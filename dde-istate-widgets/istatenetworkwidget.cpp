@@ -178,3 +178,34 @@ QString IstateNetworkWidget::shortenDataSizeStr(QString dataSizeStr, int minLeng
     }
     return tmpStr;
 }
+
+void IstateNetworkWidget::updateStatistics(QMap<QString, QPair<ulong, ulong>> currStat) {
+    QList<QString> interfaceList(currStat.keys());
+    std::sort(interfaceList.begin(), interfaceList.end(), [currStat](const QString &s1, const QString &s2) {
+        return currStat[s1].first + currStat[s1].second > currStat[s2].first + currStat[s2].second;
+    });
+
+    int rank = 0;
+    for (int r = 1; r < ui->statisticsGridLayout->rowCount(); ++r) {
+        for (int c = 0; c < ui->statisticsGridLayout->columnCount(); ++c) {
+            auto *qLabel = dynamic_cast<QLabel*>(ui->statisticsGridLayout->itemAtPosition(r, c)->widget());
+            qLabel->clear();
+        }
+
+        if (rank < interfaceList.size()) {
+            QString interfaceName = interfaceList.at(rank);
+            auto *qLabel = dynamic_cast<QLabel*>(ui->statisticsGridLayout->itemAtPosition(r, 0)->widget());
+            qLabel->setText(interfaceName);
+
+            qLabel = dynamic_cast<QLabel*>(ui->statisticsGridLayout->itemAtPosition(r, 1)->widget());
+            QString uploadStr = this->engLocale.formattedDataSize(currStat[interfaceName].second, 2, QLocale::DataSizeSIFormat);
+            qLabel->setText(uploadStr);
+
+            qLabel = dynamic_cast<QLabel*>(ui->statisticsGridLayout->itemAtPosition(r, 2)->widget());
+            QString downloadStr = this->engLocale.formattedDataSize(currStat[interfaceName].first, 2, QLocale::DataSizeSIFormat);
+            qLabel->setText(downloadStr);
+
+            ++rank;
+        }
+    }
+}

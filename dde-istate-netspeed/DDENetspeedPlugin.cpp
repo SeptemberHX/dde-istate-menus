@@ -103,6 +103,7 @@ void DDENetspeedPlugin::refreshData() {
         this->lastInDataSize = dataMap[netName].first;
         this->lastOutDataSize = dataMap[netName].second;
     }
+    this->m_appletWidget->updateStatistics(dataMap);
 }
 
 void DDENetspeedPlugin::setRefreshInterval(int msec) {
