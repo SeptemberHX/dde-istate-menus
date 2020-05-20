@@ -22,6 +22,7 @@ public:
     ~IstateNetworkWidget();
     void appendSpeed(qreal upSpeed, qreal downSpeed);
     void updateStatistics(QMap<QString, QPair<ulong, ulong>> currStat);
+    void updateProcesses(QMap<QString, QPair<ulong, ulong>> currStat);
     void redrawCurve();
     void setTimeInterval(int msec);
 

@@ -146,8 +146,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dde-istate-widgets/istatenetworkwidget.cpp" line="128"/>
-        <location filename="../dde-istate-widgets/istatenetworkwidget.cpp" line="129"/>
+        <location filename="../dde-istate-widgets/istatenetworkwidget.cpp" line="122"/>
+        <location filename="../dde-istate-widgets/istatenetworkwidget.cpp" line="123"/>
         <source>Peak</source>
         <translation type="unfinished"></translation>
     </message>
@@ -158,6 +158,15 @@
         <location filename="../dde-istate-widgets/mainwindow.ui" line="13"/>
         <location filename="../build-dde-istate-widgets-default-Debug/ui_mainwindow.h" line="55"/>
         <source>MainWindow</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Process.Table</name>
+    <message>
+        <location filename="../utils/stats_collector.cpp" line="630"/>
+        <location filename="../utils/stats_collector.cpp" line="639"/>
+        <source>Tray</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

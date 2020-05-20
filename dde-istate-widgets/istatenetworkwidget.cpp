@@ -70,12 +70,6 @@ IstateNetworkWidget::IstateNetworkWidget(QWidget *parent) :
     this->m_chart->setBackgroundRoundness(0);
     this->m_chart->legend()->setLabelColor(Qt::white);
 
-//    for (int i = 0; i < 60; i++)
-//    {
-//        this->m_outSeries->append(i, 10 * i);
-//        this->m_inSeries->append(i, -10 * i);
-//    }
-
     ui->chartView->setChart(this->m_chart);
     ui->chartView->setContentsMargins(0, 0, 0, 0);
     ui->chartView->setRenderHint(QPainter::Antialiasing);
@@ -204,6 +198,37 @@ void IstateNetworkWidget::updateStatistics(QMap<QString, QPair<ulong, ulong>> cu
             qLabel = dynamic_cast<QLabel*>(ui->statisticsGridLayout->itemAtPosition(r, 2)->widget());
             QString downloadStr = this->engLocale.formattedDataSize(currStat[interfaceName].first, 2, QLocale::DataSizeSIFormat);
             qLabel->setText(downloadStr);
+
+            ++rank;
+        }
+    }
+}
+
+void IstateNetworkWidget::updateProcesses(QMap<QString, QPair<ulong, ulong>> currStat) {
+    QList<QString> processList(currStat.keys());
+    std::sort(processList.begin(), processList.end(), [currStat](const QString &s1, const QString &s2) {
+        return currStat[s1].second > currStat[s2].second;
+    });
+
+    int rank = 0;
+    for (int r = 1; r < ui->processesGridLayout->rowCount(); ++r) {
+        for (int c = 0; c < ui->processesGridLayout->columnCount(); ++c) {
+            auto *qLabel = dynamic_cast<QLabel*>(ui->processesGridLayout->itemAtPosition(r, c)->widget());
+            qLabel->clear();
+        }
+
+        if (rank < processList.size()) {
+            QString processName = processList.at(rank);
+            auto *qLabel = dynamic_cast<QLabel*>(ui->processesGridLayout->itemAtPosition(r, 0)->widget());
+            qLabel->setText(processName);
+
+            qLabel = dynamic_cast<QLabel*>(ui->processesGridLayout->itemAtPosition(r, 1)->widget());
+            QString uploadStr = this->engLocale.formattedDataSize(currStat[processName].second, 2, QLocale::DataSizeSIFormat);
+            qLabel->setText(uploadStr + "/s");
+
+            qLabel = dynamic_cast<QLabel*>(ui->processesGridLayout->itemAtPosition(r, 2)->widget());
+            QString downloadStr = this->engLocale.formattedDataSize(currStat[processName].first, 2, QLocale::DataSizeSIFormat);
+            qLabel->setText(downloadStr + "/s");
 
             ++rank;
         }

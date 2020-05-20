@@ -21,7 +21,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "NetworkTrafficFilter.h"
+#include "network_traffic_filter.h"
 #include <string.h>
 
 std::mutex NetworkTrafficFilter::m_mutex;

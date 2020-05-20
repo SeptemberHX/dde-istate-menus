@@ -5,6 +5,7 @@
 
 # 设置运行被配置所需的 cmake 最低版本
 cmake_minimum_required(VERSION 3.11)
+set(CMAKE_CXX_STANDARD 11)
 
 # 使用 set 命令设置一个变量
 set(PLUGIN_NAME "dde_istate_menus")
@@ -37,8 +38,10 @@ file(GLOB SRCS "*.h" "*.cpp" "utils/*.h" "utils/*.cpp" "nethogs/src/*.h")
 # <库名>_INCLUDE_DIRS   有哪些头文件目录（Qt5Widgets_INCLUDE_DIRS）
 # <库名>_LIBRARIES      有哪些库文件（Qt5Widgets_LIBRARIES）
 find_package(Qt5Widgets REQUIRED)
+find_package(Qt5DBus REQUIRED)
 find_package(DtkWidget REQUIRED)
 find_package(Qt5LinguistTools REQUIRED)
+find_package(DtkGui REQUIRED)
 
 # find_package 命令还可以用来加载 cmake 的功能模块
 # 并不是所有的库都直接支持 cmake 查找的，但大部分都支持了 pkg-config 这个标准，
@@ -58,6 +61,8 @@ find_package(PkgConfig REQUIRED)
 # DdeDockInterface_LIBRARIES
 # 还有有另外的一些变量以及更灵活的用法，比如一次性查找多个库，这些请自行查找 cmake 文档学习。
 pkg_check_modules(DdeDockInterface REQUIRED dde-dock)
+pkg_check_modules(Dtkwm REQUIRED dtkwm)
+pkg_check_modules(XCB REQUIRED xcb)
 
 # add_definitions 命令用于声明/定义一些编译/预处理参数
 # 根据 cmake 文档描述此命令已经有另外几个功能划分的更为细致的命令所取代，具体请查阅文档
@@ -95,8 +100,15 @@ set_target_properties(${PLUGIN_NAME} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ./)
 # 当出现编译失败提示找不到某些库的头文件时应该检查此处是否将所有需要的头文件都包含了
 target_include_directories(${PLUGIN_NAME} PUBLIC
         ${Qt5Widgets_INCLUDE_DIRS}
+        ${Qt5DBus_INCLUDE_DIRS}
         ${DtkWidget_INCLUDE_DIRS}
         ${DdeDockInterface_INCLUDE_DIRS}
+        ${Dtkwm_INCLUDE_DIRS}
+        ${XCB_INCLUDE_DIRS}
+        )
+
+target_compile_options(${PLUGIN_NAME} PUBLIC
+        ${Dtkwm_CFLAGS_OTHER}
         )
 
 find_library(pcap REQUIRED)
@@ -111,6 +123,9 @@ target_link_libraries(${PLUGIN_NAME} PRIVATE
         dde_istate_netspeed
         ${CMAKE_CURRENT_SOURCE_DIR}/nethogs/src/libnethogs.a
         pcap
+        ${Qt5DBus_LIBRARIES}
+        ${Dtkwm_LIBRARIES}
+        ${XCB_LIBRARIES}
         )
 
 # 设置安装路径的前缀(默认为"/usr/local")

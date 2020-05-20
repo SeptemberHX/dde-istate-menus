@@ -7,10 +7,12 @@
 
 #include "DDEIstateMenuPlugin.h"
 #include "dde-istate-netspeed/DDENetspeedPlugin.h"
-#include "utils/process_stat.h"
+#include "utils/stats_collector.h"
 #include <dde-dock/pluginsiteminterface.h>
 #include <QObject>
 #include <QLabel>
+#include <QThread>
+#include <QMap>
 
 class DDEIstateMenuPlugin : public QObject, public PluginsItemInterface {
     Q_OBJECT
@@ -41,10 +43,14 @@ public:
 
 private:
     void fetchSystemData();
-    static void readProcStatsCallBack(ProcStat &ps, void *context);
+    StatsCollector *m_statsCollector {nullptr};
+    void updateProcessList(const QList<ProcessEntry> procList);
+
+    QThread m_workerThread;
     DDENetspeedPlugin *netspeedPlugin;
     QLabel *m_itemWidget;
     QTimer *m_refreshTimer;
+
 };
 
 

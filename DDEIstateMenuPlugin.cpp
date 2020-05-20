@@ -3,13 +3,18 @@
 //
 
 #include "DDEIstateMenuPlugin.h"
-#include "utils/NetworkTrafficFilter.h"
+#include "utils/network_traffic_filter.h"
 #include <QJsonObject>
 
 #define PLUGIN_STATE_KEY "enable"
 
 DDEIstateMenuPlugin::DDEIstateMenuPlugin(QObject *parent) : QObject(parent) {
-
+    m_statsCollector = new StatsCollector();
+    m_statsCollector->moveToThread(&m_workerThread);
+    connect(&m_workerThread, &QThread::started, m_statsCollector, &StatsCollector::start);
+    connect(&m_workerThread, &QThread::finished, m_statsCollector, &QObject::deleteLater);
+    connect(this->m_statsCollector, &StatsCollector::processListUpdated, this, &DDEIstateMenuPlugin::updateProcessList);
+    m_workerThread.start();
 }
 
 const QString DDEIstateMenuPlugin::pluginName() const {
@@ -92,29 +97,11 @@ QWidget *DDEIstateMenuPlugin::itemWidget(const QString &itemKey) {
 }
 
 void DDEIstateMenuPlugin::fetchSystemData() {
-    NetworkTrafficFilter::Update update {};
-    while (NetworkTrafficFilter::getRowUpdate(update)) {
-        if (update.action != NETHOGS_APP_ACTION_REMOVE) {
-            auto pid = update.record.pid;
-            auto recvBps = qreal(update.record.recv_kbs) * 1024;
-            auto sentBps = qreal(update.record.sent_kbs) * 1024;
-            auto recvBytes = update.record.recv_bytes;
-            auto sentBytes = update.record.sent_bytes;
-
-//            qDebug() << "====>> pid:" << pid << recvBps << sentBps << recvBytes << sentBytes;
-        }
-    }
-
-    ProcessStat::readProcStats(readProcStatsCallBack, this);
 }
 
-void DDEIstateMenuPlugin::readProcStatsCallBack(ProcStat &ps, void *context) {
-    if (!context)
-        return;
-
-    auto *ctx = static_cast<DDEIstateMenuPlugin *>(context);
-    if (!ctx)
-        return;
-
-
+void DDEIstateMenuPlugin::updateProcessList(QList<ProcessEntry> procList) {
+    for (ProcessEntry entry : procList) {
+//        qDebug() << entry.getName() << entry.getPID();
+//      todo: the main job
+    }
 }

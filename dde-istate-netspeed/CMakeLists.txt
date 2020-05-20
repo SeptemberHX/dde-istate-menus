@@ -19,7 +19,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 # 指定所有源码文件
 # 使用了 cmake 的 file 命令，递归查找项目目录下所有头文件和源码文件，
 # 并将结果放入 SRCS 变量中，SRCS 变量可用于后续使用
-file(GLOB SRCS "*.h" "*.cpp" "../utils/*.h" "../utils/*.cpp")
+file(GLOB SRCS "*.h" "*.cpp" "../utils/DDEUtils.h" "../utils/DDEUtils.cpp")
 
 
 # 指定要用到的库
