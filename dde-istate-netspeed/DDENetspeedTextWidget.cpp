@@ -13,16 +13,14 @@
 DWIDGET_USE_NAMESPACE
 
 DDENetspeedTextWidget::DDENetspeedTextWidget(QWidget *parent)
-    : QLabel(parent)
-{
-    this->setMinimumSize(PLUGIN_BACKGROUND_MIN_SIZE, PLUGIN_BACKGROUND_MIN_SIZE);
-    this->setFixedSize(40, 30);
+        : QLabel(parent) {
+    this->setMinimumSize(40, 30);
     this->curSize();
-    this->m_font = DFontSizeManager::instance()->t10();
+    this->m_font = DFontSizeManager::instance()->t4();
 }
 
 QSize DDENetspeedTextWidget::sizeHint() const {
-    return QSize(40, 30);
+    return this->curSize();
 }
 
 void DDENetspeedTextWidget::paintEvent(QPaintEvent *e) {
@@ -42,8 +40,7 @@ void DDENetspeedTextWidget::paintEvent(QPaintEvent *e) {
     painter.drawText(downloadRect, Qt::AlignTop | Qt::AlignHCenter, getDownloadBpsStr());
 }
 
-QString DDENetspeedTextWidget::shortenDataSizeStr(QString dataSizeStr) const
-{
+QString DDENetspeedTextWidget::shortenDataSizeStr(QString dataSizeStr) const {
     int i = -1;
     for (int j = 0; j < dataSizeStr.length(); ++j) {
         if (dataSizeStr[j].isLetter()) {
@@ -69,7 +66,7 @@ void DDENetspeedTextWidget::setUpAndDownBps(qreal uploadBps, qreal downloadBps) 
 QSize DDENetspeedTextWidget::curSize() const {
     QLocale tmpLocal = QLocale(QLocale::English, QLocale::UnitedStates);
 
-    this->m_font = DFontSizeManager::instance()->t10();
+    this->m_font = DFontSizeManager::instance()->t4();
     QFontMetrics fm(this->m_font);
 
     QString uploadStr = tmpLocal.formattedDataSize(this->uploadBps, 1, QLocale::DataSizeSIFormat);
@@ -81,10 +78,13 @@ QSize DDENetspeedTextWidget::curSize() const {
     while (QFontMetrics(m_font).boundingRect(uploadStr).size().height() +
            QFontMetrics(m_font).boundingRect(downloadStr).size().height() > height() ||
            std::max(QFontMetrics(m_font).boundingRect(uploadStr).size().width(),
-                    QFontMetrics(m_font).boundingRect(downloadStr).size().width()) > width()) {
+                    QFontMetrics(m_font).boundingRect(downloadStr).size().width()) > width() - 5) {
         m_font.setPixelSize(m_font.pixelSize() - 1);
     }
-    return this->size();
+    return QSize(std::max(QFontMetrics(m_font).boundingRect(uploadStr).size().width(),
+                          QFontMetrics(m_font).boundingRect(downloadStr).size().width()),
+                 QFontMetrics(m_font).boundingRect(uploadStr).size().height() +
+                 QFontMetrics(m_font).boundingRect(downloadStr).size().height());
 }
 
 QString DDENetspeedTextWidget::getUploadBpsStr() {

@@ -22,6 +22,7 @@ void DDENetspeedPlugin::init(PluginProxyInterface *proxyInter) {
     this->m_proxyInter = proxyInter;
 
     this->m_speedTextWidget = new DDENetspeedTextWidget();
+    this->m_speedTextWidget2 = new DDENetspeedTextWidget2();
     this->m_pluginWidget = new QLabel();
     this->m_tipsWidget = new QLabel();
     this->m_appletWidget = new IstateNetworkWidget();
@@ -107,6 +108,8 @@ void DDENetspeedPlugin::refreshData() {
                 this->m_appletWidget->appendBps(uploadBps, downloadBps);
             }
             this->m_speedTextWidget->setUpAndDownBps(uploadBps, downloadBps);
+            this->m_speedTextWidget2->setUpAndDownBps(uploadBps, downloadBps);
+
             this->lastInDataSize = dataMap[this->defaultNetDeviceName].first;
             this->lastOutDataSize = dataMap[this->defaultNetDeviceName].second;
 

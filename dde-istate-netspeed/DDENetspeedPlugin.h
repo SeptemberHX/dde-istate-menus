@@ -9,6 +9,7 @@
 #include "../dde-istate-widgets/istatenetworkwidget.h"
 #include <dde-dock/pluginsiteminterface.h>
 #include "DDENetspeedTextWidget.h"
+#include "DDENetspeedTextWidget2.h"
 #include <QObject>
 #include <QLabel>
 #include <QTimer>
@@ -63,6 +64,7 @@ private:
     int intervalInMSec = 2000;
     QString defaultNetDeviceName;
     DDENetspeedTextWidget *m_speedTextWidget;
+    DDENetspeedTextWidget2 *m_speedTextWidget2;
 };
 
 
