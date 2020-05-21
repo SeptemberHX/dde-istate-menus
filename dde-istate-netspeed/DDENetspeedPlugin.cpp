@@ -21,12 +21,12 @@ void DDENetspeedPlugin::init(PluginProxyInterface *proxyInter) {
     this->lastOutDataSize = 0;
     this->m_proxyInter = proxyInter;
 
+    this->m_speedTextWidget = new DDENetspeedTextWidget();
     this->m_pluginWidget = new QLabel();
     this->m_tipsWidget = new QLabel();
     this->m_appletWidget = new IstateNetworkWidget();
     this->m_timer = new QTimer(this);
     this->m_timer->setInterval(this->intervalInMSec);
-    this->m_appletWidget->setTimeInterval(this->intervalInMSec);
     connect(this->m_timer, &QTimer::timeout, this, &DDENetspeedPlugin::refreshData);
     this->m_timer->start();
 }
@@ -34,7 +34,7 @@ void DDENetspeedPlugin::init(PluginProxyInterface *proxyInter) {
 QWidget *DDENetspeedPlugin::itemWidget(const QString &itemKey) {
     Q_UNUSED(itemKey)
     this->m_pluginWidget->setText("Plugin widget");
-    return this->m_pluginWidget;
+    return this->m_speedTextWidget;
 }
 
 void DDENetspeedPlugin::pluginStateSwitched() {
@@ -57,7 +57,6 @@ const QString DDENetspeedPlugin::pluginDisplayName() const {
 QWidget *DDENetspeedPlugin::itemTipsWidget(const QString &itemKey) {
     Q_UNUSED(itemKey)
     this->m_tipsWidget->setText("Tips widget");
-    DDEUtils::currNetInOutBytes();
     return m_tipsWidget;
 }
 
@@ -102,10 +101,12 @@ void DDENetspeedPlugin::refreshData() {
 
     if (!this->defaultNetDeviceName.isEmpty()) {
         if (dataMap.contains(this->defaultNetDeviceName)) {
+            qreal uploadBps = (dataMap[this->defaultNetDeviceName].second - this->lastOutDataSize) * 1000.0 / this->intervalInMSec;
+            qreal downloadBps = (dataMap[this->defaultNetDeviceName].first - this->lastInDataSize) * 1000.0 / this->intervalInMSec;
             if (this->lastInDataSize != 0) {
-                this->m_appletWidget->appendSpeed(dataMap[this->defaultNetDeviceName].second - this->lastOutDataSize,
-                                                  dataMap[this->defaultNetDeviceName].first - this->lastInDataSize);
+                this->m_appletWidget->appendBps(uploadBps, downloadBps);
             }
+            this->m_speedTextWidget->setUpAndDownBps(uploadBps, downloadBps);
             this->lastInDataSize = dataMap[this->defaultNetDeviceName].first;
             this->lastOutDataSize = dataMap[this->defaultNetDeviceName].second;
 
@@ -116,7 +117,7 @@ void DDENetspeedPlugin::refreshData() {
             this->m_appletWidget->setCurveDevice(this->defaultNetDeviceName, ipv4);
         }
     } else {
-        this->m_appletWidget->appendSpeed(0, 0);
+        this->m_appletWidget->appendBps(0, 0);
         this->m_appletWidget->setCurveDevice("-", "-");
     }
     this->m_appletWidget->updateStatistics(dataMap, netIpv4Map);
@@ -125,7 +126,6 @@ void DDENetspeedPlugin::refreshData() {
 void DDENetspeedPlugin::setRefreshInterval(int msec) {
     this->intervalInMSec = msec;
     this->m_timer->setInterval(msec);
-    this->m_appletWidget->setTimeInterval(msec);
     this->m_timer->start();
 }
 

@@ -21,12 +21,11 @@ class IstateNetworkWidget : public QWidget
 public:
     explicit IstateNetworkWidget(QWidget *parent = nullptr);
     ~IstateNetworkWidget();
-    void appendSpeed(qreal upSpeed, qreal downSpeed);
+    void appendBps(qreal upSpeed, qreal downSpeed);
     void setCurveDevice(QString devName, QString ipv4);
     void updateStatistics(QMap<QString, QPair<ulong, ulong>> currStat, QMap<QString, QString> netIpv4Map);
     void updateProcesses(QList<ProcessEntry> entryList);
     void redrawCurve();
-    void setTimeInterval(int msec);
 
 public slots:
     void _addDataTest();
@@ -56,7 +55,6 @@ private:
     int maxY = 100;
     double currMaxY = 100;
     double spacing = 0.15;
-    int timeInterval = 1000;
     QLocale engLocale = QLocale(QLocale::English, QLocale::UnitedStates);
 };
 

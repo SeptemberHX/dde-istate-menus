@@ -86,10 +86,10 @@ IstateNetworkWidget::~IstateNetworkWidget()
     delete ui;
 }
 
-void IstateNetworkWidget::appendSpeed(qreal upSpeed, qreal downSpeed)
+void IstateNetworkWidget::appendBps(qreal upSpeed, qreal downSpeed)
 {
-    this->downSpeedHistoryList.append(downSpeed / this->timeInterval * 1000);
-    this->uploadHistoryList.append(upSpeed / this->timeInterval * 1000);
+    this->downSpeedHistoryList.append(downSpeed);
+    this->uploadHistoryList.append(upSpeed);
 
     if (this->downSpeedHistoryList.size() > this->maxHistorySize) {
         this->downSpeedHistoryList = this->downSpeedHistoryList.mid(this->downSpeedHistoryList.size() - this->maxHistorySize);
@@ -141,14 +141,9 @@ void IstateNetworkWidget::redrawCurve()
     }
 }
 
-void IstateNetworkWidget::setTimeInterval(int msec)
-{
-    this->timeInterval = msec;
-}
-
 void IstateNetworkWidget::_addDataTest()
 {
-    this->appendSpeed(10 * this->_testCount, 10 * this->_testCount * 1000);
+    this->appendBps(10 * this->_testCount, 10 * this->_testCount * 1000);
     ++this->_testCount;
 }
 
