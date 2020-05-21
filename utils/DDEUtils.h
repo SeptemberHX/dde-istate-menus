@@ -14,6 +14,7 @@ class DDEUtils {
 
 public:
     static QMap<QString, QPair<ulong, ulong>> currNetInOutBytes();
+    static QMap<QString, QString> netIpv4Map();
 };
 
 

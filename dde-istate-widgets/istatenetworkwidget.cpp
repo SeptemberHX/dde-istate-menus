@@ -173,7 +173,7 @@ QString IstateNetworkWidget::shortenDataSizeStr(QString dataSizeStr, int minLeng
     return tmpStr;
 }
 
-void IstateNetworkWidget::updateStatistics(QMap<QString, QPair<ulong, ulong>> currStat) {
+void IstateNetworkWidget::updateStatistics(QMap<QString, QPair<ulong, ulong>> currStat, QMap<QString, QString> netIpv4Map) {
     QList<QString> interfaceList(currStat.keys());
     std::sort(interfaceList.begin(), interfaceList.end(), [currStat](const QString &s1, const QString &s2) {
         return currStat[s1].first + currStat[s1].second > currStat[s2].first + currStat[s2].second;
@@ -192,11 +192,20 @@ void IstateNetworkWidget::updateStatistics(QMap<QString, QPair<ulong, ulong>> cu
             qLabel->setText(interfaceName);
 
             qLabel = dynamic_cast<QLabel*>(ui->statisticsGridLayout->itemAtPosition(r, 1)->widget());
-            QString uploadStr = this->engLocale.formattedDataSize(currStat[interfaceName].second, 2, QLocale::DataSizeSIFormat);
-            qLabel->setText(uploadStr);
+            if (netIpv4Map.contains(interfaceName)) {
+                qLabel->setText(netIpv4Map[interfaceName]);
+            } else {
+                qLabel->setText("-");
+            }
 
             qLabel = dynamic_cast<QLabel*>(ui->statisticsGridLayout->itemAtPosition(r, 2)->widget());
+            QString uploadStr = this->engLocale.formattedDataSize(currStat[interfaceName].second, 2, QLocale::DataSizeSIFormat);
+            uploadStr = this->shortenDataSizeStr(uploadStr);
+            qLabel->setText(uploadStr);
+
+            qLabel = dynamic_cast<QLabel*>(ui->statisticsGridLayout->itemAtPosition(r, 3)->widget());
             QString downloadStr = this->engLocale.formattedDataSize(currStat[interfaceName].first, 2, QLocale::DataSizeSIFormat);
+            downloadStr = this->shortenDataSizeStr(downloadStr);
             qLabel->setText(downloadStr);
 
             ++rank;
@@ -204,10 +213,9 @@ void IstateNetworkWidget::updateStatistics(QMap<QString, QPair<ulong, ulong>> cu
     }
 }
 
-void IstateNetworkWidget::updateProcesses(QMap<QString, QPair<ulong, ulong>> currStat) {
-    QList<QString> processList(currStat.keys());
-    std::sort(processList.begin(), processList.end(), [currStat](const QString &s1, const QString &s2) {
-        return currStat[s1].second > currStat[s2].second;
+void IstateNetworkWidget::updateProcesses(QList<ProcessEntry> entryList) {
+    std::sort(entryList.begin(), entryList.end(), [](const ProcessEntry &e1, const ProcessEntry &e2) {
+        return e1.getRecvBps() > e2.getRecvBps();
     });
 
     int rank = 0;
@@ -217,20 +225,32 @@ void IstateNetworkWidget::updateProcesses(QMap<QString, QPair<ulong, ulong>> cur
             qLabel->clear();
         }
 
-        if (rank < processList.size()) {
-            QString processName = processList.at(rank);
+        if (rank < entryList.size()) {
+            ProcessEntry entry = entryList.at(rank);
             auto *qLabel = dynamic_cast<QLabel*>(ui->processesGridLayout->itemAtPosition(r, 0)->widget());
-            qLabel->setText(processName);
+            qLabel->setPixmap(entry.getIcon().pixmap(qLabel->size()));
 
             qLabel = dynamic_cast<QLabel*>(ui->processesGridLayout->itemAtPosition(r, 1)->widget());
-            QString uploadStr = this->engLocale.formattedDataSize(currStat[processName].second, 2, QLocale::DataSizeSIFormat);
-            qLabel->setText(uploadStr + "/s");
+            QFontMetrics fontWidth(qLabel->font());
+            QString elideNote = fontWidth.elidedText(entry.getName(), Qt::ElideRight, qLabel->width());
+            qLabel->setText(elideNote);
 
             qLabel = dynamic_cast<QLabel*>(ui->processesGridLayout->itemAtPosition(r, 2)->widget());
-            QString downloadStr = this->engLocale.formattedDataSize(currStat[processName].first, 2, QLocale::DataSizeSIFormat);
+            QString uploadStr = this->engLocale.formattedDataSize(entry.getSentBps(), 2, QLocale::DataSizeSIFormat);
+            uploadStr = this->shortenDataSizeStr(uploadStr);
+            qLabel->setText(uploadStr + "/s");
+
+            qLabel = dynamic_cast<QLabel*>(ui->processesGridLayout->itemAtPosition(r, 3)->widget());
+            QString downloadStr = this->engLocale.formattedDataSize(entry.getRecvBps(), 2, QLocale::DataSizeSIFormat);
+            downloadStr = this->shortenDataSizeStr(downloadStr);
             qLabel->setText(downloadStr + "/s");
 
             ++rank;
         }
     }
+}
+
+void IstateNetworkWidget::setCurveDevice(QString devName, QString ipv4) {
+    ui->deviceNameLabel->setText(devName);
+    ui->ipv4Label->setText(ipv4);
 }

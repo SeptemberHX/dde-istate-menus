@@ -111,6 +111,10 @@ target_compile_options(${PLUGIN_NAME} PUBLIC
         ${Dtkwm_CFLAGS_OTHER}
         )
 
+target_compile_definitions(${PLUGIN_NAME} PUBLIC
+        QT_DEBUG_NO_OUTPUT
+        )
+
 find_library(pcap REQUIRED)
 
 # 设置目标要使用的链接库

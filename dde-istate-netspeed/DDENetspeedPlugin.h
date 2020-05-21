@@ -19,7 +19,7 @@ class DDENetspeedPlugin : public QObject, public PluginsItemInterface, public DD
     // 声明实现了的接口
     Q_INTERFACES(PluginsItemInterface)
     // 插件元数据
-    Q_PLUGIN_METADATA(IID "com.deepin.dock.PluginsItemInterface" FILE "dde_istate_netspeed.json")
+//    Q_PLUGIN_METADATA(IID "com.deepin.dock.PluginsItemInterface" FILE "dde_istate_netspeed.json")
 
 public:
     explicit DDENetspeedPlugin(QObject *parent = nullptr);
@@ -48,6 +48,10 @@ public:
 
     void setRefreshInterval(int msec) override;
 
+    void updateProcesses(QList<ProcessEntry> entryList);
+
+    void determineNetDevice(QMap<QString, QPair<ulong, ulong>> netTrafficMap);
+
 private:
     QLabel *m_pluginWidget;
     IstateNetworkWidget *m_appletWidget;
@@ -56,6 +60,7 @@ private:
     uint lastInDataSize;
     uint lastOutDataSize;
     int intervalInMSec = 2000;
+    QString defaultNetDeviceName;
 };
 
 

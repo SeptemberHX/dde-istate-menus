@@ -6,6 +6,7 @@
 #include <QLineSeries>
 #include <QAreaSeries>
 #include <QTimer>
+#include "../utils/process_entry.h"
 
 QT_CHARTS_USE_NAMESPACE
 
@@ -21,8 +22,9 @@ public:
     explicit IstateNetworkWidget(QWidget *parent = nullptr);
     ~IstateNetworkWidget();
     void appendSpeed(qreal upSpeed, qreal downSpeed);
-    void updateStatistics(QMap<QString, QPair<ulong, ulong>> currStat);
-    void updateProcesses(QMap<QString, QPair<ulong, ulong>> currStat);
+    void setCurveDevice(QString devName, QString ipv4);
+    void updateStatistics(QMap<QString, QPair<ulong, ulong>> currStat, QMap<QString, QString> netIpv4Map);
+    void updateProcesses(QList<ProcessEntry> entryList);
     void redrawCurve();
     void setTimeInterval(int msec);
 

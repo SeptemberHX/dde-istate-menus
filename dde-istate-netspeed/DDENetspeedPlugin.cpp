@@ -94,16 +94,32 @@ void DDENetspeedPlugin::pluginSettingsChanged() {
 
 void DDENetspeedPlugin::refreshData() {
     QMap<QString, QPair<ulong, ulong>> dataMap = DDEUtils::currNetInOutBytes();
-    QString netName = "wlp0s20f3";
-    if (dataMap.contains(netName)) {
-        if (this->lastInDataSize != 0) {
-            this->m_appletWidget->appendSpeed(dataMap[netName].second - this->lastOutDataSize,
-                                              dataMap[netName].first - this->lastInDataSize);
-        }
-        this->lastInDataSize = dataMap[netName].first;
-        this->lastOutDataSize = dataMap[netName].second;
+    QMap<QString, QString> netIpv4Map = DDEUtils::netIpv4Map();
+
+    if (this->defaultNetDeviceName.isEmpty()) {
+        this->determineNetDevice(dataMap);
     }
-    this->m_appletWidget->updateStatistics(dataMap);
+
+    if (!this->defaultNetDeviceName.isEmpty()) {
+        if (dataMap.contains(this->defaultNetDeviceName)) {
+            if (this->lastInDataSize != 0) {
+                this->m_appletWidget->appendSpeed(dataMap[this->defaultNetDeviceName].second - this->lastOutDataSize,
+                                                  dataMap[this->defaultNetDeviceName].first - this->lastInDataSize);
+            }
+            this->lastInDataSize = dataMap[this->defaultNetDeviceName].first;
+            this->lastOutDataSize = dataMap[this->defaultNetDeviceName].second;
+
+            QString ipv4 = "-";
+            if (netIpv4Map.contains(this->defaultNetDeviceName)) {
+                ipv4 = netIpv4Map[this->defaultNetDeviceName];
+            }
+            this->m_appletWidget->setCurveDevice(this->defaultNetDeviceName, ipv4);
+        }
+    } else {
+        this->m_appletWidget->appendSpeed(0, 0);
+        this->m_appletWidget->setCurveDevice("-", "-");
+    }
+    this->m_appletWidget->updateStatistics(dataMap, netIpv4Map);
 }
 
 void DDENetspeedPlugin::setRefreshInterval(int msec) {
@@ -111,4 +127,23 @@ void DDENetspeedPlugin::setRefreshInterval(int msec) {
     this->m_timer->setInterval(msec);
     this->m_appletWidget->setTimeInterval(msec);
     this->m_timer->start();
+}
+
+void DDENetspeedPlugin::updateProcesses(QList<ProcessEntry> entryList) {
+    this->m_appletWidget->updateProcesses(entryList);
+}
+
+void DDENetspeedPlugin::determineNetDevice(QMap<QString, QPair<ulong, ulong>> dataMap) {
+    QList<QString> interfaceList(dataMap.keys());
+    std::sort(interfaceList.begin(), interfaceList.end(), [dataMap](const QString &s1, const QString &s2) {
+        return dataMap[s1].first + dataMap[s1].second > dataMap[s2].first + dataMap[s2].second;
+    });
+
+    for (const QString& devName : interfaceList) {
+        if (devName.startsWith("wlan") || devName.startsWith("wlp")
+            || devName.startsWith("eth") || devName.startsWith("enp")) {
+            this->defaultNetDeviceName = devName;
+            break;
+        }
+    }
 }
