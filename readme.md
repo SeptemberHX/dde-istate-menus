@@ -3,6 +3,7 @@
 IStat menus on macOS alternative for DDE.
 
 > This software has nothing to do with the Istat menu excepting adopting its UI design
+
 > The main part of the system monitoring code in `utils` comes from [deepin-system-monitor](https://github.com/linuxdeepin/deepin-system-monitor)
 
 > Still in development
