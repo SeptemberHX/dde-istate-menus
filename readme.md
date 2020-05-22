@@ -19,7 +19,7 @@ IStat menus on macOS alternative for DDE.
 * [ ] RAM
 * [ ] DISK
 * [ ] Datetime
-    * [x] dock widget
+    * [x] dock widget (main code comes from the original datetime plugin in dde-dock)
     * [ ] popup widget
     
 ### Known issues
@@ -33,8 +33,14 @@ IStat menus on macOS alternative for DDE.
 ![](./screenshots/network.png)
 
 
-### Attention
+### How to use
+
+Download the `libdde_istate_menus.so` and put it to `~/.local/lib/dde-dock/plugins` or `/usr/lib/dde-dock/plugins`
+
+Then:
 
 ```
 sudo setcap cap_net_raw,cap_dac_read_search,cap_sys_ptrace+ep `which dde-dock`
 ```
+
+logout out or reboot.
