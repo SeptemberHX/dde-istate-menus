@@ -23,7 +23,6 @@
 
 #include <DDBusSender>
 #include <QLabel>
-#include <QDebug>
 #include <QDBusConnection>
 #include <QDBusConnectionInterface>
 #include "datetimewidget.h"

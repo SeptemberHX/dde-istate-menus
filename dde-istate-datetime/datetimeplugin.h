@@ -43,7 +43,6 @@ public:
     void init(PluginProxyInterface *proxyInter) override;
 
     void pluginStateSwitched() override;
-    bool pluginIsAllowDisable() override { return true; }
     bool pluginIsDisable() override;
 
     int itemSortKey(const QString &itemKey) Q_DECL_OVERRIDE;
