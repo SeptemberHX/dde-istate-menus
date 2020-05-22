@@ -2,6 +2,14 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="zh_CN">
 <context>
+    <name>DatetimePlugin</name>
+    <message>
+        <location filename="../dde-istate-datetime/datetimeplugin.cpp" line="47"/>
+        <source>dde_istate_datetime</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>IstateNetworkWidget</name>
     <message>
         <location filename="../dde-istate-widgets/istatenetworkwidget.ui" line="26"/>

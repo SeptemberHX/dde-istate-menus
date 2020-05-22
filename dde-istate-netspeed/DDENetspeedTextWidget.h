@@ -6,10 +6,10 @@
 #define DDE_ISTATE_MENUS_DDENETSPEEDTEXTWIDGET_H
 
 
-#include <QLabel>
+#include <QWidget>
 #include <QLocale>
 
-class DDENetspeedTextWidget : public QLabel {
+class DDENetspeedTextWidget : public QWidget {
     Q_OBJECT
 
 public:
@@ -19,14 +19,16 @@ public:
 
 private:
     void paintEvent(QPaintEvent *e) override;
-    QString shortenDataSizeStr(QString dataSizeStr) const;
+    QString shortenDataSizeStr(QString dataSizeStr, int fixLength=7) const;
     QSize curSize() const;
+
+private:
 
     QString getUploadBpsStr();
     QString getDownloadBpsStr();
 
     mutable QFont m_font;
-    mutable int m_offset;
+    mutable int m_timeOffset;
 
     qreal downloadBps = 0;
     qreal uploadBps = 0;

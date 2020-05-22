@@ -9,14 +9,14 @@
 #include <QPainter>
 #include <DFontSizeManager>
 
+#define PLUGIN_STATE_KEY    "enable"
+#define TIME_FONT DFontSizeManager::instance()->t4()
 
 DWIDGET_USE_NAMESPACE
 
 DDENetspeedTextWidget::DDENetspeedTextWidget(QWidget *parent)
-        : QLabel(parent) {
-    this->setMinimumSize(40, 30);
-    this->curSize();
-    this->m_font = DFontSizeManager::instance()->t4();
+        : QWidget(parent) {
+    setMinimumSize(PLUGIN_BACKGROUND_MIN_SIZE, PLUGIN_BACKGROUND_MIN_SIZE);
 }
 
 QSize DDENetspeedTextWidget::sizeHint() const {
@@ -25,6 +25,7 @@ QSize DDENetspeedTextWidget::sizeHint() const {
 
 void DDENetspeedTextWidget::paintEvent(QPaintEvent *e) {
     QPainter painter(this);
+    this->curSize();
     painter.setRenderHint(QPainter::Antialiasing);
 
     painter.setFont(this->m_font);
@@ -33,14 +34,14 @@ void DDENetspeedTextWidget::paintEvent(QPaintEvent *e) {
     QRect uploadRect = rect();
     QRect downloadRect = rect();
 
-    uploadRect.setBottom(rect().center().y() + 4);
-    downloadRect.setTop(uploadRect.bottom() - 4);
+    uploadRect.setBottom(rect().center().y() + 2);
+    downloadRect.setTop(uploadRect.bottom() - 2);
 
     painter.drawText(uploadRect, Qt::AlignBottom | Qt::AlignHCenter, getUploadBpsStr());
     painter.drawText(downloadRect, Qt::AlignTop | Qt::AlignHCenter, getDownloadBpsStr());
 }
 
-QString DDENetspeedTextWidget::shortenDataSizeStr(QString dataSizeStr) const {
+QString DDENetspeedTextWidget::shortenDataSizeStr(QString dataSizeStr, int fixLength) const {
     int i = -1;
     for (int j = 0; j < dataSizeStr.length(); ++j) {
         if (dataSizeStr[j].isLetter()) {
@@ -52,6 +53,10 @@ QString DDENetspeedTextWidget::shortenDataSizeStr(QString dataSizeStr) const {
     QString tmpStr = dataSizeStr;
     if (i >= 0 && i + 1 < dataSizeStr.size()) {
         tmpStr = dataSizeStr.mid(0, i + 1);
+    }
+
+    while (tmpStr.length() < fixLength) {
+        tmpStr = tmpStr.insert(0, ' ');
     }
 
     return tmpStr;
@@ -66,20 +71,23 @@ void DDENetspeedTextWidget::setUpAndDownBps(qreal uploadBps, qreal downloadBps) 
 QSize DDENetspeedTextWidget::curSize() const {
     QLocale tmpLocal = QLocale(QLocale::English, QLocale::UnitedStates);
 
-    this->m_font = DFontSizeManager::instance()->t4();
+    this->m_font = TIME_FONT;
     QFontMetrics fm(this->m_font);
+    QString uploadStr = QString("↑ 1000.0B");
+    QString downloadStr = QString("↑ 1000.0B");
 
-    QString uploadStr = tmpLocal.formattedDataSize(this->uploadBps, 1, QLocale::DataSizeSIFormat);
-    uploadStr = QString("↑ ") + shortenDataSizeStr(uploadStr);
+    const Dock::Position position = qApp->property(PROP_POSITION).value<Dock::Position>();
 
-    QString downloadStr = tmpLocal.formattedDataSize(this->uploadBps, 1, QLocale::DataSizeSIFormat);
-    downloadStr = QString("↑ ") + shortenDataSizeStr(downloadStr);
-
-    while (QFontMetrics(m_font).boundingRect(uploadStr).size().height() +
-           QFontMetrics(m_font).boundingRect(downloadStr).size().height() > height() ||
-           std::max(QFontMetrics(m_font).boundingRect(uploadStr).size().width(),
-                    QFontMetrics(m_font).boundingRect(downloadStr).size().width()) > width() - 5) {
-        m_font.setPixelSize(m_font.pixelSize() - 1);
+    if (position == Dock::Top || position == Dock::Bottom) {
+        while (QFontMetrics(m_font).boundingRect(uploadStr).size().height() +
+               QFontMetrics(m_font).boundingRect(downloadStr).size().height() > height()) {
+            m_font.setPixelSize(m_font.pixelSize() - 1);
+        }
+    } else {
+        while (std::max(QFontMetrics(m_font).boundingRect(uploadStr).size().width(),
+                        QFontMetrics(m_font).boundingRect(downloadStr).size().width()) > width()) {
+            m_font.setPixelSize(m_font.pixelSize() - 1);
+        }
     }
     return QSize(std::max(QFontMetrics(m_font).boundingRect(uploadStr).size().width(),
                           QFontMetrics(m_font).boundingRect(downloadStr).size().width()),

@@ -23,9 +23,11 @@ const QString DDEIstateMenuPlugin::pluginName() const {
 
 void DDEIstateMenuPlugin::init(PluginProxyInterface *proxyInter) {
     this->m_proxyInter = proxyInter;
+
     this->netspeedPlugin = new DDENetspeedPlugin();
     this->netspeedPlugin->init(this->m_proxyInter);
-    this->m_itemWidget = new QLabel();
+    this->datetimePlugin = new DatetimePlugin();
+    this->datetimePlugin->init(this->m_proxyInter);
 
     this->m_refreshTimer = new QTimer(this);
     this->m_refreshTimer->setInterval(2000);
@@ -36,8 +38,9 @@ void DDEIstateMenuPlugin::init(PluginProxyInterface *proxyInter) {
     nethogs_monitor_thread.detach();
 
     if (!pluginIsDisable()) {
-        this->m_proxyInter->itemAdded(this, this->pluginName());
+//        this->m_proxyInter->itemAdded(this, this->pluginName());
         this->m_proxyInter->itemAdded(this->netspeedPlugin, this->netspeedPlugin->pluginName());
+        this->m_proxyInter->itemAdded(this->datetimePlugin, this->datetimePlugin->pluginName());
     }
 }
 
@@ -52,48 +55,40 @@ bool DDEIstateMenuPlugin::pluginIsDisable() {
 void DDEIstateMenuPlugin::pluginStateSwitched() {
     m_proxyInter->saveValue(this, PLUGIN_STATE_KEY, pluginIsDisable());
     m_proxyInter->saveValue(this->netspeedPlugin, PLUGIN_STATE_KEY, pluginIsDisable());
+    m_proxyInter->saveValue(this->datetimePlugin, PLUGIN_STATE_KEY, pluginIsDisable());
 
     if (pluginIsDisable()) {
-        m_proxyInter->itemRemoved(this, pluginName());
+//        m_proxyInter->itemRemoved(this, pluginName());
+        m_proxyInter->itemRemoved(this->datetimePlugin, this->datetimePlugin->pluginName());
         m_proxyInter->itemRemoved(this->netspeedPlugin, this->netspeedPlugin->pluginName());
         return;
     }
 
-    m_proxyInter->itemAdded(this, pluginName());
+//    m_proxyInter->itemAdded(this, pluginName());
     this->m_proxyInter->itemAdded(this->netspeedPlugin, this->netspeedPlugin->pluginName());
+    this->m_proxyInter->itemAdded(this->datetimePlugin, this->datetimePlugin->pluginName());
 }
 
 const QString DDEIstateMenuPlugin::pluginDisplayName() const {
     return QStringLiteral("DDE Istate Menus");
 }
 
-int DDEIstateMenuPlugin::itemSortKey(const QString &itemKey) {
-    Q_UNUSED(itemKey)
-
-    const QString key = QString("pos_%1").arg(Dock::Efficient);
-    return m_proxyInter->getValue(this, key, 5).toInt();
-}
-
-void DDEIstateMenuPlugin::setSortKey(const QString &itemKey, const int order) {
-    Q_UNUSED(itemKey)
-
-    const QString key = QString("pos_%1").arg(Dock::Efficient);
-    m_proxyInter->saveValue(this, key, order);
-}
-
 void DDEIstateMenuPlugin::pluginSettingsChanged() {
     if (pluginIsDisable()) {
-        m_proxyInter->itemRemoved(this, pluginName());
+//        m_proxyInter->itemRemoved(this, pluginName());
+        m_proxyInter->itemRemoved(this->datetimePlugin, this->datetimePlugin->pluginName());
+        m_proxyInter->itemRemoved(this->netspeedPlugin, this->netspeedPlugin->pluginName());
         return;
     }
 
-    m_proxyInter->itemAdded(this, pluginName());
+//    m_proxyInter->itemAdded(this, pluginName());
+    this->m_proxyInter->itemAdded(this->datetimePlugin, this->datetimePlugin->pluginName());
+    this->m_proxyInter->itemAdded(this->netspeedPlugin, this->netspeedPlugin->pluginName());
 }
 
 QWidget *DDEIstateMenuPlugin::itemWidget(const QString &itemKey) {
     Q_UNUSED(itemKey)
-    this->m_itemWidget->setText("Item widget");
-    return this->m_itemWidget;
+    return nullptr;
 }
 
 void DDEIstateMenuPlugin::fetchSystemData() {

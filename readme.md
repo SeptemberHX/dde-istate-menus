@@ -8,6 +8,24 @@ IStat menus on macOS alternative for DDE.
 
 > Still in development
 
+
+* [ ] Network
+    * [x] popup widget
+    * [ ] dock widget
+        * [x] text
+        * [ ] chart
+* [ ] Weather
+* [ ] CPU
+* [ ] RAM
+* [ ] DISK
+* [ ] Datetime
+    * [x] dock widget
+    * [ ] popup widget
+    
+### Known issues
+
+* dock widgets' text are really small even the widget has enough space, or text is too large and only part is shown on the widget. I think it is related to the dde-dock [issue](https://github.com/linuxdeepin/dde-dock/issues/271)
+
 ### Screenshot
 
 #### Network

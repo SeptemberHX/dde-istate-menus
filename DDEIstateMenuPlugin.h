@@ -7,6 +7,7 @@
 
 #include "DDEIstateMenuPlugin.h"
 #include "dde-istate-netspeed/DDENetspeedPlugin.h"
+#include "dde-istate-datetime/datetimeplugin.h"
 #include "utils/stats_collector.h"
 #include <dde-dock/pluginsiteminterface.h>
 #include <QObject>
@@ -34,12 +35,14 @@ public:
 
     bool pluginIsAllowDisable() override;
     bool pluginIsDisable() override;
+
     void pluginStateSwitched() override;
+
     const QString pluginDisplayName() const override;
     void pluginSettingsChanged() override;
 
-    int itemSortKey(const QString &itemKey) Q_DECL_OVERRIDE;
-    void setSortKey(const QString &itemKey, const int order) Q_DECL_OVERRIDE;
+//    int itemSortKey(const QString &itemKey) Q_DECL_OVERRIDE;
+//    void setSortKey(const QString &itemKey, const int order) Q_DECL_OVERRIDE;
 
 private:
     void fetchSystemData();
@@ -48,7 +51,7 @@ private:
 
     QThread m_workerThread;
     DDENetspeedPlugin *netspeedPlugin;
-    QLabel *m_itemWidget;
+    DatetimePlugin *datetimePlugin;
     QTimer *m_refreshTimer;
 
 };
