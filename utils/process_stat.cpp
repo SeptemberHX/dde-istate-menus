@@ -44,7 +44,7 @@
 
 auto print_err = [](decltype(errno) e, const QString &msg)
 {
-    qDebug() << QString("Error: [%1] %2, ").arg(e).arg(strerror(e)) << msg;
+//    qDebug() << QString("Error: [%1] %2, ").arg(e).arg(strerror(e)) << msg;
 };
 
 // ref: sysstat#common.c#get_kb_shift

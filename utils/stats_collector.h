@@ -94,7 +94,7 @@ private:
 private:
     enum StatIndex { kLastStat = 0, kCurrentStat = 1, kStatCount = kCurrentStat + 1 };
 
-    FilterType m_filterType {OnlyGUI};
+    FilterType m_filterType {AllProcess};
     uid_t m_euid;
 
     int m_napps {};     // current running gui apps)

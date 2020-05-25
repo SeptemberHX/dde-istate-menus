@@ -96,13 +96,13 @@ void DDEIstateMenuPlugin::fetchSystemData() {
 
 void DDEIstateMenuPlugin::updateProcessList(QList<ProcessEntry> procList) {
     QSet<pid_t> procIdSet;
-    for (auto iter = procList.begin(); iter != procList.end(); ++iter) {
-        if (procIdSet.contains(iter->getPID())) {
-            procList.erase(iter);
-        } else {
-            procIdSet.insert(iter->getPID());
-        }
-    }
+//    for (auto iter = procList.begin(); iter != procList.end(); ++iter) {
+//        if (procIdSet.contains(iter->getPID())) {
+//            procList.erase(iter);
+//        } else {
+//            procIdSet.insert(iter->getPID());
+//        }
+//    }
 
     if (this->netspeedPlugin != nullptr) {
 

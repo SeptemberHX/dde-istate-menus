@@ -102,8 +102,8 @@ void DDENetspeedPlugin::refreshData() {
 
     if (!this->defaultNetDeviceName.isEmpty()) {
         if (dataMap.contains(this->defaultNetDeviceName)) {
-            qreal uploadBps = (dataMap[this->defaultNetDeviceName].second - this->lastOutDataSize) * 1000.0 / this->intervalInMSec;
-            qreal downloadBps = (dataMap[this->defaultNetDeviceName].first - this->lastInDataSize) * 1000.0 / this->intervalInMSec;
+            qreal uploadBps = (dataMap[this->defaultNetDeviceName].second - this->lastOutDataSize) / (this->intervalInMSec / 1000.0);
+            qreal downloadBps = (dataMap[this->defaultNetDeviceName].first - this->lastInDataSize) / (this->intervalInMSec / 1000.0);
             if (this->lastInDataSize != 0) {
                 this->m_appletWidget->appendBps(uploadBps, downloadBps);
             }

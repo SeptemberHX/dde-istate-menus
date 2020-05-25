@@ -59,8 +59,8 @@ private:
     IstateNetworkWidget *m_appletWidget;
     QLabel *m_tipsWidget;
     QTimer *m_timer;
-    uint lastInDataSize;
-    uint lastOutDataSize;
+    ulong lastInDataSize;
+    ulong lastOutDataSize;
     int intervalInMSec = 2000;
     QString defaultNetDeviceName;
     DDENetspeedTextWidget *m_speedTextWidget;
