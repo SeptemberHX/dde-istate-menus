@@ -46,6 +46,7 @@ public:
     static void nethogsMonitorThreadProc();
     static void onNethogsUpdate(int action, NethogsMonitorRecord const* update);
 
+    static bool hasInstance;
 private:
     typedef std::map<int, Update> RowUpdatesMap;
     static RowUpdatesMap m_row_updates_map;

@@ -27,6 +27,7 @@
 std::mutex NetworkTrafficFilter::m_mutex;
 NetworkTrafficFilter::RowUpdatesMap NetworkTrafficFilter::m_row_updates_map;
 int NetworkTrafficFilter::m_nethogs_monitor_status = NETHOGS_STATUS_OK;
+bool NetworkTrafficFilter::hasInstance = false;
 
 bool NetworkTrafficFilter::getRowUpdate(NetworkTrafficFilter::Update& update)
 {

@@ -34,8 +34,11 @@ void DDEIstateMenuPlugin::init(PluginProxyInterface *proxyInter) {
     connect(this->m_refreshTimer, &QTimer::timeout, this, &DDEIstateMenuPlugin::fetchSystemData);
     this->m_refreshTimer->start();
 
-    std::thread nethogs_monitor_thread(&NetworkTrafficFilter::nethogsMonitorThreadProc);
-    nethogs_monitor_thread.detach();
+    if (!NetworkTrafficFilter::hasInstance) {
+        NetworkTrafficFilter::hasInstance = true;
+        std::thread nethogs_monitor_thread(&NetworkTrafficFilter::nethogsMonitorThreadProc);
+        nethogs_monitor_thread.detach();
+    }
 
     if (!pluginIsDisable()) {
 //        this->m_proxyInter->itemAdded(this, this->pluginName());
