@@ -168,6 +168,7 @@ void IstateCpuWidget::redrawCpuCurve() {
 void IstateCpuWidget::showEvent(QShowEvent *event) {
     this->redrawCpuCurve();
     this->redrawCpuBarCurve();
+    this->redrawProcesses();
     QWidget::showEvent(event);
 }
 
@@ -237,5 +238,40 @@ void IstateCpuWidget::redrawCpuBarCurve() {
         this->m_cpuUserBarSet->append(i.user);
         this->m_cpuSystemBarSet->append(i.system);
         this->m_cpuIdleBarSet->append(i.idle);
+    }
+}
+
+void IstateCpuWidget::updateProcesses(QList<ProcessEntry> entryList) {
+    std::sort(entryList.begin(), entryList.end(), [](const ProcessEntry &e1, const ProcessEntry &e2) {
+        return e1.getCPU() > e2.getCPU();
+    });
+    this->entries = entryList.mid(0, 5);
+    this->redrawProcesses();
+}
+
+void IstateCpuWidget::redrawProcesses() {
+    if (this->isHidden()) return;
+
+    int r;
+    for (r = 0; r < ui->processGridLayout->rowCount() && r < this->entries.size(); ++r) {
+        QLabel *label = dynamic_cast<QLabel*>(ui->processGridLayout->itemAtPosition(r, 0)->widget());
+        label->setPixmap(this->entries[r].getIcon().pixmap(label->size()));
+
+        label = dynamic_cast<QLabel*>(ui->processGridLayout->itemAtPosition(r, 1)->widget());
+        label->setText(this->entries[r].getName());
+
+        label = dynamic_cast<QLabel*>(ui->processGridLayout->itemAtPosition(r, 2)->widget());
+        label->setText(QString("%1%").arg(QString::number(this->entries[r].getCPU(), 'f', 1)));
+    }
+
+    for (; r < ui->processGridLayout->rowCount(); ++r) {
+        QLabel *label = dynamic_cast<QLabel*>(ui->processGridLayout->itemAtPosition(r, 0)->widget());
+        label->clear();
+
+        label = dynamic_cast<QLabel*>(ui->processGridLayout->itemAtPosition(r, 1)->widget());
+        label->clear();
+
+        label = dynamic_cast<QLabel*>(ui->processGridLayout->itemAtPosition(r, 2)->widget());
+        label->clear();
     }
 }

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>350</width>
-    <height>559</height>
+    <height>558</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -63,13 +63,13 @@
        <number>0</number>
       </property>
       <property name="bottomMargin">
-       <number>0</number>
+       <number>5</number>
       </property>
       <item>
        <widget class="QWidget" name="widget" native="true">
         <layout class="QHBoxLayout" name="horizontalLayout_4">
          <property name="spacing">
-          <number>5</number>
+          <number>3</number>
          </property>
          <property name="leftMargin">
           <number>0</number>
@@ -354,13 +354,13 @@
        <number>0</number>
       </property>
       <property name="bottomMargin">
-       <number>0</number>
+       <number>5</number>
       </property>
       <property name="spacing">
        <number>0</number>
       </property>
       <item row="2" column="0">
-       <layout class="QGridLayout" name="gridLayout_2">
+       <layout class="QGridLayout" name="processGridLayout">
         <property name="verticalSpacing">
          <number>0</number>
         </property>
@@ -627,6 +627,18 @@
      <layout class="QVBoxLayout" name="verticalLayout_4">
       <property name="spacing">
        <number>0</number>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>5</number>
       </property>
       <item>
        <widget class="QChartView" name="loadChartView" native="true">

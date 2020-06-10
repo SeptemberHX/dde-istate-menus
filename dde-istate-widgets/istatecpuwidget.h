@@ -9,6 +9,7 @@
 #include <QLineSeries>
 #include <QAreaSeries>
 #include "../utils/system_stat.h"
+#include "../utils/process_entry.h"
 
 namespace Ui {
 class IstateCpuWidget;
@@ -26,10 +27,12 @@ public:
     ~IstateCpuWidget();
 
     void addCpuUsage(cpu_usage avgUsage, QList<cpu_usage> cpuUsageList);
+    void updateProcesses(QList<ProcessEntry> entryList);
 
 private:
     void redrawCpuCurve();
     void redrawCpuBarCurve();
+    void redrawProcesses();
 
 protected:
     void showEvent(QShowEvent *event) override;
@@ -72,6 +75,8 @@ private:
     QPercentBarSeries *m_cpuBarSeries;
     QStringList categories;
     QList<cpu_usage> cpuUsageBarList;
+
+    QList<ProcessEntry> entries;
 };
 
 #endif // ISTATECPUWIDGET_H

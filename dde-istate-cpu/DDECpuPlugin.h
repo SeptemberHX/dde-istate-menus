@@ -10,6 +10,7 @@
 #include "../DDEIstateSubPlugin.h"
 #include "DDECpuItemWidget.h"
 #include "../dde-istate-widgets/istatecpuwidget.h"
+#include "../utils/process_entry.h"
 #include <QLabel>
 #include <QWidget>
 
@@ -23,6 +24,7 @@ public:
     explicit DDECpuPlugin(QObject *parent = 0);
 
     void addCpuUsage(qreal usage, cpu_usage avgUsage, QList<cpu_usage> cpuUsageList);
+    void updateProcesses(QList<ProcessEntry> entryList);
 
     // 返回插件的名称，必须是唯一值，不可以和其它插件冲突
     const QString pluginName() const override;
