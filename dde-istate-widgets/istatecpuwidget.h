@@ -28,11 +28,13 @@ public:
 
     void addCpuUsage(cpu_usage avgUsage, QList<cpu_usage> cpuUsageList);
     void updateProcesses(QList<ProcessEntry> entryList);
+    void updateUptime(qulonglong uptime);
 
 private:
     void redrawCpuCurve();
     void redrawCpuBarCurve();
     void redrawProcesses();
+    void redrawUptime();
 
 protected:
     void showEvent(QShowEvent *event) override;
@@ -77,6 +79,7 @@ private:
     QList<cpu_usage> cpuUsageBarList;
 
     QList<ProcessEntry> entries;
+    qulonglong uptime;
 };
 
 #endif // ISTATECPUWIDGET_H

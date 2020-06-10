@@ -66,6 +66,7 @@ Q_SIGNALS:
 
     void processSummaryUpdated(int napps, int nprocs);
     void processListUpdated(const QList<ProcessEntry> procList);
+    void uptimeInfoUpdated(qulonglong uptime);
 
     void initialSysInfoLoaded();    // simply put here to help defer initialize some of the widgets
 

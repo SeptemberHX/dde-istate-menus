@@ -28,19 +28,19 @@
     <name>IstateCpuWidget</name>
     <message>
         <location filename="../dde-istate-widgets/istatecpuwidget.ui" line="26"/>
-        <location filename="../cmake-build-debug/dde-istate-cpu/dde_istate_cpu_autogen/include/ui_istatecpuwidget.h" line="397"/>
+        <location filename="../cmake-build-debug/dde-istate-cpu/dde_istate_cpu_autogen/include/ui_istatecpuwidget.h" line="398"/>
         <source>Form</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../dde-istate-widgets/istatecpuwidget.ui" line="47"/>
-        <location filename="../cmake-build-debug/dde-istate-cpu/dde_istate_cpu_autogen/include/ui_istatecpuwidget.h" line="398"/>
+        <location filename="../cmake-build-debug/dde-istate-cpu/dde_istate_cpu_autogen/include/ui_istatecpuwidget.h" line="399"/>
         <source>CPU</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../dde-istate-widgets/istatecpuwidget.ui" line="161"/>
-        <location filename="../cmake-build-debug/dde-istate-cpu/dde_istate_cpu_autogen/include/ui_istatecpuwidget.h" line="400"/>
+        <location filename="../cmake-build-debug/dde-istate-cpu/dde_istate_cpu_autogen/include/ui_istatecpuwidget.h" line="401"/>
         <source>User</source>
         <translation type="unfinished"></translation>
     </message>
@@ -48,27 +48,27 @@
         <location filename="../dde-istate-widgets/istatecpuwidget.ui" line="180"/>
         <location filename="../dde-istate-widgets/istatecpuwidget.ui" line="249"/>
         <location filename="../dde-istate-widgets/istatecpuwidget.ui" line="318"/>
-        <location filename="../cmake-build-debug/dde-istate-cpu/dde_istate_cpu_autogen/include/ui_istatecpuwidget.h" line="401"/>
-        <location filename="../cmake-build-debug/dde-istate-cpu/dde_istate_cpu_autogen/include/ui_istatecpuwidget.h" line="404"/>
-        <location filename="../cmake-build-debug/dde-istate-cpu/dde_istate_cpu_autogen/include/ui_istatecpuwidget.h" line="407"/>
+        <location filename="../cmake-build-debug/dde-istate-cpu/dde_istate_cpu_autogen/include/ui_istatecpuwidget.h" line="402"/>
+        <location filename="../cmake-build-debug/dde-istate-cpu/dde_istate_cpu_autogen/include/ui_istatecpuwidget.h" line="405"/>
+        <location filename="../cmake-build-debug/dde-istate-cpu/dde_istate_cpu_autogen/include/ui_istatecpuwidget.h" line="408"/>
         <source>90%</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../dde-istate-widgets/istatecpuwidget.ui" line="230"/>
-        <location filename="../cmake-build-debug/dde-istate-cpu/dde_istate_cpu_autogen/include/ui_istatecpuwidget.h" line="403"/>
+        <location filename="../cmake-build-debug/dde-istate-cpu/dde_istate_cpu_autogen/include/ui_istatecpuwidget.h" line="404"/>
         <source>System</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../dde-istate-widgets/istatecpuwidget.ui" line="299"/>
-        <location filename="../cmake-build-debug/dde-istate-cpu/dde_istate_cpu_autogen/include/ui_istatecpuwidget.h" line="406"/>
+        <location filename="../cmake-build-debug/dde-istate-cpu/dde_istate_cpu_autogen/include/ui_istatecpuwidget.h" line="407"/>
         <source>Idle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../dde-istate-widgets/istatecpuwidget.ui" line="341"/>
-        <location filename="../cmake-build-debug/dde-istate-cpu/dde_istate_cpu_autogen/include/ui_istatecpuwidget.h" line="408"/>
+        <location filename="../cmake-build-debug/dde-istate-cpu/dde_istate_cpu_autogen/include/ui_istatecpuwidget.h" line="409"/>
         <source>PROCESSES</source>
         <translation type="unfinished"></translation>
     </message>
@@ -78,35 +78,35 @@
         <location filename="../dde-istate-widgets/istatecpuwidget.ui" line="556"/>
         <location filename="../dde-istate-widgets/istatecpuwidget.ui" line="578"/>
         <location filename="../dde-istate-widgets/istatecpuwidget.ui" line="600"/>
-        <location filename="../cmake-build-debug/dde-istate-cpu/dde_istate_cpu_autogen/include/ui_istatecpuwidget.h" line="419"/>
         <location filename="../cmake-build-debug/dde-istate-cpu/dde_istate_cpu_autogen/include/ui_istatecpuwidget.h" line="420"/>
         <location filename="../cmake-build-debug/dde-istate-cpu/dde_istate_cpu_autogen/include/ui_istatecpuwidget.h" line="421"/>
         <location filename="../cmake-build-debug/dde-istate-cpu/dde_istate_cpu_autogen/include/ui_istatecpuwidget.h" line="422"/>
         <location filename="../cmake-build-debug/dde-istate-cpu/dde_istate_cpu_autogen/include/ui_istatecpuwidget.h" line="423"/>
+        <location filename="../cmake-build-debug/dde-istate-cpu/dde_istate_cpu_autogen/include/ui_istatecpuwidget.h" line="424"/>
         <source>100%</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../dde-istate-widgets/istatecpuwidget.ui" line="622"/>
-        <location filename="../cmake-build-debug/dde-istate-cpu/dde_istate_cpu_autogen/include/ui_istatecpuwidget.h" line="424"/>
+        <location filename="../cmake-build-debug/dde-istate-cpu/dde_istate_cpu_autogen/include/ui_istatecpuwidget.h" line="425"/>
         <source>LOAD AVERAGE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dde-istate-widgets/istatecpuwidget.ui" line="650"/>
-        <location filename="../cmake-build-debug/dde-istate-cpu/dde_istate_cpu_autogen/include/ui_istatecpuwidget.h" line="425"/>
+        <location filename="../dde-istate-widgets/istatecpuwidget.ui" line="662"/>
+        <location filename="../cmake-build-debug/dde-istate-cpu/dde_istate_cpu_autogen/include/ui_istatecpuwidget.h" line="426"/>
         <source>Peak Load: 6</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dde-istate-widgets/istatecpuwidget.ui" line="676"/>
-        <location filename="../cmake-build-debug/dde-istate-cpu/dde_istate_cpu_autogen/include/ui_istatecpuwidget.h" line="426"/>
+        <location filename="../dde-istate-widgets/istatecpuwidget.ui" line="688"/>
+        <location filename="../cmake-build-debug/dde-istate-cpu/dde_istate_cpu_autogen/include/ui_istatecpuwidget.h" line="427"/>
         <source>UPTIME</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dde-istate-widgets/istatecpuwidget.ui" line="700"/>
-        <location filename="../cmake-build-debug/dde-istate-cpu/dde_istate_cpu_autogen/include/ui_istatecpuwidget.h" line="427"/>
+        <location filename="../dde-istate-widgets/istatecpuwidget.ui" line="712"/>
+        <location filename="../cmake-build-debug/dde-istate-cpu/dde_istate_cpu_autogen/include/ui_istatecpuwidget.h" line="428"/>
         <source>5 days, 17 hours, 33 minutes</source>
         <translation type="unfinished"></translation>
     </message>
@@ -260,8 +260,8 @@
 <context>
     <name>Process.Table</name>
     <message>
-        <location filename="../utils/stats_collector.cpp" line="680"/>
-        <location filename="../utils/stats_collector.cpp" line="689"/>
+        <location filename="../utils/stats_collector.cpp" line="681"/>
+        <location filename="../utils/stats_collector.cpp" line="690"/>
         <source>Tray</source>
         <translation type="unfinished"></translation>
     </message>

@@ -15,6 +15,9 @@ DDEIstateMenuPlugin::DDEIstateMenuPlugin(QObject *parent) : QObject(parent) {
 
     connect(this->m_statsCollector, &StatsCollector::cpuStatInfoUpdated, this, &DDEIstateMenuPlugin::updateCpuUsage);
     connect(this->m_statsCollector, &StatsCollector::processListUpdated, this, &DDEIstateMenuPlugin::updateProcessList);
+    connect(this->m_statsCollector, &StatsCollector::uptimeInfoUpdated, this, [this](qulonglong uptime) {
+        this->cpuPlugin->updateUptime(uptime);
+    });
 
     connect(&m_workerThread, &QThread::started, m_statsCollector, &StatsCollector::start);
     connect(&m_workerThread, &QThread::finished, m_statsCollector, &QObject::deleteLater);

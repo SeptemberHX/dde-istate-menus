@@ -103,3 +103,7 @@ void DDECpuPlugin::addCpuUsage(qreal usage, cpu_usage avgUsage, QList<cpu_usage>
 void DDECpuPlugin::updateProcesses(QList<ProcessEntry> entryList) {
     this->m_popupWidget->updateProcesses(entryList);
 }
+
+void DDECpuPlugin::updateUptime(qulonglong uptime) {
+    this->m_popupWidget->updateUptime(uptime);
+}

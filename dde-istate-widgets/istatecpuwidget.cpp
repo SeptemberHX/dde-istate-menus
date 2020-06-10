@@ -169,6 +169,7 @@ void IstateCpuWidget::showEvent(QShowEvent *event) {
     this->redrawCpuCurve();
     this->redrawCpuBarCurve();
     this->redrawProcesses();
+    this->redrawUptime();
     QWidget::showEvent(event);
 }
 
@@ -274,4 +275,21 @@ void IstateCpuWidget::redrawProcesses() {
         label = dynamic_cast<QLabel*>(ui->processGridLayout->itemAtPosition(r, 2)->widget());
         label->clear();
     }
+}
+
+void IstateCpuWidget::updateUptime(qulonglong uptime) {
+    this->uptime = uptime;
+    this->redrawUptime();
+}
+
+void IstateCpuWidget::redrawUptime() {
+    if (this->isHidden()) return;
+
+    int minutes = this->uptime / 60;
+    int nowMinutes = minutes % 60;
+    int hours = minutes / 60;
+    int nowHours = hours % 24;
+    int days = hours / 24;
+
+    ui->uptimeLabel->setText(QString("%1 days, %2 hours, %3 minutes").arg(days).arg(nowHours).arg(nowMinutes));
 }

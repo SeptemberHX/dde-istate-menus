@@ -305,6 +305,7 @@ void StatsCollector::updateStatus()
         if (m_interval <= 1) {
             m_interval = 2.;
         }
+        Q_EMIT uptimeInfoUpdated(uptime / 101);
     }
 
     b = SystemStat::readCPUStats(cpuStat, cpuStatMap);
