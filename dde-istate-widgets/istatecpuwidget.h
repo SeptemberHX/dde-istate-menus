@@ -5,6 +5,7 @@
 #include <QColor>
 #include <QtCharts>
 #include <QChart>
+#include <QBarSet>
 #include <QLineSeries>
 #include <QAreaSeries>
 #include "../utils/system_stat.h"
@@ -20,6 +21,7 @@ class IstateCpuWidget : public QWidget
 public:
     explicit IstateCpuWidget(QWidget *parent = nullptr);
     void initCpuChart();
+    void initCpuBarChart();
     void initLoadChart();
     ~IstateCpuWidget();
 
@@ -27,6 +29,7 @@ public:
 
 private:
     void redrawCpuCurve();
+    void redrawCpuBarCurve();
 
 protected:
     void showEvent(QShowEvent *event) override;
@@ -61,6 +64,14 @@ private:
     QAreaSeries *m_loadUserAreaSeries;
     QLineSeries *m_loadSystemSeries;
     QLineSeries *m_loadIdleSeries;
+
+    QChart *m_cpuBarChart;
+    QBarSet *m_cpuUserBarSet;
+    QBarSet *m_cpuSystemBarSet;
+    QBarSet *m_cpuIdleBarSet;
+    QPercentBarSeries *m_cpuBarSeries;
+    QStringList categories;
+    QList<cpu_usage> cpuUsageBarList;
 };
 
 #endif // ISTATECPUWIDGET_H

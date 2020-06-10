@@ -76,7 +76,7 @@ auto calcCPUUsage = [](const CPUStat &prev, const CPUStat &cur) -> qreal
 auto calcSeparatorCpuUsage = [](const CPUStat &prev, const CPUStat &cur) -> cpu_usage
 {
     cpu_usage usage {};
-    qulonglong cur_tot {}, prev_tot {}, cur_idle {}, prev_idle {};
+    qulonglong cur_tot {}, prev_tot {}, prev_user {}, curr_user {}, cur_idle {}, prev_idle {};
 
     if (!cur.isNull()) {
         cur_tot = cur->user +
@@ -88,6 +88,7 @@ auto calcSeparatorCpuUsage = [](const CPUStat &prev, const CPUStat &cur) -> cpu_
                   cur->softirq +
                   cur->steal;
         cur_idle = cur->idle + cur->iowait;
+        curr_user = cur->user;
     }
 
     if (!prev.isNull()) {
@@ -100,12 +101,13 @@ auto calcSeparatorCpuUsage = [](const CPUStat &prev, const CPUStat &cur) -> cpu_
                    prev->softirq +
                    prev->steal;
         prev_idle = prev->idle + prev->iowait;
+        prev_user = prev->user;
     }
 
 
     auto totald = (cur_tot > prev_tot) ? (cur_tot - prev_tot) : 0;
     auto idled = (cur_idle > prev_idle) ? (cur_idle - prev_idle) : 0;
-    auto user = (cur->user > prev->user) ? (cur->user - prev->user) : 0;
+    auto user = (curr_user > prev_user) ? (curr_user - prev_user) : 0;
     auto system = totald - idled - user;
 
     usage.user = (totald != 0) ? user * 1.0 / totald : 0;
@@ -316,14 +318,17 @@ void StatsCollector::updateStatus()
         auto cpuSeparatorUsage = calcSeparatorCpuUsage(m_cpuStat[kLastStat], m_cpuStat[kCurrentStat]);
 
         QList<double> cpuPecents;
+        QList<cpu_usage> cpuUsageList;
         for (auto i = 0; i < cpuStatMap.size(); i++) {
             auto &cur = m_cpuStatMap[kCurrentStat][i];
             auto &prev = m_cpuStatMap[kLastStat][i];
             auto cpp = calcCPUUsage(prev, cur);
             cpuPecents << cpp;
+            auto cppL = calcSeparatorCpuUsage(prev, cur);
+            cpuUsageList << cppL;
         }
 
-        Q_EMIT cpuStatInfoUpdated(cpuPecent * 100., cpuPecents, cpuSeparatorUsage);
+        Q_EMIT cpuStatInfoUpdated(cpuPecent * 100., cpuPecents, cpuSeparatorUsage, cpuUsageList);
     }
 
     b = SystemStat::readMemStats(memStat);

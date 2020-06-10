@@ -125,7 +125,7 @@ void DDEIstateMenuPlugin::updateProcessList(QList<ProcessEntry> procList) {
     }
 }
 
-void DDEIstateMenuPlugin::updateCpuUsage(qreal cpuPercent, const QList<double> cpuPercents, cpu_usage separatorUsage)
+void DDEIstateMenuPlugin::updateCpuUsage(qreal cpuPercent, const QList<double> cpuPercents, cpu_usage separatorUsage, QList<cpu_usage> cpuUsageList)
 {
-    this->cpuPlugin->addCpuUsage(cpuPercent, separatorUsage, QList<cpu_usage>());
+    this->cpuPlugin->addCpuUsage(cpuPercent, separatorUsage, cpuUsageList);
 }

@@ -9,9 +9,9 @@ IstateCpuWidget::IstateCpuWidget(QWidget *parent) :
 
     this->cpuIdleColor = QColor("#404244");
     this->cpuUserColor = QColor("#5BBDF8");
-    this->cpuUserAreaColor = QColor("#811D18");
+    this->cpuUserAreaColor = QColor("#296085");
     this->cpuSystemColor = QColor("#EA654D");
-    this->cpuSystemAreaColor = QColor("#296085");
+    this->cpuSystemAreaColor = QColor("#811D18");
 
     this->loadIdleColor = QColor("#9C9CA0");
     this->loadUserColor = this->cpuUserColor;
@@ -22,6 +22,7 @@ IstateCpuWidget::IstateCpuWidget(QWidget *parent) :
     ui->cpuUserColorLabel->setStyleSheet(QString("QLabel { background-color: %1; }").arg(this->cpuUserColor.name()));
 
     initCpuChart();
+    initCpuBarChart();
     initLoadChart();
 }
 
@@ -36,17 +37,32 @@ void IstateCpuWidget::initCpuChart() {
     this->m_userSeries = new QLineSeries();
     this->m_userSeries->setPen(QPen(this->cpuUserColor, 2));
     this->m_userSeries->setBrush(Qt::NoBrush);
-    this->m_cpuChart->addSeries(this->m_userSeries);
 
     this->m_systemSeries = new QLineSeries();
     this->m_systemSeries->setPen(QPen(this->cpuSystemColor, 2));
     this->m_systemSeries->setBrush(Qt::NoBrush);
-    this->m_cpuChart->addSeries(this->m_systemSeries);
 
     this->m_cpuZeroSeries = new QLineSeries();
     this->m_cpuZeroSeries->setPen(Qt::NoPen);
     this->m_cpuZeroSeries->setBrush(Qt::NoBrush);
     this->m_cpuChart->addSeries(this->m_cpuZeroSeries);
+
+    for (int i = 0; i < this->maxHistorySize; ++i) {
+        this->m_cpuZeroSeries->append(i, 0);
+    }
+
+    this->m_userAreaSeries = new QAreaSeries(this->m_userSeries, this->m_cpuZeroSeries);
+    this->m_userAreaSeries->setPen(QPen(Qt::transparent));
+    this->m_userAreaSeries->setBrush(this->cpuUserAreaColor);
+    this->m_cpuChart->addSeries(this->m_userAreaSeries);
+
+    this->m_systemAreaSeries = new QAreaSeries(this->m_systemSeries, this->m_userSeries);
+    this->m_systemAreaSeries->setPen(QPen(Qt::transparent));
+    this->m_systemAreaSeries->setBrush(this->cpuSystemAreaColor);
+    this->m_cpuChart->addSeries(this->m_systemAreaSeries);
+
+    this->m_cpuChart->addSeries(this->m_userSeries);
+    this->m_cpuChart->addSeries(this->m_systemSeries);
 
     // enable the legend and move it to bottom
     this->m_cpuChart->legend()->setVisible(false);
@@ -122,7 +138,10 @@ void IstateCpuWidget::addCpuUsage(cpu_usage avgUsage, QList<cpu_usage> cpuUsageL
     if (this->cpuUsageList.size() > this->maxHistorySize) {
         this->cpuUsageList = this->cpuUsageList.mid(this->cpuUsageList.size() - this->maxHistorySize);
     }
+
+    this->cpuUsageBarList = cpuUsageList;
     this->redrawCpuCurve();
+    this->redrawCpuBarCurve();
 }
 
 void IstateCpuWidget::redrawCpuCurve() {
@@ -148,5 +167,75 @@ void IstateCpuWidget::redrawCpuCurve() {
 
 void IstateCpuWidget::showEvent(QShowEvent *event) {
     this->redrawCpuCurve();
+    this->redrawCpuBarCurve();
     QWidget::showEvent(event);
+}
+
+void IstateCpuWidget::initCpuBarChart() {
+    this->m_cpuBarChart = new QChart();
+
+    this->m_cpuUserBarSet = new QBarSet("User");
+    this->m_cpuUserBarSet->setPen(QPen(this->cpuUserColor, 1));
+    this->m_cpuUserBarSet->setBrush(this->cpuUserAreaColor);
+
+    this->m_cpuSystemBarSet = new QBarSet("System");
+    this->m_cpuSystemBarSet->setPen(QPen(this->cpuSystemColor, 1));
+    this->m_cpuSystemBarSet->setBrush(this->cpuSystemAreaColor);
+
+    this->m_cpuIdleBarSet = new QBarSet("Idle");
+    this->m_cpuIdleBarSet->setPen(Qt::NoPen);
+    this->m_cpuIdleBarSet->setBrush(Qt::NoBrush);
+
+    this->m_cpuBarSeries = new QPercentBarSeries(this->m_cpuBarChart);
+    this->m_cpuBarSeries->append(this->m_cpuUserBarSet);
+    this->m_cpuBarSeries->append(this->m_cpuSystemBarSet);
+    this->m_cpuBarSeries->append(this->m_cpuIdleBarSet);
+    this->m_cpuBarChart->addSeries(this->m_cpuBarSeries);
+
+    QValueAxis *axisY = new QValueAxis();
+    axisY->hide();
+    axisY->setGridLineVisible(false);
+    this->m_cpuBarChart->addAxis(axisY, Qt::AlignLeft);
+    this->m_cpuBarSeries->attachAxis(axisY);
+
+    this->m_cpuBarChart->legend()->setVisible(false);
+
+    this->m_cpuBarChart->setMargins(QMargins(0, 0, 0, 0));
+    this->m_cpuBarChart->layout()->setContentsMargins(0, 0, 0, 0);
+    this->m_cpuBarChart->setBackgroundBrush(QBrush(this->cpuIdleColor));
+    this->m_cpuBarChart->setBackgroundRoundness(0);
+
+    ui->cpuBarChartView->setChart(this->m_cpuBarChart);
+    ui->cpuBarChartView->setContentsMargins(0, 0, 0, 0);
+    ui->cpuBarChartView->setRenderHint(QPainter::Antialiasing);
+}
+
+void IstateCpuWidget::redrawCpuBarCurve() {
+    if (this->isHidden()) return;
+
+    if (this->categories.size() != this->cpuUsageBarList.size()) {
+        this->categories.clear();
+        for (int i  = 0; i < this->cpuUsageBarList.size(); ++i) {
+            categories << QString::number(i);
+        }
+        ui->cpuBarChartView->setFixedWidth(10 * this->cpuUsageBarList.size() + 2);
+
+        QBarCategoryAxis *axisX = new QBarCategoryAxis();
+        axisX->hide();
+        axisX->append(categories);
+        this->m_cpuBarChart->addAxis(axisX, Qt::AlignBottom);
+        this->m_cpuBarSeries->attachAxis(axisX);
+        this->m_cpuBarSeries->setBarWidth((this->cpuUsageBarList.size() - 1.0) / this->cpuUsageBarList.size());
+
+    }
+
+    this->m_cpuUserBarSet->remove(0, this->cpuUsageBarList.size());
+    this->m_cpuSystemBarSet->remove(0, this->cpuUsageBarList.size());
+    this->m_cpuIdleBarSet->remove(0, this->cpuUsageBarList.size());
+
+    for (auto & i : this->cpuUsageBarList) {
+        this->m_cpuUserBarSet->append(i.user);
+        this->m_cpuSystemBarSet->append(i.system);
+        this->m_cpuIdleBarSet->append(i.idle);
+    }
 }

@@ -68,6 +68,9 @@
       <item>
        <widget class="QWidget" name="widget" native="true">
         <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <property name="spacing">
+          <number>5</number>
+         </property>
          <property name="leftMargin">
           <number>0</number>
          </property>
@@ -92,6 +95,22 @@
             <size>
              <width>16777215</width>
              <height>100</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QChartView" name="cpuBarChartView" native="true">
+           <property name="minimumSize">
+            <size>
+             <width>90</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>90</width>
+             <height>16777215</height>
             </size>
            </property>
           </widget>
