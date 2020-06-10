@@ -42,7 +42,7 @@
     <number>8</number>
    </property>
    <item>
-    <widget class="QGroupBox" name="groupBox">
+    <widget class="QGroupBox" name="cpuGroupBox">
      <property name="title">
       <string>CPU</string>
      </property>
@@ -66,7 +66,7 @@
        <number>5</number>
       </property>
       <item>
-       <widget class="QWidget" name="widget" native="true">
+       <widget class="QWidget" name="cpuPlotWidget" native="true">
         <layout class="QHBoxLayout" name="horizontalLayout_4">
          <property name="spacing">
           <number>3</number>

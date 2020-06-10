@@ -26,6 +26,8 @@ public:
     void updateStatistics(QMap<QString, QPair<ulong, ulong>> currStat, QMap<QString, QString> netIpv4Map);
     void updateProcesses(QList<ProcessEntry> entryList);
     void redrawCurve();
+    void redrawProcessList();
+    void redrawStatistics();
 
 public slots:
     void _addDataTest();
@@ -51,6 +53,10 @@ private:
 
     QList<qreal> downSpeedHistoryList;
     QList<qreal> uploadHistoryList;
+    QList<ProcessEntry> entries;
+
+    QMap<QString, QPair<ulong, ulong>> currStat;
+    QMap<QString, QString> netIpv4Map;
 
     QTimer *m_timer;
 

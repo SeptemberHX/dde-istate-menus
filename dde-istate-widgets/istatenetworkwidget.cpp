@@ -171,8 +171,71 @@ QString IstateNetworkWidget::shortenDataSizeStr(QString dataSizeStr, int minLeng
 }
 
 void IstateNetworkWidget::updateStatistics(QMap<QString, QPair<ulong, ulong>> currStat, QMap<QString, QString> netIpv4Map) {
+    this->currStat = currStat;
+    this->netIpv4Map = netIpv4Map;
+    this->redrawStatistics();
+}
+
+void IstateNetworkWidget::updateProcesses(QList<ProcessEntry> entryList) {
+    std::sort(entryList.begin(), entryList.end(), [](const ProcessEntry &e1, const ProcessEntry &e2) {
+        return e1.getRecvBps() > e2.getRecvBps();
+    });
+    this->entries = entryList.mid(0, 5);
+    this->redrawProcessList();
+}
+
+void IstateNetworkWidget::setCurveDevice(QString devName, QString ipv4) {
+    ui->deviceNameLabel->setText(devName);
+    ui->ipv4Label->setText(ipv4);
+}
+
+void IstateNetworkWidget::showEvent(QShowEvent *event) {
+    this->redrawCurve();
+    this->redrawProcessList();
+    this->redrawStatistics();
+    QWidget::showEvent(event);
+}
+
+void IstateNetworkWidget::redrawProcessList() {
+    if (this->isHidden()) return;
+
+    int rank = 0;
+    for (int r = 1; r < ui->processesGridLayout->rowCount(); ++r) {
+        for (int c = 0; c < ui->processesGridLayout->columnCount(); ++c) {
+            auto *qLabel = dynamic_cast<QLabel*>(ui->processesGridLayout->itemAtPosition(r, c)->widget());
+            qLabel->clear();
+        }
+
+        if (rank < entries.size()) {
+            ProcessEntry entry = entries.at(rank);
+            auto *qLabel = dynamic_cast<QLabel*>(ui->processesGridLayout->itemAtPosition(r, 0)->widget());
+            qLabel->setPixmap(entry.getIcon().pixmap(qLabel->size()));
+
+            qLabel = dynamic_cast<QLabel*>(ui->processesGridLayout->itemAtPosition(r, 1)->widget());
+            QFontMetrics fontWidth(qLabel->font());
+            QString elideNote = fontWidth.elidedText(entry.getName(), Qt::ElideRight, qLabel->width());
+            qLabel->setText(elideNote);
+
+            qLabel = dynamic_cast<QLabel*>(ui->processesGridLayout->itemAtPosition(r, 2)->widget());
+            QString uploadStr = this->engLocale.formattedDataSize(entry.getSentBps(), 2, QLocale::DataSizeSIFormat);
+            uploadStr = this->shortenDataSizeStr(uploadStr);
+            qLabel->setText(uploadStr + "/s");
+
+            qLabel = dynamic_cast<QLabel*>(ui->processesGridLayout->itemAtPosition(r, 3)->widget());
+            QString downloadStr = this->engLocale.formattedDataSize(entry.getRecvBps(), 2, QLocale::DataSizeSIFormat);
+            downloadStr = this->shortenDataSizeStr(downloadStr);
+            qLabel->setText(downloadStr + "/s");
+
+            ++rank;
+        }
+    }
+}
+
+void IstateNetworkWidget::redrawStatistics() {
+    if (this->isHidden()) return;
+
     QList<QString> interfaceList(currStat.keys());
-    std::sort(interfaceList.begin(), interfaceList.end(), [currStat](const QString &s1, const QString &s2) {
+    std::sort(interfaceList.begin(), interfaceList.end(), [this](const QString &s1, const QString &s2) {
         return currStat[s1].first + currStat[s1].second > currStat[s2].first + currStat[s2].second;
     });
 
@@ -208,51 +271,4 @@ void IstateNetworkWidget::updateStatistics(QMap<QString, QPair<ulong, ulong>> cu
             ++rank;
         }
     }
-}
-
-void IstateNetworkWidget::updateProcesses(QList<ProcessEntry> entryList) {
-    std::sort(entryList.begin(), entryList.end(), [](const ProcessEntry &e1, const ProcessEntry &e2) {
-        return e1.getRecvBps() > e2.getRecvBps();
-    });
-
-    int rank = 0;
-    for (int r = 1; r < ui->processesGridLayout->rowCount(); ++r) {
-        for (int c = 0; c < ui->processesGridLayout->columnCount(); ++c) {
-            auto *qLabel = dynamic_cast<QLabel*>(ui->processesGridLayout->itemAtPosition(r, c)->widget());
-            qLabel->clear();
-        }
-
-        if (rank < entryList.size()) {
-            ProcessEntry entry = entryList.at(rank);
-            auto *qLabel = dynamic_cast<QLabel*>(ui->processesGridLayout->itemAtPosition(r, 0)->widget());
-            qLabel->setPixmap(entry.getIcon().pixmap(qLabel->size()));
-
-            qLabel = dynamic_cast<QLabel*>(ui->processesGridLayout->itemAtPosition(r, 1)->widget());
-            QFontMetrics fontWidth(qLabel->font());
-            QString elideNote = fontWidth.elidedText(entry.getName(), Qt::ElideRight, qLabel->width());
-            qLabel->setText(elideNote);
-
-            qLabel = dynamic_cast<QLabel*>(ui->processesGridLayout->itemAtPosition(r, 2)->widget());
-            QString uploadStr = this->engLocale.formattedDataSize(entry.getSentBps(), 2, QLocale::DataSizeSIFormat);
-            uploadStr = this->shortenDataSizeStr(uploadStr);
-            qLabel->setText(uploadStr + "/s");
-
-            qLabel = dynamic_cast<QLabel*>(ui->processesGridLayout->itemAtPosition(r, 3)->widget());
-            QString downloadStr = this->engLocale.formattedDataSize(entry.getRecvBps(), 2, QLocale::DataSizeSIFormat);
-            downloadStr = this->shortenDataSizeStr(downloadStr);
-            qLabel->setText(downloadStr + "/s");
-
-            ++rank;
-        }
-    }
-}
-
-void IstateNetworkWidget::setCurveDevice(QString devName, QString ipv4) {
-    ui->deviceNameLabel->setText(devName);
-    ui->ipv4Label->setText(ipv4);
-}
-
-void IstateNetworkWidget::showEvent(QShowEvent *event) {
-    this->redrawCurve();
-    QWidget::showEvent(event);
 }
