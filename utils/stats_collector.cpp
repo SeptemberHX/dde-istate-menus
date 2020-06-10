@@ -270,7 +270,7 @@ void StatsCollector::updateStatus()
 
         auto cpuPecent = calcCPUUsage(m_cpuStat[kLastStat], m_cpuStat[kCurrentStat]);
 
-        QList<qreal> cpuPecents;
+        QList<double> cpuPecents;
         for (auto i = 0; i < cpuStatMap.size(); i++) {
             auto &cur = m_cpuStatMap[kCurrentStat][i];
             auto &prev = m_cpuStatMap[kLastStat][i];

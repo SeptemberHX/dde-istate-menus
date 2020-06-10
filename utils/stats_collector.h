@@ -53,7 +53,7 @@ public:
     explicit StatsCollector(QObject *parent = nullptr);
 
 Q_SIGNALS:
-    void cpuStatInfoUpdated(qreal cpuPercent, const QList<qreal> cpuPercents);
+    void cpuStatInfoUpdated(qreal cpuPercent, const QList<double> cpuPercents);
     void memStatInfoUpdated(qulonglong usedMemory,
                             qulonglong totalMemory,
                             qulonglong usedSwap,

@@ -8,6 +8,7 @@
 #include "DDEIstateMenuPlugin.h"
 #include "dde-istate-netspeed/DDENetspeedPlugin.h"
 #include "dde-istate-datetime/datetimeplugin.h"
+#include "dde-istate-cpu/DDECpuPlugin.h"
 #include "utils/stats_collector.h"
 #include <dde-dock/pluginsiteminterface.h>
 #include <QObject>
@@ -44,14 +45,18 @@ public:
 //    int itemSortKey(const QString &itemKey) Q_DECL_OVERRIDE;
 //    void setSortKey(const QString &itemKey, const int order) Q_DECL_OVERRIDE;
 
+private slots:
+    void updateProcessList(const QList<ProcessEntry> procList);
+    void updateCpuUsage(qreal cpuPercent);
+
 private:
     void fetchSystemData();
     StatsCollector *m_statsCollector {nullptr};
-    void updateProcessList(const QList<ProcessEntry> procList);
 
     QThread m_workerThread;
     DDENetspeedPlugin *netspeedPlugin;
     DatetimePlugin *datetimePlugin;
+    DDECpuPlugin *cpuPlugin;
     QTimer *m_refreshTimer;
 
 };
