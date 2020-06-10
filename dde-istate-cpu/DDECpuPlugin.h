@@ -9,6 +9,7 @@
 #include <dde-dock/pluginsiteminterface.h>
 #include "../DDEIstateSubPlugin.h"
 #include "DDECpuItemWidget.h"
+#include "../dde-istate-widgets/istatecpuwidget.h"
 #include <QLabel>
 #include <QWidget>
 
@@ -21,7 +22,7 @@ class DDECpuPlugin : public QObject, public PluginsItemInterface, public DDEIsta
 public:
     explicit DDECpuPlugin(QObject *parent = 0);
 
-    void addCpuUsage(qreal usage);
+    void addCpuUsage(qreal usage, cpu_usage avgUsage, QList<cpu_usage> cpuUsageList);
 
     // 返回插件的名称，必须是唯一值，不可以和其它插件冲突
     const QString pluginName() const override;
@@ -50,7 +51,7 @@ public:
 private:
     DDECpuItemWidget *m_pluginWidget;
     QLabel *m_tipWidget;
-    QWidget *m_popupWidget;
+    IstateCpuWidget *m_popupWidget;
 };
 
 

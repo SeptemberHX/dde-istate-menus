@@ -102,6 +102,8 @@ void IstateNetworkWidget::appendBps(qreal upSpeed, qreal downSpeed)
 
 void IstateNetworkWidget::redrawCurve()
 {
+    if (this->isHidden()) return;
+
     this->m_inSeries->clear();
     this->m_outSeries->clear();
     this->m_inBottomSeries->clear();
@@ -248,4 +250,9 @@ void IstateNetworkWidget::updateProcesses(QList<ProcessEntry> entryList) {
 void IstateNetworkWidget::setCurveDevice(QString devName, QString ipv4) {
     ui->deviceNameLabel->setText(devName);
     ui->ipv4Label->setText(ipv4);
+}
+
+void IstateNetworkWidget::showEvent(QShowEvent *event) {
+    this->redrawCurve();
+    QWidget::showEvent(event);
 }

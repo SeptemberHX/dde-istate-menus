@@ -36,6 +36,10 @@ private:
     Ui::IstateNetworkWidget *ui;
     QChart *m_chart;
     QLineSeries *m_inSeries;
+protected:
+    void showEvent(QShowEvent *event) override;
+
+private:
     QAreaSeries *m_inAreaSeries;
 
     QLineSeries *m_outSeries;

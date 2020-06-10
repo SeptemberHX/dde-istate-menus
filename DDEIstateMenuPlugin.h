@@ -47,7 +47,7 @@ public:
 
 private slots:
     void updateProcessList(const QList<ProcessEntry> procList);
-    void updateCpuUsage(qreal cpuPercent);
+    void updateCpuUsage(qreal cpuPercent, const QList<double> cpuPercents, cpu_usage separatorUsage);
 
 private:
     void fetchSystemData();

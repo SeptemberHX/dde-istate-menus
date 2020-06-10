@@ -53,7 +53,7 @@ public:
     explicit StatsCollector(QObject *parent = nullptr);
 
 Q_SIGNALS:
-    void cpuStatInfoUpdated(qreal cpuPercent, const QList<double> cpuPercents);
+    void cpuStatInfoUpdated(qreal cpuPercent, const QList<double> cpuPercents, cpu_usage separatorUsage);
     void memStatInfoUpdated(qulonglong usedMemory,
                             qulonglong totalMemory,
                             qulonglong usedSwap,
@@ -154,5 +154,7 @@ private:
 
 void readProcStatsCallback(ProcStat &ps, void *context);
 void setProcDisplayNameAndIcon(StatsCollector &ctx, ProcessEntry &proc, const ProcStat &ps);
+
+Q_DECLARE_METATYPE(cpu_usage)
 
 #endif // STATS_COLLECTOR_H

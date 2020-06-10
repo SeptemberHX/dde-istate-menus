@@ -45,6 +45,12 @@ struct cpu_stat {
     unsigned long long guest_nice;
 };
 
+struct cpu_usage {
+    double user;
+    double system;
+    double idle;
+};
+
 // from /proc/meminfo, ref: sysstat#rd_stats.h#stats_memory
 struct mem_stat {
     unsigned long long mem_total_kb;        // MemTotal

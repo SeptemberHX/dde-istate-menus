@@ -55,6 +55,10 @@ void DatetimePlugin::init(PluginProxyInterface *proxyInter)
 {
     m_proxyInter = proxyInter;
 
+    if (!pluginIsDisable()) {
+        loadPlugin();
+    }
+
     // transfer config
     QSettings settings("deepin", "dde-dock-datetime");
     if (QFile::exists(settings.fileName())) {
@@ -63,35 +67,20 @@ void DatetimePlugin::init(PluginProxyInterface *proxyInter)
         proxyInter->saveValue(this, key, settings.value(key, mode == Dock::DisplayMode::Fashion ? 5 : -1));
         QFile::remove(settings.fileName());
     }
-
-    if (pluginIsDisable()) {
-        return;
-    }
-
-    loadPlugin();
 }
 
 void DatetimePlugin::loadPlugin()
 {
-    if (m_pluginLoaded)
-        return;
-
-    m_pluginLoaded = true;
-    m_dateTipsLabel = new QLabel;
+    m_dateTipsLabel = new QLabel();
     m_refershTimer = new QTimer(this);
     m_dateTipsLabel->setObjectName("datetime");
-
-    m_refershTimer->setInterval(1000);
-    m_refershTimer->start();
-
-    m_centralWidget = new DatetimeWidget;
+    m_centralWidget = new DatetimeWidget();
 
     connect(m_centralWidget, &DatetimeWidget::requestUpdateGeometry, [this] { m_proxyInter->itemUpdate(this, pluginName()); });
     connect(m_refershTimer, &QTimer::timeout, this, &DatetimePlugin::updateCurrentTimeString);
 
-    m_proxyInter->itemAdded(this, pluginName());
-
-    pluginSettingsChanged();
+    m_refershTimer->setInterval(1000);
+    m_refershTimer->start();
 }
 
 void DatetimePlugin::pluginStateSwitched()

@@ -73,12 +73,56 @@ auto calcCPUUsage = [](const CPUStat &prev, const CPUStat &cur) -> qreal
     return cpuPecent;
 };
 
+auto calcSeparatorCpuUsage = [](const CPUStat &prev, const CPUStat &cur) -> cpu_usage
+{
+    cpu_usage usage {};
+    qulonglong cur_tot {}, prev_tot {}, cur_idle {}, prev_idle {};
+
+    if (!cur.isNull()) {
+        cur_tot = cur->user +
+                  cur->nice +
+                  cur->sys +
+                  cur->idle +
+                  cur->iowait +
+                  cur->hardirq +
+                  cur->softirq +
+                  cur->steal;
+        cur_idle = cur->idle + cur->iowait;
+    }
+
+    if (!prev.isNull()) {
+        prev_tot = prev->user +
+                   prev->nice +
+                   prev->sys +
+                   prev->idle +
+                   prev->iowait +
+                   prev->hardirq +
+                   prev->softirq +
+                   prev->steal;
+        prev_idle = prev->idle + prev->iowait;
+    }
+
+
+    auto totald = (cur_tot > prev_tot) ? (cur_tot - prev_tot) : 0;
+    auto idled = (cur_idle > prev_idle) ? (cur_idle - prev_idle) : 0;
+    auto user = (cur->user > prev->user) ? (cur->user - prev->user) : 0;
+    auto system = totald - idled - user;
+
+    usage.user = (totald != 0) ? user * 1.0 / totald : 0;
+    usage.system = (totald != 0) ? system * 1.0 / totald : 0;
+    usage.idle = (totald != 0) ? idled * 1.0 / totald : 0;
+
+    return usage;
+};
+
 StatsCollector::StatsCollector(QObject *parent) :
     QObject(parent),
     m_wm(new FindWindowTitle{})
 {
     qRegisterMetaType<QList<ProcessEntry>>("ProcessEntryList");
     qRegisterMetaType<QHash<QString, DesktopEntry>>("DesktopEntryCache");
+    qRegisterMetaType<cpu_usage>("CpuUsage");
+    qRegisterMetaType<QList<cpu_usage>>("CpuUsageList");
 
     m_cpuStat[kLastStat] = CPUStat(new cpu_stat {});
     m_cpuStat[kCurrentStat] = CPUStat(new cpu_stat {});
@@ -269,6 +313,7 @@ void StatsCollector::updateStatus()
         m_cpuStatMap[kCurrentStat] = cpuStatMap;
 
         auto cpuPecent = calcCPUUsage(m_cpuStat[kLastStat], m_cpuStat[kCurrentStat]);
+        auto cpuSeparatorUsage = calcSeparatorCpuUsage(m_cpuStat[kLastStat], m_cpuStat[kCurrentStat]);
 
         QList<double> cpuPecents;
         for (auto i = 0; i < cpuStatMap.size(); i++) {
@@ -278,7 +323,7 @@ void StatsCollector::updateStatus()
             cpuPecents << cpp;
         }
 
-        Q_EMIT cpuStatInfoUpdated(cpuPecent * 100., cpuPecents);
+        Q_EMIT cpuStatInfoUpdated(cpuPecent * 100., cpuPecents, cpuSeparatorUsage);
     }
 
     b = SystemStat::readMemStats(memStat);
