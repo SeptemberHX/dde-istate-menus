@@ -17,6 +17,7 @@ DWIDGET_USE_NAMESPACE
 DDENetspeedTextWidget::DDENetspeedTextWidget(QWidget *parent)
         : QWidget(parent) {
     setMinimumSize(PLUGIN_BACKGROUND_MIN_SIZE, PLUGIN_BACKGROUND_MIN_SIZE);
+    this->setFixedHeight(34);
 }
 
 QSize DDENetspeedTextWidget::sizeHint() const {
