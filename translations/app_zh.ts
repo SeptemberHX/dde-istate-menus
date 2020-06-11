@@ -260,8 +260,8 @@
 <context>
     <name>Process.Table</name>
     <message>
-        <location filename="../utils/stats_collector.cpp" line="681"/>
-        <location filename="../utils/stats_collector.cpp" line="690"/>
+        <location filename="../utils/stats_collector.cpp" line="687"/>
+        <location filename="../utils/stats_collector.cpp" line="696"/>
         <source>Tray</source>
         <translation type="unfinished"></translation>
     </message>

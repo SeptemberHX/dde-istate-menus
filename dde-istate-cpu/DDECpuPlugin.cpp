@@ -107,3 +107,7 @@ void DDECpuPlugin::updateProcesses(QList<ProcessEntry> entryList) {
 void DDECpuPlugin::updateUptime(qulonglong uptime) {
     this->m_popupWidget->updateUptime(uptime);
 }
+
+void DDECpuPlugin::updateLoadAvg(qreal loadAvg1, qreal loadAvg5, qreal loadAvg15) {
+    this->m_popupWidget->updateLoadAvg(loadAvg1, loadAvg5, loadAvg15);
+}

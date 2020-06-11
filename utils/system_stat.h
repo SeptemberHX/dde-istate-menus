@@ -108,6 +108,7 @@ public:
     static bool readMemStats(MemStat &stat);
     static bool readDiskIOStats(DiskIOStat &statSum, DiskIOStatMap &statIOMap);
     static bool readNetIfStats(NetIFStat &statSum, NetIFStatMap &statNetIfMap);
+    static bool readLoadAvg(qreal &loadAvg1, qreal &loadAvg5, qreal &loadAvg15);
 
     static QString getCurrentRealUserName();
     static QString getCurrentRealGroupName();

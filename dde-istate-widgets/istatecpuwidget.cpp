@@ -13,13 +13,20 @@ IstateCpuWidget::IstateCpuWidget(QWidget *parent) :
     this->cpuSystemColor = QColor("#EA654D");
     this->cpuSystemAreaColor = QColor("#811D18");
 
-    this->loadIdleColor = QColor("#9C9CA0");
-    this->loadUserColor = this->cpuUserColor;
-    this->loadSystemColor = this->cpuSystemColor;
+    this->loadAvg15Color = QColor("#9C9CA0");
+    this->loadAvg1Color = this->cpuUserColor;
+    this->loadAvg5Color = this->cpuSystemAreaColor;
+    this->loadAvg1AreaColor = this->cpuUserAreaColor;
 
     ui->cpuIdleColorLabel->setStyleSheet(QString("QLabel { background-color: %1; }").arg(this->cpuIdleColor.name()));
     ui->cpuSystemColorLabel->setStyleSheet(QString("QLabel { background-color: %1; }").arg(this->cpuSystemColor.name()));
     ui->cpuUserColorLabel->setStyleSheet(QString("QLabel { background-color: %1; }").arg(this->cpuUserColor.name()));
+
+    ui->loadAvg1ColorLabel->setStyleSheet(QString("QLabel { background-color: %1; }").arg(this->loadAvg1Color.name()));
+    ui->loadAvg5ColorLabel->setStyleSheet(QString("QLabel { background-color: %1; }").arg(this->loadAvg5Color.name()));
+    ui->loadAvg15ColorLabel->setStyleSheet(QString("QLabel { background-color: %1; }").arg(this->loadAvg15Color.name()));
+
+    this->loadUnit = 5;
 
     initCpuChart();
     initCpuBarChart();
@@ -92,20 +99,35 @@ void IstateCpuWidget::initCpuChart() {
 void IstateCpuWidget::initLoadChart() {
     this->m_loadChart = new QChart();
 
-    this->m_loadUserSeries = new QLineSeries();
-    this->m_loadUserSeries->setPen(QPen(this->loadUserColor, 2));
-    this->m_loadUserSeries->setBrush(Qt::NoBrush);
-    this->m_loadChart->addSeries(this->m_loadUserSeries);
+    this->m_loadAvg1Series = new QLineSeries();
+    this->m_loadAvg1Series->setPen(QPen(this->loadAvg1Color, 2));
+    this->m_loadAvg1Series->setBrush(Qt::NoBrush);
 
-    this->m_loadSystemSeries = new QLineSeries();
-    this->m_loadSystemSeries->setPen(QPen(this->loadSystemColor, 2));
-    this->m_loadSystemSeries->setBrush(Qt::NoBrush);
-    this->m_loadChart->addSeries(this->m_loadSystemSeries);
+    this->m_loadAvg5Series = new QLineSeries();
+    this->m_loadAvg5Series->setPen(QPen(this->loadAvg5Color, 2));
+    this->m_loadAvg5Series->setBrush(Qt::NoBrush);
 
-    this->m_loadIdleSeries = new QLineSeries();
-    this->m_loadIdleSeries->setPen(QPen(this->loadIdleColor, 2));
-    this->m_loadIdleSeries->setBrush(Qt::NoBrush);
-    this->m_loadChart->addSeries(this->m_loadIdleSeries);
+    this->m_loadAvg15Series = new QLineSeries();
+    this->m_loadAvg15Series->setPen(QPen(this->loadAvg15Color, 2));
+    this->m_loadAvg15Series->setBrush(Qt::NoBrush);
+
+    this->m_loadZeroSeries = new QLineSeries();
+    this->m_loadZeroSeries->setPen(Qt::NoPen);
+    this->m_loadZeroSeries->setBrush(Qt::NoBrush);
+
+    for (int i = 0; i < this->maxHistorySize; ++i) {
+        this->m_loadZeroSeries->append(i, 0);
+    }
+
+    this->m_loadAvg1AreaSeries = new QAreaSeries(this->m_loadAvg1Series, this->m_loadZeroSeries);
+    this->m_loadAvg1AreaSeries->setPen(Qt::NoPen);
+    this->m_loadAvg1AreaSeries->setBrush(this->loadAvg1AreaColor);
+
+    this->m_loadChart->addSeries(this->m_loadAvg1AreaSeries);
+    this->m_loadChart->addSeries(this->m_loadAvg1Series);
+    this->m_loadChart->addSeries(this->m_loadAvg5Series);
+    this->m_loadChart->addSeries(this->m_loadAvg15Series);
+    this->m_loadChart->addSeries(this->m_loadZeroSeries);
 
     this->m_loadChart->legend()->setVisible(false);
 
@@ -116,7 +138,7 @@ void IstateCpuWidget::initLoadChart() {
     this->m_loadChart->axisX()->setLabelsVisible(false);
     this->m_loadChart->axisX()->setVisible(false);
 
-    this->m_loadChart->axisY()->setRange(0, 10);
+    this->m_loadChart->axisY()->setRange(0, this->loadUnit);
     this->m_loadChart->axisY()->setGridLineVisible(false);
     this->m_loadChart->axisY()->setLabelsVisible(false);
     this->m_loadChart->axisY()->setVisible(false);
@@ -170,6 +192,7 @@ void IstateCpuWidget::showEvent(QShowEvent *event) {
     this->redrawCpuBarCurve();
     this->redrawProcesses();
     this->redrawUptime();
+    this->redrawLoadCurve();
     QWidget::showEvent(event);
 }
 
@@ -292,4 +315,57 @@ void IstateCpuWidget::redrawUptime() {
     int days = hours / 24;
 
     ui->uptimeLabel->setText(QString("%1 days, %2 hours, %3 minutes").arg(days).arg(nowHours).arg(nowMinutes));
+}
+
+void IstateCpuWidget::updateLoadAvg(qreal loadAvg1, qreal loadAvg5, qreal loadAvg15) {
+    this->loadAvg1List.append(loadAvg1);
+    if (this->loadAvg1List.size() > this->maxHistorySize) {
+        this->loadAvg1List = this->loadAvg1List.mid(this->loadAvg1List.size() - this->maxHistorySize);
+    }
+
+    this->loadAvg5List.append(loadAvg5);
+    if (this->loadAvg5List.size() > this->maxHistorySize) {
+        this->loadAvg5List = this->loadAvg5List.mid(this->loadAvg5List.size() - this->maxHistorySize);
+    }
+
+    this->loadAvg15List.append(loadAvg15);
+    if (this->loadAvg15List.size() > this->maxHistorySize) {
+        this->loadAvg15List = this->loadAvg15List.mid(this->loadAvg15List.size() - this->maxHistorySize);
+    }
+
+    this->redrawLoadCurve();
+}
+
+void IstateCpuWidget::redrawLoadCurve() {
+    if (this->isHidden()) return;
+
+    this->m_loadAvg1Series->clear();
+    this->m_loadAvg5Series->clear();
+    this->m_loadAvg15Series->clear();
+
+    qreal maxAvg1 = *std::max_element(this->loadAvg1List.begin(), this->loadAvg1List.end());
+    qreal maxAvg5 = *std::max_element(this->loadAvg5List.begin(), this->loadAvg5List.end());
+    qreal maxAvg15 = *std::max_element(this->loadAvg15List.begin(), this->loadAvg15List.end());
+
+    qreal maxAvg = qMax(maxAvg1, qMax(maxAvg5, maxAvg15));
+
+    this->m_loadChart->axisY()->setRange(0, (floor(maxAvg / this->loadUnit) + 1) * this->loadUnit);
+
+    int i;
+    for (i = 0; i < this->maxHistorySize - this->loadAvg1List.size(); ++i) {
+        this->m_loadAvg1Series->append(i, 0);
+        this->m_loadAvg5Series->append(i, 0);
+        this->m_loadAvg15Series->append(i, 0);
+    }
+
+    for (int j = 0; j < this->loadAvg1List.size(); ++j) {
+        this->m_loadAvg1Series->append(i + j, this->loadAvg1List[j]);
+        this->m_loadAvg5Series->append(i + j, this->loadAvg5List[j]);
+        this->m_loadAvg15Series->append(i + j, this->loadAvg15List[j]);
+    }
+
+    ui->peakLoadLabel->setText(QString("%1: %2").arg(tr("Peak load")).arg(QString::number(maxAvg1, 'f', 2)));
+    ui->loadAvg1ValueLabel->setText(QString::number(this->loadAvg1List.last(), 'f', 2));
+    ui->loadAvg5ValueLabel->setText(QString::number(this->loadAvg5List.last(), 'f', 2));
+    ui->loadAvg15ValueLabel->setText(QString::number(this->loadAvg15List.last(), 'f', 2));
 }

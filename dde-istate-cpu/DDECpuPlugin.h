@@ -26,6 +26,7 @@ public:
     void addCpuUsage(qreal usage, cpu_usage avgUsage, QList<cpu_usage> cpuUsageList);
     void updateProcesses(QList<ProcessEntry> entryList);
     void updateUptime(qulonglong uptime);
+    void updateLoadAvg(qreal loadAvg1, qreal loadAvg5, qreal loadAvg15);
 
     // 返回插件的名称，必须是唯一值，不可以和其它插件冲突
     const QString pluginName() const override;

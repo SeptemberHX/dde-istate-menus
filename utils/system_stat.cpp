@@ -34,6 +34,7 @@
 
 #define PROC_PATH_UPTIME    "/proc/uptime"
 #define PROC_PATH_STAT      "/proc/stat"
+#define PROC_PATH_LOADAVG   "/proc/loadavg"
 #define PROC_PATH_CPU       PROC_PATH_STAT
 #define PROC_PATH_MEM       "/proc/meminfo"
 #define PROC_PATH_DISK      "/proc/diskstats"
@@ -46,6 +47,38 @@ auto print_err = [](decltype(errno) e, const QString &msg)
 {
     qDebug() << QString("Error: [%1] %2, ").arg(e).arg(strerror(e)) << msg;
 };
+
+
+bool SystemStat::readLoadAvg(qreal &loadAvg1, qreal &loadAvg5, qreal &loadAvg15) {
+    bool b = false;
+    FILE *fp;
+    char buf[128];
+    int rc;
+    double avg1, avg5, avg15;
+
+    errno = 0;
+    if ((fp = fopen(PROC_PATH_LOADAVG, "r")) == nullptr) {
+        print_err(errno, QString("open %1 failed").arg(PROC_PATH_LOADAVG));
+        return b;
+    }
+
+    if (fgets(buf, sizeof(buf), fp)) {
+        rc = sscanf(buf, "%lf %lf %lf", &avg1, &avg5, &avg15);
+        if (rc == 3) {
+            loadAvg1 = avg1;
+            loadAvg5 = avg5;
+            loadAvg15 = avg15;
+            b = true;
+        }
+    }
+    fclose(fp);
+    if (!b) {
+        print_err(errno, QString("read %1 failed").arg(PROC_PATH_LOADAVG));
+    }
+
+    return b;
+}
+
 
 bool SystemStat::readUpTime(qulonglong &uptime)
 {

@@ -29,12 +29,14 @@ public:
     void addCpuUsage(cpu_usage avgUsage, QList<cpu_usage> cpuUsageList);
     void updateProcesses(QList<ProcessEntry> entryList);
     void updateUptime(qulonglong uptime);
+    void updateLoadAvg(qreal loadAvg1, qreal loadAvg5, qreal loadAvg15);
 
 private:
     void redrawCpuCurve();
     void redrawCpuBarCurve();
     void redrawProcesses();
     void redrawUptime();
+    void redrawLoadCurve();
 
 protected:
     void showEvent(QShowEvent *event) override;
@@ -61,14 +63,16 @@ private:
     QAreaSeries *m_systemAreaSeries;
 
     QChart *m_loadChart;
-    QColor loadIdleColor;
-    QColor loadUserColor;
-    QColor loadSystemColor;
+    QColor loadAvg15Color;
+    QColor loadAvg1Color;
+    QColor loadAvg5Color;
+    QColor loadAvg1AreaColor;
 
-    QLineSeries *m_loadUserSeries;
-    QAreaSeries *m_loadUserAreaSeries;
-    QLineSeries *m_loadSystemSeries;
-    QLineSeries *m_loadIdleSeries;
+    QLineSeries *m_loadAvg1Series;
+    QAreaSeries *m_loadAvg1AreaSeries;
+    QLineSeries *m_loadAvg5Series;
+    QLineSeries *m_loadAvg15Series;
+    QLineSeries *m_loadZeroSeries;
 
     QChart *m_cpuBarChart;
     QBarSet *m_cpuUserBarSet;
@@ -80,6 +84,11 @@ private:
 
     QList<ProcessEntry> entries;
     qulonglong uptime;
+
+    QList<qreal> loadAvg1List;
+    QList<qreal> loadAvg5List;
+    QList<qreal> loadAvg15List;
+    int loadUnit;
 };
 
 #endif // ISTATECPUWIDGET_H

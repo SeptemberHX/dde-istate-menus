@@ -332,6 +332,12 @@ void StatsCollector::updateStatus()
         Q_EMIT cpuStatInfoUpdated(cpuPecent * 100., cpuPecents, cpuSeparatorUsage, cpuUsageList);
     }
 
+    qreal loadAvg1, loadAvg5, loadAvg15;
+    b = SystemStat::readLoadAvg(loadAvg1, loadAvg5, loadAvg15);
+    if (b) {
+        Q_EMIT loadAvgInfoUpdated(loadAvg1, loadAvg5, loadAvg15);
+    }
+
     b = SystemStat::readMemStats(memStat);
     if (b) {
         if (memStat->swap_total_kb > 0) {
