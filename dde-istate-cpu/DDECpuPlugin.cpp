@@ -8,7 +8,7 @@
 
 DDECpuPlugin::DDECpuPlugin(QObject *parent) : QObject(parent)
 {
-    this->m_tipWidget = new QLabel();
+    this->m_tipWidget = new DDECpuTipWidget();
     this->m_popupWidget = new IstateCpuWidget();
     this->m_pluginWidget = new DDECpuItemWidget();
 }
@@ -98,6 +98,7 @@ void DDECpuPlugin::setRefreshInterval(int msec) {
 void DDECpuPlugin::addCpuUsage(qreal usage, cpu_usage avgUsage, QList<cpu_usage> cpuUsageList) {
     this->m_pluginWidget->addData(usage);
     this->m_popupWidget->addCpuUsage(avgUsage, cpuUsageList);
+    this->m_tipWidget->updateCpuUsage(avgUsage);
 }
 
 void DDECpuPlugin::updateProcesses(QList<ProcessEntry> entryList) {
@@ -110,4 +111,5 @@ void DDECpuPlugin::updateUptime(qulonglong uptime) {
 
 void DDECpuPlugin::updateLoadAvg(qreal loadAvg1, qreal loadAvg5, qreal loadAvg15) {
     this->m_popupWidget->updateLoadAvg(loadAvg1, loadAvg5, loadAvg15);
+    this->m_tipWidget->updateLoad(loadAvg1, loadAvg5, loadAvg15);
 }

@@ -8,6 +8,7 @@
 
 #include <dde-dock/pluginsiteminterface.h>
 #include "../DDEIstateSubPlugin.h"
+#include "DDECpuTipWidget.h"
 #include "DDECpuItemWidget.h"
 #include "../dde-istate-widgets/istatecpuwidget.h"
 #include "../utils/process_entry.h"
@@ -54,7 +55,7 @@ public:
 
 private:
     DDECpuItemWidget *m_pluginWidget;
-    QLabel *m_tipWidget;
+    DDECpuTipWidget *m_tipWidget;
     IstateCpuWidget *m_popupWidget;
 };
 
