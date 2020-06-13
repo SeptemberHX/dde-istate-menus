@@ -2,8 +2,8 @@
 // Created by septemberhx on 2020/6/13.
 //
 
-#ifndef DDE_ISTATE_MENUS_DDECPUPLUGIN_H
-#define DDE_ISTATE_MENUS_DDECPUPLUGIN_H
+#ifndef DDE_ISTATE_MENUS_DDERAMPLUGIN_H
+#define DDE_ISTATE_MENUS_DDERAMPLUGIN_H
 
 
 #include <dde-dock/pluginsiteminterface.h>
@@ -20,6 +20,8 @@ class DDERamPlugin : public QObject, public PluginsItemInterface, public DDEIsta
 
 public:
     explicit DDERamPlugin(QObject *parent = nullptr);
+
+    void updateRamInfo(qreal usedPercent);
 
     // 返回插件的名称，必须是唯一值，不可以和其它插件冲突
     const QString pluginName() const override;
@@ -52,4 +54,4 @@ private:
 };
 
 
-#endif //DDE_ISTATE_MENUS_DDECPUPLUGIN_H
+#endif //DDE_ISTATE_MENUS_DDERAMPLUGIN_H

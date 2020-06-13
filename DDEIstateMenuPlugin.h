@@ -8,6 +8,7 @@
 #include "DDEIstateMenuPlugin.h"
 #include "dde-istate-netspeed/DDENetspeedPlugin.h"
 #include "dde-istate-datetime/datetimeplugin.h"
+#include "dde-istate-ram/DDERamPlugin.h"
 #include "dde-istate-cpu/DDECpuPlugin.h"
 #include "utils/stats_collector.h"
 #include <dde-dock/pluginsiteminterface.h>
@@ -50,15 +51,13 @@ private slots:
     void updateCpuUsage(qreal cpuPercent, const QList<double> cpuPercents, cpu_usage separatorUsage, QList<cpu_usage> cpuUsageList);
 
 private:
-    void fetchSystemData();
     StatsCollector *m_statsCollector {nullptr};
 
     QThread m_workerThread;
     DDENetspeedPlugin *netspeedPlugin;
     DatetimePlugin *datetimePlugin;
     DDECpuPlugin *cpuPlugin;
-    QTimer *m_refreshTimer;
-
+    DDERamPlugin *ramPlugin;
 };
 
 

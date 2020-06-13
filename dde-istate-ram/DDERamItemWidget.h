@@ -14,6 +14,16 @@ class DDERamItemWidget : public QLabel {
 
 public:
     explicit DDERamItemWidget(QWidget *parent = nullptr);
+
+    void setPercent(qreal percent);
+
+protected:
+    void paintEvent(QPaintEvent *event) override;
+
+private:
+    qreal percent;  // [0, 100]
+    quint8 maxValue;
+    quint8 width;
 };
 
 

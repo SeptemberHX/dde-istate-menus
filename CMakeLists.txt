@@ -27,6 +27,9 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 # 并将结果放入 SRCS 变量中，SRCS 变量可用于后续使用
 file(GLOB SRCS "*.h" "*.cpp" "utils/*.h" "utils/*.cpp" "nethogs/src/*.h" "resources/resources.qrc")
 
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0")
+
 
 # 指定要用到的库
 # 使用了 cmake 的 find_package 命令，查找库 Qt5Widgets 等，
@@ -132,6 +135,7 @@ target_link_libraries(${PLUGIN_NAME} PRIVATE
         dde_istate_netspeed
         dde_istate_datetime
         dde_istate_cpu
+        dde_istate_ram
         ${Qt5DBus_LIBRARIES}
         ${Dtkwm_LIBRARIES}
         ${XCB_LIBRARIES}

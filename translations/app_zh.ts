@@ -252,8 +252,8 @@
 <context>
     <name>Process.Table</name>
     <message>
-        <location filename="../utils/stats_collector.cpp" line="687"/>
-        <location filename="../utils/stats_collector.cpp" line="696"/>
+        <location filename="../utils/stats_collector.cpp" line="686"/>
+        <location filename="../utils/stats_collector.cpp" line="695"/>
         <source>Tray</source>
         <translation type="unfinished"></translation>
     </message>

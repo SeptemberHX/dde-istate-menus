@@ -21,6 +21,10 @@ DDEIstateMenuPlugin::DDEIstateMenuPlugin(QObject *parent) : QObject(parent) {
     connect(this->m_statsCollector, &StatsCollector::loadAvgInfoUpdated, this, [this](qreal loadAvg1, qreal loadAvg5, qreal loadAvg15) {
         this->cpuPlugin->updateLoadAvg(loadAvg1, loadAvg5, loadAvg15);
     });
+    connect(this->m_statsCollector, &StatsCollector::memStatInfoUpdated,
+            this,[this](qulonglong usedMemory, qulonglong totalMemory, qulonglong usedSwap, qulonglong totalSwap) {
+        this->ramPlugin->updateRamInfo(usedMemory * 100.0 / totalMemory);
+    });
 
     connect(&m_workerThread, &QThread::started, m_statsCollector, &StatsCollector::start);
     connect(&m_workerThread, &QThread::finished, m_statsCollector, &QObject::deleteLater);
@@ -40,11 +44,8 @@ void DDEIstateMenuPlugin::init(PluginProxyInterface *proxyInter) {
     this->datetimePlugin->init(this->m_proxyInter);
     this->cpuPlugin = new DDECpuPlugin();
     this->cpuPlugin->init(this->m_proxyInter);
-
-    this->m_refreshTimer = new QTimer(this);
-    this->m_refreshTimer->setInterval(2000);
-    connect(this->m_refreshTimer, &QTimer::timeout, this, &DDEIstateMenuPlugin::fetchSystemData);
-    this->m_refreshTimer->start();
+    this->ramPlugin = new DDERamPlugin();
+    this->ramPlugin->init(this->m_proxyInter);
 
     if (!NetworkTrafficFilter::hasInstance) {
         NetworkTrafficFilter::hasInstance = true;
@@ -57,6 +58,7 @@ void DDEIstateMenuPlugin::init(PluginProxyInterface *proxyInter) {
         this->m_proxyInter->itemAdded(this->netspeedPlugin, this->netspeedPlugin->pluginName());
         this->m_proxyInter->itemAdded(this->datetimePlugin, this->datetimePlugin->pluginName());
         this->m_proxyInter->itemAdded(this->cpuPlugin, this->cpuPlugin->pluginName());
+        this->m_proxyInter->itemAdded(this->ramPlugin, this->ramPlugin->pluginName());
     }
 }
 
@@ -73,12 +75,14 @@ void DDEIstateMenuPlugin::pluginStateSwitched() {
     m_proxyInter->saveValue(this->netspeedPlugin, PLUGIN_STATE_KEY, pluginIsDisable());
     m_proxyInter->saveValue(this->datetimePlugin, PLUGIN_STATE_KEY, pluginIsDisable());
     m_proxyInter->saveValue(this->cpuPlugin, PLUGIN_STATE_KEY, pluginIsDisable());
+    m_proxyInter->saveValue(this->ramPlugin, PLUGIN_STATE_KEY, pluginIsDisable());
 
     if (pluginIsDisable()) {
 //        m_proxyInter->itemRemoved(this, pluginName());
         m_proxyInter->itemRemoved(this->datetimePlugin, this->datetimePlugin->pluginName());
         m_proxyInter->itemRemoved(this->netspeedPlugin, this->netspeedPlugin->pluginName());
         m_proxyInter->itemRemoved(this->cpuPlugin, this->cpuPlugin->pluginName());
+        m_proxyInter->itemRemoved(this->ramPlugin, this->ramPlugin->pluginName());
         return;
     }
 
@@ -86,6 +90,7 @@ void DDEIstateMenuPlugin::pluginStateSwitched() {
     this->m_proxyInter->itemAdded(this->netspeedPlugin, this->netspeedPlugin->pluginName());
     this->m_proxyInter->itemAdded(this->datetimePlugin, this->datetimePlugin->pluginName());
     this->m_proxyInter->itemAdded(this->cpuPlugin, this->cpuPlugin->pluginName());
+    this->m_proxyInter->itemAdded(this->ramPlugin, this->ramPlugin->pluginName());
 }
 
 const QString DDEIstateMenuPlugin::pluginDisplayName() const {
@@ -98,6 +103,7 @@ void DDEIstateMenuPlugin::pluginSettingsChanged() {
         m_proxyInter->itemRemoved(this->datetimePlugin, this->datetimePlugin->pluginName());
         m_proxyInter->itemRemoved(this->netspeedPlugin, this->netspeedPlugin->pluginName());
         m_proxyInter->itemRemoved(this->cpuPlugin, this->cpuPlugin->pluginName());
+        m_proxyInter->itemRemoved(this->ramPlugin, this->ramPlugin->pluginName());
         return;
     }
 
@@ -105,14 +111,12 @@ void DDEIstateMenuPlugin::pluginSettingsChanged() {
     this->m_proxyInter->itemAdded(this->datetimePlugin, this->datetimePlugin->pluginName());
     this->m_proxyInter->itemAdded(this->netspeedPlugin, this->netspeedPlugin->pluginName());
     this->m_proxyInter->itemAdded(this->cpuPlugin, this->cpuPlugin->pluginName());
+    this->m_proxyInter->itemAdded(this->ramPlugin, this->ramPlugin->pluginName());
 }
 
 QWidget *DDEIstateMenuPlugin::itemWidget(const QString &itemKey) {
     Q_UNUSED(itemKey)
     return nullptr;
-}
-
-void DDEIstateMenuPlugin::fetchSystemData() {
 }
 
 void DDEIstateMenuPlugin::updateProcessList(QList<ProcessEntry> procList) {

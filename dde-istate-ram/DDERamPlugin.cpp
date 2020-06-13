@@ -98,3 +98,7 @@ void DDERamPlugin::refreshData() {
 void DDERamPlugin::setRefreshInterval(int msec) {
 
 }
+
+void DDERamPlugin::updateRamInfo(qreal usedPercent) {
+    this->m_pluginWidget->setPercent(usedPercent);
+}
