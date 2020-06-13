@@ -1,14 +1,8 @@
-# 学习 cmake 时建议直接从命令列表作为入口，遇到不清楚意思的命令都可以在此处查阅：
-# https://cmake.org/cmake/help/latest/manual/cmake-commands.7.html
-# 另外下面时完整的文档入口：
-# https://cmake.org/cmake/help/latest/
-
 # 设置运行被配置所需的 cmake 最低版本
 cmake_minimum_required(VERSION 3.11)
-set(CMAKE_CXX_STANDARD 11)
 
 # 使用 set 命令设置一个变量
-set(PLUGIN_NAME "dde_istate_menus")
+set(PLUGIN_NAME "dde_istate_ram")
 
 # 设置项目名称
 project(${PLUGIN_NAME})
@@ -25,7 +19,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 # 指定所有源码文件
 # 使用了 cmake 的 file 命令，递归查找项目目录下所有头文件和源码文件，
 # 并将结果放入 SRCS 变量中，SRCS 变量可用于后续使用
-file(GLOB SRCS "*.h" "*.cpp" "utils/*.h" "utils/*.cpp" "nethogs/src/*.h" "resources/resources.qrc")
+file(GLOB SRCS "*.h" "*.cpp" "../utils/DDEUtils.h" "../utils/DDEUtils.cpp" "../resources/resources.qrc")
 
 
 # 指定要用到的库
@@ -38,10 +32,10 @@ file(GLOB SRCS "*.h" "*.cpp" "utils/*.h" "utils/*.cpp" "nethogs/src/*.h" "resour
 # <库名>_INCLUDE_DIRS   有哪些头文件目录（Qt5Widgets_INCLUDE_DIRS）
 # <库名>_LIBRARIES      有哪些库文件（Qt5Widgets_LIBRARIES）
 find_package(Qt5Widgets REQUIRED)
-find_package(Qt5DBus REQUIRED)
+find_package(Qt5Charts REQUIRED)
 find_package(DtkWidget REQUIRED)
 find_package(Qt5LinguistTools REQUIRED)
-find_package(DtkGui REQUIRED)
+find_library(pcap REQUIRED)
 
 # find_package 命令还可以用来加载 cmake 的功能模块
 # 并不是所有的库都直接支持 cmake 查找的，但大部分都支持了 pkg-config 这个标准，
@@ -61,8 +55,6 @@ find_package(PkgConfig REQUIRED)
 # DdeDockInterface_LIBRARIES
 # 还有有另外的一些变量以及更灵活的用法，比如一次性查找多个库，这些请自行查找 cmake 文档学习。
 pkg_check_modules(DdeDockInterface REQUIRED dde-dock)
-pkg_check_modules(Dtkwm REQUIRED dtkwm)
-pkg_check_modules(XCB REQUIRED xcb)
 
 # add_definitions 命令用于声明/定义一些编译/预处理参数
 # 根据 cmake 文档描述此命令已经有另外几个功能划分的更为细致的命令所取代，具体请查阅文档
@@ -72,19 +64,16 @@ pkg_check_modules(XCB REQUIRED xcb)
 # 基于 qt5 或更高版本的新插件不必使用此变量。要查看 qt5 的库定义了哪些变量应该查看变量：${Qt5Widgets_DEFINITIONS}
 add_definitions("${QT_DEFINITIONS} -DQT_PLUGIN")
 
-set(TS_FILES
-        ${CMAKE_CURRENT_SOURCE_DIR}/translations/app_zh.ts
-        )
-qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
+set(UI_FILES)
+
+#set(TS_FILES
+#        ${CMAKE_CURRENT_SOURCE_DIR}/translations/app_zh.ts
+#        )
+#qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
 #
 #qt5_wrap_ui(UIS_HDRS
 #        PstateMainWidget.ui
 #        )
-
-add_subdirectory(dde-istate-netspeed)
-add_subdirectory(dde-istate-datetime)
-add_subdirectory(dde-istate-cpu)
-add_subdirectory(dde-istate-ram)
 
 # 新增一个编译目标
 # 这里使用命令 add_library 来表示本项目要生成一个库文件目标，
@@ -92,7 +81,7 @@ add_subdirectory(dde-istate-ram)
 # SHARED 表示生成的库应该是动态库，
 # 变量 ${PLUGIN_NAME} 和 ${SRCS} 都是前面处理好的，
 # 另外 qrc 资源文件也应该追加在后面以编译进目标中。
-add_library(${PLUGIN_NAME} SHARED ${SRCS} ${UIS_HDRS} ${QM_FILES})
+add_library(${PLUGIN_NAME} STATIC ${SRCS} ${UIS_HDRS} ${UI_FILES})
 
 # 设置目标的生成位置，这里表示生成在执行 make 的目录,
 # 另外还有很多可用于设置的属性，可查阅 cmake 文档。
@@ -103,42 +92,25 @@ set_target_properties(${PLUGIN_NAME} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ./)
 # 当出现编译失败提示找不到某些库的头文件时应该检查此处是否将所有需要的头文件都包含了
 target_include_directories(${PLUGIN_NAME} PUBLIC
         ${Qt5Widgets_INCLUDE_DIRS}
-        ${Qt5DBus_INCLUDE_DIRS}
+        ${Qt5Charts_INCLUDE_DIRS}
         ${DtkWidget_INCLUDE_DIRS}
         ${DdeDockInterface_INCLUDE_DIRS}
-        ${Dtkwm_INCLUDE_DIRS}
-        ${XCB_INCLUDE_DIRS}
         )
 
-target_compile_options(${PLUGIN_NAME} PUBLIC
-        ${Dtkwm_CFLAGS_OTHER}
-        )
-
-target_compile_definitions(${PLUGIN_NAME} PUBLIC
-        QT_DEBUG_NO_OUTPUT
-        )
-
-find_library(pcap REQUIRED)
+find_library(../nethogs ../nethogs/src/libnethogs.a)
 
 # 设置目标要使用的链接库
 # 变量 ${DtkWidget_LIBRARIES} 和 ${Qt5Widgets_LIBRARIES} 是在前面执行 find_package 命令时引入的
 # 当出现运行时错误提示某些符号没有定义时应该检查此处是否将所有用的库都写在了这里
 target_link_libraries(${PLUGIN_NAME} PRIVATE
         ${Qt5Widgets_LIBRARIES}
+        ${Qt5Charts_LIBRARIES}
         ${DtkWidget_LIBRARIES}
         ${DdeDockInterface_LIBRARIES}
-        ${CMAKE_CURRENT_SOURCE_DIR}/nethogs/src/libnethogs.a
-        pcap
-        dde_istate_netspeed
-        dde_istate_datetime
-        dde_istate_cpu
-        ${Qt5DBus_LIBRARIES}
-        ${Dtkwm_LIBRARIES}
-        ${XCB_LIBRARIES}
         )
 
 # 设置安装路径的前缀(默认为"/usr/local")
-set(CMAKE_INSTALL_PREFIX "/usr")
+#set(CMAKE_INSTALL_PREFIX "/usr")
 
 # 设置执行 make install 时哪个目标应该被 install 到哪个位置
 #install(TARGETS ${PLUGIN_NAME} LIBRARY DESTINATION lib/dde-dock/plugins)

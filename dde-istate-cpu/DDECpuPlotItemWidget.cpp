@@ -4,7 +4,6 @@
 
 #include "DDECpuPlotItemWidget.h"
 #include <QPainter>
-#include <cmath>
 
 DDECpuPlotItemWidget::DDECpuPlotItemWidget(QWidget *parent)
     : QLabel(parent)
