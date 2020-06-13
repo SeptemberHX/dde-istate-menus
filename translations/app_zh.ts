@@ -9,17 +9,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dde-istate-datetime/datetimeplugin.cpp" line="145"/>
+        <location filename="../dde-istate-datetime/datetimeplugin.cpp" line="144"/>
         <source>12 Hour Time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dde-istate-datetime/datetimeplugin.cpp" line="147"/>
+        <location filename="../dde-istate-datetime/datetimeplugin.cpp" line="146"/>
         <source>24 Hour Time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dde-istate-datetime/datetimeplugin.cpp" line="153"/>
+        <location filename="../dde-istate-datetime/datetimeplugin.cpp" line="152"/>
         <source>Time Settings</source>
         <translation type="unfinished"></translation>
     </message>
@@ -120,7 +120,6 @@
     <name>IstateNetworkWidget</name>
     <message>
         <location filename="../dde-istate-widgets/istatenetworkwidget.ui" line="26"/>
-        <location filename="../build/dde-istate-netspeed/dde_istate_netspeed_autogen/include/ui_istatenetworkwidget.h" line="571"/>
         <location filename="../build-dde-istate-widgets-default-Debug/ui_istatenetworkwidget.h" line="243"/>
         <location filename="../cmake-build-debug/dde-istate-netspeed/dde_istate_netspeed_autogen/include/ui_istatenetworkwidget.h" line="571"/>
         <source>Form</source>
@@ -128,7 +127,6 @@
     </message>
     <message>
         <location filename="../dde-istate-widgets/istatenetworkwidget.ui" line="47"/>
-        <location filename="../build/dde-istate-netspeed/dde_istate_netspeed_autogen/include/ui_istatenetworkwidget.h" line="572"/>
         <location filename="../build-dde-istate-widgets-default-Debug/ui_istatenetworkwidget.h" line="244"/>
         <location filename="../cmake-build-debug/dde-istate-netspeed/dde_istate_netspeed_autogen/include/ui_istatenetworkwidget.h" line="572"/>
         <source>NETWORK</source>
@@ -138,9 +136,6 @@
         <location filename="../dde-istate-widgets/istatenetworkwidget.ui" line="167"/>
         <location filename="../dde-istate-widgets/istatenetworkwidget.ui" line="329"/>
         <location filename="../dde-istate-widgets/istatenetworkwidget.ui" line="723"/>
-        <location filename="../build/dde-istate-netspeed/dde_istate_netspeed_autogen/include/ui_istatenetworkwidget.h" line="575"/>
-        <location filename="../build/dde-istate-netspeed/dde_istate_netspeed_autogen/include/ui_istatenetworkwidget.h" line="585"/>
-        <location filename="../build/dde-istate-netspeed/dde_istate_netspeed_autogen/include/ui_istatenetworkwidget.h" line="612"/>
         <location filename="../build-dde-istate-widgets-default-Debug/ui_istatenetworkwidget.h" line="252"/>
         <location filename="../cmake-build-debug/dde-istate-netspeed/dde_istate_netspeed_autogen/include/ui_istatenetworkwidget.h" line="575"/>
         <location filename="../cmake-build-debug/dde-istate-netspeed/dde_istate_netspeed_autogen/include/ui_istatenetworkwidget.h" line="585"/>
@@ -150,7 +145,6 @@
     </message>
     <message>
         <location filename="../dde-istate-widgets/istatenetworkwidget.ui" line="174"/>
-        <location filename="../build/dde-istate-netspeed/dde_istate_netspeed_autogen/include/ui_istatenetworkwidget.h" line="576"/>
         <location filename="../build-dde-istate-widgets-default-Debug/ui_istatenetworkwidget.h" line="253"/>
         <location filename="../cmake-build-debug/dde-istate-netspeed/dde_istate_netspeed_autogen/include/ui_istatenetworkwidget.h" line="576"/>
         <source>0.50 KB/s</source>
@@ -160,9 +154,6 @@
         <location filename="../dde-istate-widgets/istatenetworkwidget.ui" line="184"/>
         <location filename="../dde-istate-widgets/istatenetworkwidget.ui" line="265"/>
         <location filename="../dde-istate-widgets/istatenetworkwidget.ui" line="769"/>
-        <location filename="../build/dde-istate-netspeed/dde_istate_netspeed_autogen/include/ui_istatenetworkwidget.h" line="577"/>
-        <location filename="../build/dde-istate-netspeed/dde_istate_netspeed_autogen/include/ui_istatenetworkwidget.h" line="581"/>
-        <location filename="../build/dde-istate-netspeed/dde_istate_netspeed_autogen/include/ui_istatenetworkwidget.h" line="616"/>
         <location filename="../build-dde-istate-widgets-default-Debug/ui_istatenetworkwidget.h" line="254"/>
         <location filename="../cmake-build-debug/dde-istate-netspeed/dde_istate_netspeed_autogen/include/ui_istatenetworkwidget.h" line="577"/>
         <location filename="../cmake-build-debug/dde-istate-netspeed/dde_istate_netspeed_autogen/include/ui_istatenetworkwidget.h" line="581"/>
@@ -172,7 +163,6 @@
     </message>
     <message>
         <location filename="../dde-istate-widgets/istatenetworkwidget.ui" line="191"/>
-        <location filename="../build/dde-istate-netspeed/dde_istate_netspeed_autogen/include/ui_istatenetworkwidget.h" line="578"/>
         <location filename="../build-dde-istate-widgets-default-Debug/ui_istatenetworkwidget.h" line="255"/>
         <location filename="../cmake-build-debug/dde-istate-netspeed/dde_istate_netspeed_autogen/include/ui_istatenetworkwidget.h" line="578"/>
         <source>3.00KB/s</source>
@@ -180,21 +170,18 @@
     </message>
     <message>
         <location filename="../dde-istate-widgets/istatenetworkwidget.ui" line="211"/>
-        <location filename="../build/dde-istate-netspeed/dde_istate_netspeed_autogen/include/ui_istatenetworkwidget.h" line="579"/>
         <location filename="../cmake-build-debug/dde-istate-netspeed/dde_istate_netspeed_autogen/include/ui_istatenetworkwidget.h" line="579"/>
         <source>STATISTICS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../dde-istate-widgets/istatenetworkwidget.ui" line="587"/>
-        <location filename="../build/dde-istate-netspeed/dde_istate_netspeed_autogen/include/ui_istatenetworkwidget.h" line="603"/>
         <location filename="../cmake-build-debug/dde-istate-netspeed/dde_istate_netspeed_autogen/include/ui_istatenetworkwidget.h" line="603"/>
         <source>ipv4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../dde-istate-widgets/istatenetworkwidget.ui" line="609"/>
-        <location filename="../build/dde-istate-netspeed/dde_istate_netspeed_autogen/include/ui_istatenetworkwidget.h" line="604"/>
         <location filename="../build-dde-istate-widgets-default-Debug/ui_istatenetworkwidget.h" line="257"/>
         <location filename="../cmake-build-debug/dde-istate-netspeed/dde_istate_netspeed_autogen/include/ui_istatenetworkwidget.h" line="604"/>
         <source>PROCESSES</source>

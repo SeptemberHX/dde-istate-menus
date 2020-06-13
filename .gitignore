@@ -1,4 +1,5 @@
 build
 build-dde-istate-widgets-default-Debug
 cmake-build-debug
+binary
 .idea

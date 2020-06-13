@@ -39,25 +39,21 @@ DatetimePlugin::DatetimePlugin(QObject *parent)
 {
     QDBusConnection sessionBus = QDBusConnection::sessionBus();
     sessionBus.connect("com.deepin.daemon.Timedate", "/com/deepin/daemon/Timedate", "org.freedesktop.DBus.Properties",  "PropertiesChanged", this, SLOT(propertiesChanged()));
-}
 
-const QString DatetimePlugin::pluginName() const
-{
-    return "dde-istate-datetime";
-}
-
-const QString DatetimePlugin::pluginDisplayName() const
-{
-    return tr("DDE Istate Datetime");
+    m_dateTipsLabel = new QLabel();
+    m_refershTimer = new QTimer(this);
+    m_centralWidget = new DatetimeWidget();
 }
 
 void DatetimePlugin::init(PluginProxyInterface *proxyInter)
 {
     m_proxyInter = proxyInter;
 
-    if (!pluginIsDisable()) {
-        loadPlugin();
-    }
+    connect(m_centralWidget, &DatetimeWidget::requestUpdateGeometry, [this] { m_proxyInter->itemUpdate(this, pluginName()); });
+    connect(m_refershTimer, &QTimer::timeout, this, &DatetimePlugin::updateCurrentTimeString);
+
+    m_refershTimer->setInterval(1000);
+    m_refershTimer->start();
 
     // transfer config
     QSettings settings("deepin", "dde-dock-datetime");
@@ -67,62 +63,6 @@ void DatetimePlugin::init(PluginProxyInterface *proxyInter)
         proxyInter->saveValue(this, key, settings.value(key, mode == Dock::DisplayMode::Fashion ? 5 : -1));
         QFile::remove(settings.fileName());
     }
-}
-
-void DatetimePlugin::loadPlugin()
-{
-    m_dateTipsLabel = new QLabel();
-    m_refershTimer = new QTimer(this);
-    m_dateTipsLabel->setObjectName("datetime");
-    m_centralWidget = new DatetimeWidget();
-
-    connect(m_centralWidget, &DatetimeWidget::requestUpdateGeometry, [this] { m_proxyInter->itemUpdate(this, pluginName()); });
-    connect(m_refershTimer, &QTimer::timeout, this, &DatetimePlugin::updateCurrentTimeString);
-
-    m_refershTimer->setInterval(1000);
-    m_refershTimer->start();
-}
-
-void DatetimePlugin::pluginStateSwitched()
-{
-    m_proxyInter->saveValue(this, PLUGIN_STATE_KEY, pluginIsDisable());
-
-    refreshPluginItemsVisible();
-}
-
-bool DatetimePlugin::pluginIsDisable()
-{
-    return !(m_proxyInter->getValue(this, PLUGIN_STATE_KEY, true).toBool());
-}
-
-int DatetimePlugin::itemSortKey(const QString &itemKey)
-{
-    Q_UNUSED(itemKey);
-
-    const QString key = QString("pos_%1").arg(Dock::Efficient);
-    return m_proxyInter->getValue(this, key, 5).toInt();
-}
-
-void DatetimePlugin::setSortKey(const QString &itemKey, const int order)
-{
-    Q_UNUSED(itemKey);
-
-    const QString key = QString("pos_%1").arg(Dock::Efficient);
-    m_proxyInter->saveValue(this, key, order);
-}
-
-QWidget *DatetimePlugin::itemWidget(const QString &itemKey)
-{
-    Q_UNUSED(itemKey);
-
-    return m_centralWidget;
-}
-
-QWidget *DatetimePlugin::itemTipsWidget(const QString &itemKey)
-{
-    Q_UNUSED(itemKey);
-
-    return m_dateTipsLabel;
 }
 
 const QString DatetimePlugin::itemCommand(const QString &itemKey)
@@ -182,19 +122,6 @@ void DatetimePlugin::invokedMenuItem(const QString &itemKey, const QString &menu
     }
 }
 
-void DatetimePlugin::pluginSettingsChanged()
-{
-    if (!m_pluginLoaded)
-        return;
-
-    const bool value = timedateInterface()->property(TIME_FORMAT_KEY).toBool();
-
-    m_proxyInter->saveValue(this, TIME_FORMAT_KEY, value);
-    m_centralWidget->set24HourFormat(value);
-
-    refreshPluginItemsVisible();
-}
-
 void DatetimePlugin::updateCurrentTimeString()
 {
     const QDateTime currentDateTime = QDateTime::currentDateTime();
@@ -213,23 +140,15 @@ void DatetimePlugin::updateCurrentTimeString()
     m_centralWidget->update();
 }
 
-void DatetimePlugin::refreshPluginItemsVisible()
-{
-    if (!pluginIsDisable()) {
-
-        if (!m_pluginLoaded) {
-            loadPlugin();
-            return;
-        }
-        m_proxyInter->itemAdded(this, pluginName());
-    } else {
-        m_proxyInter->itemRemoved(this, pluginName());
-    }
-}
-
 void DatetimePlugin::propertiesChanged()
 {
-    pluginSettingsChanged();
+    if (!m_pluginLoaded)
+        return;
+
+    const bool value = timedateInterface()->property(TIME_FORMAT_KEY).toBool();
+
+    m_proxyInter->saveValue(this, TIME_FORMAT_KEY, value);
+    m_centralWidget->set24HourFormat(value);
 }
 
 QDBusInterface* DatetimePlugin::timedateInterface()
@@ -246,4 +165,54 @@ QDBusInterface* DatetimePlugin::timedateInterface()
     }
 
     return m_interface;
+}
+
+const QString DatetimePlugin::pluginName() const
+{
+    return "dde-istate-datetime";
+}
+
+const QString DatetimePlugin::pluginDisplayName() const
+{
+    return tr("DDE Istate Datetime");
+}
+
+void DatetimePlugin::pluginStateSwitched()
+{
+    m_proxyInter->saveValue(this, PLUGIN_STATE_KEY, pluginIsDisable());
+}
+
+bool DatetimePlugin::pluginIsDisable()
+{
+    return !(m_proxyInter->getValue(this, PLUGIN_STATE_KEY, true).toBool());
+}
+
+int DatetimePlugin::itemSortKey(const QString &itemKey)
+{
+    Q_UNUSED(itemKey);
+
+    const QString key = QString("pos_%1").arg(Dock::Efficient);
+    return m_proxyInter->getValue(this, key, 5).toInt();
+}
+
+void DatetimePlugin::setSortKey(const QString &itemKey, const int order)
+{
+    Q_UNUSED(itemKey);
+
+    const QString key = QString("pos_%1").arg(Dock::Efficient);
+    m_proxyInter->saveValue(this, key, order);
+}
+
+QWidget *DatetimePlugin::itemWidget(const QString &itemKey)
+{
+    Q_UNUSED(itemKey);
+
+    return m_centralWidget;
+}
+
+QWidget *DatetimePlugin::itemTipsWidget(const QString &itemKey)
+{
+    Q_UNUSED(itemKey);
+
+    return m_dateTipsLabel;
 }
