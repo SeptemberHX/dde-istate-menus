@@ -4,22 +4,22 @@
 <context>
     <name>DatetimePlugin</name>
     <message>
-        <location filename="../dde-istate-datetime/datetimeplugin.cpp" line="51"/>
+        <location filename="../dde-istate-datetime/datetimeplugin.cpp" line="177"/>
         <source>DDE Istate Datetime</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dde-istate-datetime/datetimeplugin.cpp" line="144"/>
+        <location filename="../dde-istate-datetime/datetimeplugin.cpp" line="85"/>
         <source>12 Hour Time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dde-istate-datetime/datetimeplugin.cpp" line="146"/>
+        <location filename="../dde-istate-datetime/datetimeplugin.cpp" line="87"/>
         <source>24 Hour Time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dde-istate-datetime/datetimeplugin.cpp" line="152"/>
+        <location filename="../dde-istate-datetime/datetimeplugin.cpp" line="93"/>
         <source>Time Settings</source>
         <translation type="unfinished"></translation>
     </message>

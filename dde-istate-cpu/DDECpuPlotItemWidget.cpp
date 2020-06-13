@@ -8,8 +8,8 @@
 
 DDECpuPlotItemWidget::DDECpuPlotItemWidget(QWidget *parent)
     : QLabel(parent)
-    , historySize(50)
-    , maxValue(22)      // 1, 2, ..., maxValue
+    , historySize(40)
+    , maxValue(24)      // 1, 2, ..., maxValue
 {
     this->setFixedSize(historySize + 2, maxValue + 2);
 
@@ -26,6 +26,7 @@ QSize DDECpuPlotItemWidget::sizeHint() const {
 
 void DDECpuPlotItemWidget::paintEvent(QPaintEvent *event) {
     QPainter painter(this);
+    painter.setRenderHint(QPainter::Antialiasing);
 
     int x0 = event->rect().bottomLeft().x() + 1;
     int y0 = event->rect().bottomLeft().y() - 1;
@@ -43,7 +44,7 @@ void DDECpuPlotItemWidget::paintEvent(QPaintEvent *event) {
 
     painter.setPen(QPen(Qt::white, 2));
     painter.setBrush(Qt::NoBrush);
-    painter.drawRect(event->rect());
+    painter.drawRoundRect(event->rect());
 }
 
 void DDECpuPlotItemWidget::addData(qreal usagePer) {
