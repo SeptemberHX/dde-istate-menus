@@ -22,8 +22,8 @@ DDEIstateMenuPlugin::DDEIstateMenuPlugin(QObject *parent) : QObject(parent) {
         this->cpuPlugin->updateLoadAvg(loadAvg1, loadAvg5, loadAvg15);
     });
     connect(this->m_statsCollector, &StatsCollector::memStatInfoUpdated,
-            this,[this](qulonglong usedMemory, qulonglong totalMemory, qulonglong usedSwap, qulonglong totalSwap) {
-        this->ramPlugin->updateRamInfo(usedMemory * 100.0 / totalMemory);
+            this,[this](qulonglong usedMemory, qulonglong totalMemory, qulonglong usedSwap, qulonglong totalSwap, mem_stat memStat) {
+        this->ramPlugin->updateRamInfo(usedMemory * 100.0 / totalMemory, memStat);
     });
 
     connect(&m_workerThread, &QThread::started, m_statsCollector, &StatsCollector::start);

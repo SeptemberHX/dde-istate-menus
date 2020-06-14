@@ -66,6 +66,7 @@ struct mem_stat {
     unsigned long long swap_free_kb;        // SwapFree
     unsigned long long dirty_kb;            // Dirty
     unsigned long long anon_pages_kb;       // AnonPages
+    unsigned long long sreclaimable_kb;     // SReclaimable
 };
 
 // from /proc/diskstats, ref: sysstat#rd_stats.h#stats_io

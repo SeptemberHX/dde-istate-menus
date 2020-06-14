@@ -57,7 +57,8 @@ Q_SIGNALS:
     void memStatInfoUpdated(qulonglong usedMemory,
                             qulonglong totalMemory,
                             qulonglong usedSwap,
-                            qulonglong totalSwap);
+                            qulonglong totalSwap,
+                            mem_stat memStat);
     void diskStatInfoUpdated(qreal readBps, qreal writeBps);
     void networkStatInfoUpdated(qulonglong totalRecvBytes,
                                 qulonglong totalSentBytes,
@@ -158,5 +159,6 @@ void readProcStatsCallback(ProcStat &ps, void *context);
 void setProcDisplayNameAndIcon(StatsCollector &ctx, ProcessEntry &proc, const ProcStat &ps);
 
 Q_DECLARE_METATYPE(cpu_usage)
+Q_DECLARE_METATYPE(mem_stat)
 
 #endif // STATS_COLLECTOR_H

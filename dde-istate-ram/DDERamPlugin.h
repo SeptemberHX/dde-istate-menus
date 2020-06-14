@@ -11,7 +11,9 @@
 #include <QWidget>
 
 #include "../DDEIstateSubPlugin.h"
+#include "../dde-istate-widgets/istateramwidget.h"
 #include "DDERamItemWidget.h"
+#include "../utils/system_stat.h"
 
 class DDERamPlugin : public QObject, public PluginsItemInterface, public DDEIstateSubPlugin {
     Q_OBJECT
@@ -21,7 +23,7 @@ class DDERamPlugin : public QObject, public PluginsItemInterface, public DDEIsta
 public:
     explicit DDERamPlugin(QObject *parent = nullptr);
 
-    void updateRamInfo(qreal usedPercent);
+    void updateRamInfo(qreal usedPercent, mem_stat memStat);
 
     // 返回插件的名称，必须是唯一值，不可以和其它插件冲突
     const QString pluginName() const override;
@@ -50,7 +52,7 @@ public:
 private:
     DDERamItemWidget *m_pluginWidget;
     QLabel *m_tipWidget;
-    QWidget *m_popupWidget;
+    IstateRamWidget *m_popupWidget;
 };
 
 

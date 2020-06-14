@@ -10,7 +10,7 @@ DDERamPlugin::DDERamPlugin(QObject *parent)
     : QObject(parent)
 {
     this->m_tipWidget = new QLabel();
-    this->m_popupWidget = new QWidget();
+    this->m_popupWidget = new IstateRamWidget();
     this->m_pluginWidget = new DDERamItemWidget();
 }
 
@@ -23,6 +23,11 @@ void DDERamPlugin::init(PluginProxyInterface *proxyInter) {
     }
 
     // todo
+}
+
+void DDERamPlugin::updateRamInfo(qreal usedPercent, mem_stat memStat) {
+    this->m_pluginWidget->setPercent(usedPercent);
+    this->m_popupWidget->updateMemStat(memStat);
 }
 
 
@@ -97,8 +102,4 @@ void DDERamPlugin::refreshData() {
 
 void DDERamPlugin::setRefreshInterval(int msec) {
 
-}
-
-void DDERamPlugin::updateRamInfo(qreal usedPercent) {
-    this->m_pluginWidget->setPercent(usedPercent);
 }

@@ -262,6 +262,9 @@ bool SystemStat::readMemStats(MemStat &memStat)
         } else if (!strncmp(line.data(), "Slab:", 5)) {
             rc = sscanf(line.data() + 5, "%llu", &memStat->slab_kb);
             b = (rc == 1);
+        } else if (!strncmp(line.data(), "SReclaimable:", 13)) {
+            rc = sscanf(line.data() + 13, "%llu", &memStat->sreclaimable_kb);
+            b = (rc == 1);
         }
     }
 

@@ -4,11 +4,6 @@
 <context>
     <name>DatetimePlugin</name>
     <message>
-        <location filename="../dde-istate-datetime/datetimeplugin.cpp" line="177"/>
-        <source>DDE Istate Datetime</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../dde-istate-datetime/datetimeplugin.cpp" line="85"/>
         <source>12 Hour Time</source>
         <translation type="unfinished"></translation>
@@ -23,24 +18,32 @@
         <source>Time Settings</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../dde-istate-datetime/datetimeplugin.cpp" line="177"/>
+        <source>DDE Istate Datetime</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>IstateCpuWidget</name>
     <message>
         <location filename="../dde-istate-widgets/istatecpuwidget.ui" line="26"/>
         <location filename="../cmake-build-debug/dde-istate-cpu/dde_istate_cpu_autogen/include/ui_istatecpuwidget.h" line="450"/>
+        <location filename="../cmake-build-debug/dde-istate-ram/dde_istate_ram_autogen/include/ui_istatecpuwidget.h" line="450"/>
         <source>Form</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../dde-istate-widgets/istatecpuwidget.ui" line="47"/>
         <location filename="../cmake-build-debug/dde-istate-cpu/dde_istate_cpu_autogen/include/ui_istatecpuwidget.h" line="451"/>
+        <location filename="../cmake-build-debug/dde-istate-ram/dde_istate_ram_autogen/include/ui_istatecpuwidget.h" line="451"/>
         <source>CPU</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../dde-istate-widgets/istatecpuwidget.ui" line="161"/>
         <location filename="../cmake-build-debug/dde-istate-cpu/dde_istate_cpu_autogen/include/ui_istatecpuwidget.h" line="453"/>
+        <location filename="../cmake-build-debug/dde-istate-ram/dde_istate_ram_autogen/include/ui_istatecpuwidget.h" line="453"/>
         <source>User</source>
         <translation type="unfinished"></translation>
     </message>
@@ -51,24 +54,30 @@
         <location filename="../cmake-build-debug/dde-istate-cpu/dde_istate_cpu_autogen/include/ui_istatecpuwidget.h" line="454"/>
         <location filename="../cmake-build-debug/dde-istate-cpu/dde_istate_cpu_autogen/include/ui_istatecpuwidget.h" line="457"/>
         <location filename="../cmake-build-debug/dde-istate-cpu/dde_istate_cpu_autogen/include/ui_istatecpuwidget.h" line="460"/>
+        <location filename="../cmake-build-debug/dde-istate-ram/dde_istate_ram_autogen/include/ui_istatecpuwidget.h" line="454"/>
+        <location filename="../cmake-build-debug/dde-istate-ram/dde_istate_ram_autogen/include/ui_istatecpuwidget.h" line="457"/>
+        <location filename="../cmake-build-debug/dde-istate-ram/dde_istate_ram_autogen/include/ui_istatecpuwidget.h" line="460"/>
         <source>90%</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../dde-istate-widgets/istatecpuwidget.ui" line="230"/>
         <location filename="../cmake-build-debug/dde-istate-cpu/dde_istate_cpu_autogen/include/ui_istatecpuwidget.h" line="456"/>
+        <location filename="../cmake-build-debug/dde-istate-ram/dde_istate_ram_autogen/include/ui_istatecpuwidget.h" line="456"/>
         <source>System</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../dde-istate-widgets/istatecpuwidget.ui" line="299"/>
         <location filename="../cmake-build-debug/dde-istate-cpu/dde_istate_cpu_autogen/include/ui_istatecpuwidget.h" line="459"/>
+        <location filename="../cmake-build-debug/dde-istate-ram/dde_istate_ram_autogen/include/ui_istatecpuwidget.h" line="459"/>
         <source>Idle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../dde-istate-widgets/istatecpuwidget.ui" line="341"/>
         <location filename="../cmake-build-debug/dde-istate-cpu/dde_istate_cpu_autogen/include/ui_istatecpuwidget.h" line="461"/>
+        <location filename="../cmake-build-debug/dde-istate-ram/dde_istate_ram_autogen/include/ui_istatecpuwidget.h" line="461"/>
         <source>PROCESSES</source>
         <translation type="unfinished"></translation>
     </message>
@@ -83,30 +92,39 @@
         <location filename="../cmake-build-debug/dde-istate-cpu/dde_istate_cpu_autogen/include/ui_istatecpuwidget.h" line="474"/>
         <location filename="../cmake-build-debug/dde-istate-cpu/dde_istate_cpu_autogen/include/ui_istatecpuwidget.h" line="475"/>
         <location filename="../cmake-build-debug/dde-istate-cpu/dde_istate_cpu_autogen/include/ui_istatecpuwidget.h" line="476"/>
+        <location filename="../cmake-build-debug/dde-istate-ram/dde_istate_ram_autogen/include/ui_istatecpuwidget.h" line="472"/>
+        <location filename="../cmake-build-debug/dde-istate-ram/dde_istate_ram_autogen/include/ui_istatecpuwidget.h" line="473"/>
+        <location filename="../cmake-build-debug/dde-istate-ram/dde_istate_ram_autogen/include/ui_istatecpuwidget.h" line="474"/>
+        <location filename="../cmake-build-debug/dde-istate-ram/dde_istate_ram_autogen/include/ui_istatecpuwidget.h" line="475"/>
+        <location filename="../cmake-build-debug/dde-istate-ram/dde_istate_ram_autogen/include/ui_istatecpuwidget.h" line="476"/>
         <source>100%</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../dde-istate-widgets/istatecpuwidget.ui" line="622"/>
         <location filename="../cmake-build-debug/dde-istate-cpu/dde_istate_cpu_autogen/include/ui_istatecpuwidget.h" line="477"/>
+        <location filename="../cmake-build-debug/dde-istate-ram/dde_istate_ram_autogen/include/ui_istatecpuwidget.h" line="477"/>
         <source>LOAD AVERAGE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../dde-istate-widgets/istatecpuwidget.ui" line="662"/>
         <location filename="../cmake-build-debug/dde-istate-cpu/dde_istate_cpu_autogen/include/ui_istatecpuwidget.h" line="478"/>
+        <location filename="../cmake-build-debug/dde-istate-ram/dde_istate_ram_autogen/include/ui_istatecpuwidget.h" line="478"/>
         <source>Peak Load: 6</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../dde-istate-widgets/istatecpuwidget.ui" line="784"/>
         <location filename="../cmake-build-debug/dde-istate-cpu/dde_istate_cpu_autogen/include/ui_istatecpuwidget.h" line="485"/>
+        <location filename="../cmake-build-debug/dde-istate-ram/dde_istate_ram_autogen/include/ui_istatecpuwidget.h" line="485"/>
         <source>UPTIME</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../dde-istate-widgets/istatecpuwidget.ui" line="808"/>
         <location filename="../cmake-build-debug/dde-istate-cpu/dde_istate_cpu_autogen/include/ui_istatecpuwidget.h" line="486"/>
+        <location filename="../cmake-build-debug/dde-istate-ram/dde_istate_ram_autogen/include/ui_istatecpuwidget.h" line="486"/>
         <source>5 days, 17 hours, 33 minutes</source>
         <translation type="unfinished"></translation>
     </message>
@@ -241,6 +259,45 @@
     </message>
 </context>
 <context>
+    <name>IstateRamWidget</name>
+    <message>
+        <location filename="../dde-istate-widgets/istateramwidget.ui" line="26"/>
+        <location filename="../cmake-build-debug/dde-istate-ram/dde_istate_ram_autogen/include/ui_istateramwidget.h" line="161"/>
+        <source>Form</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../dde-istate-widgets/istateramwidget.ui" line="38"/>
+        <location filename="../cmake-build-debug/dde-istate-ram/dde_istate_ram_autogen/include/ui_istateramwidget.h" line="162"/>
+        <source>MEMORY</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../dde-istate-widgets/istateramwidget.ui" line="56"/>
+        <location filename="../cmake-build-debug/dde-istate-ram/dde_istate_ram_autogen/include/ui_istateramwidget.h" line="164"/>
+        <source>Free</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../dde-istate-widgets/istateramwidget.ui" line="82"/>
+        <location filename="../cmake-build-debug/dde-istate-ram/dde_istate_ram_autogen/include/ui_istateramwidget.h" line="166"/>
+        <source>Buffers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../dde-istate-widgets/istateramwidget.ui" line="89"/>
+        <location filename="../cmake-build-debug/dde-istate-ram/dde_istate_ram_autogen/include/ui_istateramwidget.h" line="167"/>
+        <source>Used</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../dde-istate-widgets/istateramwidget.ui" line="163"/>
+        <location filename="../cmake-build-debug/dde-istate-ram/dde_istate_ram_autogen/include/ui_istateramwidget.h" line="172"/>
+        <source>Cached</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>MainWindow</name>
     <message>
         <location filename="../dde-istate-widgets/mainwindow.ui" line="13"/>
@@ -252,8 +309,8 @@
 <context>
     <name>Process.Table</name>
     <message>
-        <location filename="../utils/stats_collector.cpp" line="686"/>
-        <location filename="../utils/stats_collector.cpp" line="695"/>
+        <location filename="../utils/stats_collector.cpp" line="691"/>
+        <location filename="../utils/stats_collector.cpp" line="700"/>
         <source>Tray</source>
         <translation type="unfinished"></translation>
     </message>

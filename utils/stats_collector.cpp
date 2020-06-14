@@ -124,6 +124,7 @@ StatsCollector::StatsCollector(QObject *parent) :
     qRegisterMetaType<QHash<QString, DesktopEntry>>("DesktopEntryCache");
     qRegisterMetaType<cpu_usage>("CpuUsage");
     qRegisterMetaType<QList<cpu_usage>>("CpuUsageList");
+    qRegisterMetaType<mem_stat>("MemStat");
 
     m_cpuStat[kLastStat] = CPUStat(new cpu_stat {});
     m_cpuStat[kCurrentStat] = CPUStat(new cpu_stat {});
@@ -344,13 +345,17 @@ void StatsCollector::updateStatus()
                 memStat->mem_total_kb - memStat->mem_avail_kb,
                 memStat->mem_total_kb,
                 memStat->swap_total_kb - memStat->swap_free_kb,
-                memStat->swap_total_kb);
+                memStat->swap_total_kb,
+                *memStat
+            );
         } else {
             Q_EMIT memStatInfoUpdated(
                 memStat->mem_total_kb - memStat->mem_avail_kb,
                 memStat->mem_total_kb,
                 0,
-                0);
+                0,
+                *memStat
+            );
         }
     }
 
