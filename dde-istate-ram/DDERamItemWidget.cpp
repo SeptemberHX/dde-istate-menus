@@ -33,6 +33,9 @@ void DDERamItemWidget::paintEvent(QPaintEvent *event) {
 }
 
 void DDERamItemWidget::setPercent(qreal percent) {
+    if (qAbs(percent / 100 * this->maxValue - this->percent / 100 * this->maxValue) < 1) {  // abandon
+        return;
+    }
     DDERamItemWidget::percent = percent;
     this->repaint();
 }
