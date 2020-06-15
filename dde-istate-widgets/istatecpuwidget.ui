@@ -6,19 +6,19 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>350</width>
-    <height>580</height>
+    <width>320</width>
+    <height>654</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>350</width>
+    <width>320</width>
     <height>0</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>350</width>
+    <width>320</width>
     <height>16777215</height>
    </size>
   </property>
@@ -27,19 +27,19 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
-    <number>0</number>
+    <number>5</number>
    </property>
    <property name="leftMargin">
-    <number>8</number>
+    <number>0</number>
    </property>
    <property name="topMargin">
-    <number>8</number>
+    <number>0</number>
    </property>
    <property name="rightMargin">
-    <number>8</number>
+    <number>0</number>
    </property>
    <property name="bottomMargin">
-    <number>8</number>
+    <number>0</number>
    </property>
    <item>
     <widget class="QGroupBox" name="cpuGroupBox">
@@ -51,19 +51,19 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <property name="spacing">
-       <number>0</number>
+       <number>5</number>
       </property>
       <property name="leftMargin">
-       <number>0</number>
+       <number>8</number>
       </property>
       <property name="topMargin">
-       <number>0</number>
+       <number>8</number>
       </property>
       <property name="rightMargin">
-       <number>0</number>
+       <number>8</number>
       </property>
       <property name="bottomMargin">
-       <number>5</number>
+       <number>8</number>
       </property>
       <item>
        <widget class="QWidget" name="cpuPlotWidget" native="true">
@@ -103,13 +103,13 @@
           <widget class="QChartView" name="cpuBarChartView" native="true">
            <property name="minimumSize">
             <size>
-             <width>90</width>
+             <width>80</width>
              <height>100</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>90</width>
+             <width>80</width>
              <height>100</height>
             </size>
            </property>
@@ -330,6 +330,12 @@
    </item>
    <item>
     <widget class="Line" name="line">
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>2</height>
+      </size>
+     </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
@@ -345,19 +351,19 @@
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <property name="leftMargin">
-       <number>0</number>
+       <number>8</number>
       </property>
       <property name="topMargin">
-       <number>0</number>
+       <number>8</number>
       </property>
       <property name="rightMargin">
-       <number>0</number>
+       <number>8</number>
       </property>
       <property name="bottomMargin">
-       <number>5</number>
+       <number>8</number>
       </property>
       <property name="spacing">
-       <number>0</number>
+       <number>5</number>
       </property>
       <item row="2" column="0">
        <layout class="QGridLayout" name="processGridLayout">
@@ -611,6 +617,12 @@
    </item>
    <item>
     <widget class="Line" name="line_2">
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>2</height>
+      </size>
+     </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
@@ -629,16 +641,16 @@
        <number>0</number>
       </property>
       <property name="leftMargin">
-       <number>0</number>
+       <number>8</number>
       </property>
       <property name="topMargin">
-       <number>0</number>
+       <number>8</number>
       </property>
       <property name="rightMargin">
-       <number>0</number>
+       <number>8</number>
       </property>
       <property name="bottomMargin">
-       <number>5</number>
+       <number>8</number>
       </property>
       <item>
        <widget class="QChartView" name="loadChartView" native="true">
@@ -767,6 +779,12 @@
    </item>
    <item>
     <widget class="Line" name="line_3">
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>2</height>
+      </size>
+     </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
@@ -788,19 +806,19 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <property name="spacing">
-       <number>0</number>
+       <number>5</number>
       </property>
       <property name="leftMargin">
-       <number>0</number>
+       <number>8</number>
       </property>
       <property name="topMargin">
-       <number>0</number>
+       <number>8</number>
       </property>
       <property name="rightMargin">
-       <number>0</number>
+       <number>8</number>
       </property>
       <property name="bottomMargin">
-       <number>0</number>
+       <number>8</number>
       </property>
       <item>
        <widget class="QLabel" name="uptimeLabel">

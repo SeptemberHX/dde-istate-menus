@@ -56,7 +56,7 @@ void DDEIstateMenuPlugin::init(PluginProxyInterface *proxyInter) {
     if (!pluginIsDisable()) {
 //        this->m_proxyInter->itemAdded(this, this->pluginName());
         this->m_proxyInter->itemAdded(this->netspeedPlugin, this->netspeedPlugin->pluginName());
-//        this->m_proxyInter->itemAdded(this->datetimePlugin, this->datetimePlugin->pluginName());
+        this->m_proxyInter->itemAdded(this->datetimePlugin, this->datetimePlugin->pluginName());
         this->m_proxyInter->itemAdded(this->cpuPlugin, this->cpuPlugin->pluginName());
         this->m_proxyInter->itemAdded(this->ramPlugin, this->ramPlugin->pluginName());
     }
@@ -73,13 +73,13 @@ bool DDEIstateMenuPlugin::pluginIsDisable() {
 void DDEIstateMenuPlugin::pluginStateSwitched() {
     m_proxyInter->saveValue(this, PLUGIN_STATE_KEY, pluginIsDisable());
     m_proxyInter->saveValue(this->netspeedPlugin, PLUGIN_STATE_KEY, pluginIsDisable());
-//    m_proxyInter->saveValue(this->datetimePlugin, PLUGIN_STATE_KEY, pluginIsDisable());
+    m_proxyInter->saveValue(this->datetimePlugin, PLUGIN_STATE_KEY, pluginIsDisable());
     m_proxyInter->saveValue(this->cpuPlugin, PLUGIN_STATE_KEY, pluginIsDisable());
     m_proxyInter->saveValue(this->ramPlugin, PLUGIN_STATE_KEY, pluginIsDisable());
 
     if (pluginIsDisable()) {
 //        m_proxyInter->itemRemoved(this, pluginName());
-//        m_proxyInter->itemRemoved(this->datetimePlugin, this->datetimePlugin->pluginName());
+        m_proxyInter->itemRemoved(this->datetimePlugin, this->datetimePlugin->pluginName());
         m_proxyInter->itemRemoved(this->netspeedPlugin, this->netspeedPlugin->pluginName());
         m_proxyInter->itemRemoved(this->cpuPlugin, this->cpuPlugin->pluginName());
         m_proxyInter->itemRemoved(this->ramPlugin, this->ramPlugin->pluginName());
@@ -88,7 +88,7 @@ void DDEIstateMenuPlugin::pluginStateSwitched() {
 
 //    m_proxyInter->itemAdded(this, pluginName());
     this->m_proxyInter->itemAdded(this->netspeedPlugin, this->netspeedPlugin->pluginName());
-//    this->m_proxyInter->itemAdded(this->datetimePlugin, this->datetimePlugin->pluginName());
+    this->m_proxyInter->itemAdded(this->datetimePlugin, this->datetimePlugin->pluginName());
     this->m_proxyInter->itemAdded(this->cpuPlugin, this->cpuPlugin->pluginName());
     this->m_proxyInter->itemAdded(this->ramPlugin, this->ramPlugin->pluginName());
 }
@@ -100,7 +100,7 @@ const QString DDEIstateMenuPlugin::pluginDisplayName() const {
 void DDEIstateMenuPlugin::pluginSettingsChanged() {
     if (pluginIsDisable()) {
 //        m_proxyInter->itemRemoved(this, pluginName());
-//        m_proxyInter->itemRemoved(this->datetimePlugin, this->datetimePlugin->pluginName());
+        m_proxyInter->itemRemoved(this->datetimePlugin, this->datetimePlugin->pluginName());
         m_proxyInter->itemRemoved(this->netspeedPlugin, this->netspeedPlugin->pluginName());
         m_proxyInter->itemRemoved(this->cpuPlugin, this->cpuPlugin->pluginName());
         m_proxyInter->itemRemoved(this->ramPlugin, this->ramPlugin->pluginName());
@@ -108,7 +108,7 @@ void DDEIstateMenuPlugin::pluginSettingsChanged() {
     }
 
 //    m_proxyInter->itemAdded(this, pluginName());
-//    this->m_proxyInter->itemAdded(this->datetimePlugin, this->datetimePlugin->pluginName());
+    this->m_proxyInter->itemAdded(this->datetimePlugin, this->datetimePlugin->pluginName());
     this->m_proxyInter->itemAdded(this->netspeedPlugin, this->netspeedPlugin->pluginName());
     this->m_proxyInter->itemAdded(this->cpuPlugin, this->cpuPlugin->pluginName());
     this->m_proxyInter->itemAdded(this->ramPlugin, this->ramPlugin->pluginName());
