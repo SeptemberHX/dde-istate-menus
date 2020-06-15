@@ -21,6 +21,10 @@ IStat menus on macOS alternative for DDE.
         * [x] chart
         * [ ] text
 * [ ] RAM
+    * [x] popup widget
+    * [ ] dock widget
+        * [x] chart
+        * [ ] text
 * [ ] DISK
 * [ ] Datetime
     * [x] dock widget (main code comes from the original datetime plugin in dde-dock)
@@ -41,6 +45,16 @@ dock-chart:
 popup widget:
 
 <img src="./screenshots/cpu_popup_widget.png" width="400px" />
+
+#### RAM
+
+dock-chart:
+
+![](./screenshots/ram_dock_chart.png)
+
+popup widget:
+
+<img src="./screenshots/ram_popup_widget.png" width="400px" />
 
 #### Network
 
