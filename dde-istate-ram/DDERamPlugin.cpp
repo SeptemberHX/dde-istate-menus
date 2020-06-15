@@ -28,6 +28,20 @@ void DDERamPlugin::init(PluginProxyInterface *proxyInter) {
 void DDERamPlugin::updateRamInfo(qreal usedPercent, mem_stat memStat) {
     this->m_pluginWidget->setPercent(usedPercent);
     this->m_popupWidget->updateMemStat(memStat);
+
+    if (memStat.swap_total_kb == 0) {
+        this->m_tipWidget->setText(QString("RAM: %1/%2")
+            .arg(this->engLocale.formattedDataSize(memStat.mem_total_kb * (usedPercent / 100) * 1024, 2, QLocale::DataSizeTraditionalFormat))
+            .arg(this->engLocale.formattedDataSize(memStat.mem_total_kb * 1024, 2, QLocale::DataSizeTraditionalFormat))
+        );
+    } else {
+        this->m_tipWidget->setText(QString(" RAM: %1/%2\nSWAP: %3/%4")
+           .arg(this->engLocale.formattedDataSize(memStat.mem_total_kb * (usedPercent / 100) * 1024, 2, QLocale::DataSizeTraditionalFormat))
+           .arg(this->engLocale.formattedDataSize(memStat.mem_total_kb * 1024, 2, QLocale::DataSizeTraditionalFormat))
+           .arg(this->engLocale.formattedDataSize((memStat.swap_total_kb - memStat.swap_free_kb) * 1024, 2, QLocale::DataSizeTraditionalFormat))
+           .arg(this->engLocale.formattedDataSize(memStat.swap_total_kb * 1024, 2, QLocale::DataSizeTraditionalFormat))
+        );
+    }
 }
 
 

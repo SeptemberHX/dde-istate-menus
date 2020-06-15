@@ -54,6 +54,7 @@ private:
     DDERamItemWidget *m_pluginWidget;
     QLabel *m_tipWidget;
     IstateRamWidget *m_popupWidget;
+    QLocale engLocale = QLocale(QLocale::English, QLocale::UnitedStates);
 };
 
 
