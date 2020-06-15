@@ -262,38 +262,44 @@
     <name>IstateRamWidget</name>
     <message>
         <location filename="../dde-istate-widgets/istateramwidget.ui" line="26"/>
-        <location filename="../cmake-build-debug/dde-istate-ram/dde_istate_ram_autogen/include/ui_istateramwidget.h" line="161"/>
+        <location filename="../cmake-build-debug/dde-istate-ram/dde_istate_ram_autogen/include/ui_istateramwidget.h" line="292"/>
         <source>Form</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../dde-istate-widgets/istateramwidget.ui" line="38"/>
-        <location filename="../cmake-build-debug/dde-istate-ram/dde_istate_ram_autogen/include/ui_istateramwidget.h" line="162"/>
+        <location filename="../cmake-build-debug/dde-istate-ram/dde_istate_ram_autogen/include/ui_istateramwidget.h" line="293"/>
         <source>MEMORY</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../dde-istate-widgets/istateramwidget.ui" line="56"/>
-        <location filename="../cmake-build-debug/dde-istate-ram/dde_istate_ram_autogen/include/ui_istateramwidget.h" line="164"/>
+        <location filename="../cmake-build-debug/dde-istate-ram/dde_istate_ram_autogen/include/ui_istateramwidget.h" line="295"/>
         <source>Free</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../dde-istate-widgets/istateramwidget.ui" line="82"/>
-        <location filename="../cmake-build-debug/dde-istate-ram/dde_istate_ram_autogen/include/ui_istateramwidget.h" line="166"/>
+        <location filename="../cmake-build-debug/dde-istate-ram/dde_istate_ram_autogen/include/ui_istateramwidget.h" line="297"/>
         <source>Buffers</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../dde-istate-widgets/istateramwidget.ui" line="89"/>
-        <location filename="../cmake-build-debug/dde-istate-ram/dde_istate_ram_autogen/include/ui_istateramwidget.h" line="167"/>
+        <location filename="../cmake-build-debug/dde-istate-ram/dde_istate_ram_autogen/include/ui_istateramwidget.h" line="298"/>
         <source>Used</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../dde-istate-widgets/istateramwidget.ui" line="163"/>
-        <location filename="../cmake-build-debug/dde-istate-ram/dde_istate_ram_autogen/include/ui_istateramwidget.h" line="172"/>
+        <location filename="../cmake-build-debug/dde-istate-ram/dde_istate_ram_autogen/include/ui_istateramwidget.h" line="303"/>
         <source>Cached</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../dde-istate-widgets/istateramwidget.ui" line="212"/>
+        <location filename="../cmake-build-debug/dde-istate-ram/dde_istate_ram_autogen/include/ui_istateramwidget.h" line="307"/>
+        <source>PROCESSES</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

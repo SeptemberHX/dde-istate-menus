@@ -1,5 +1,6 @@
 #include "istateramwidget.h"
 #include "ui_istateramwidget.h"
+#include <QIcon>
 
 #define RAM_USED "Used"
 #define RAM_BUFFERS "Buffers"
@@ -73,5 +74,41 @@ void IstateRamWidget::redrawRamUsage() {
 
 void IstateRamWidget::showEvent(QShowEvent *event) {
     this->redrawRamUsage();
+    this->redrawProcesses();
     QWidget::showEvent(event);
+}
+
+void IstateRamWidget::updateProcessList(QList<ProcessEntry> processEntries) {
+    std::sort(processEntries.begin(), processEntries.end(), [](ProcessEntry p1, ProcessEntry p2) {
+        return p1.getMemory() > p2.getMemory();
+    });
+    this->entries = processEntries.mid(0, 5);
+    this->redrawProcesses();
+}
+
+void IstateRamWidget::redrawProcesses() {
+    if (this->isHidden()) return;
+
+    int r;
+    for (r = 0; r < ui->processGridLayout->rowCount() && r < this->entries.size(); ++r) {
+        QLabel *label = dynamic_cast<QLabel*>(ui->processGridLayout->itemAtPosition(r, 0)->widget());
+        label->setPixmap(this->entries[r].getIcon().pixmap(label->size()));
+
+        label = dynamic_cast<QLabel*>(ui->processGridLayout->itemAtPosition(r, 1)->widget());
+        label->setText(this->entries[r].getName());
+
+        label = dynamic_cast<QLabel*>(ui->processGridLayout->itemAtPosition(r, 2)->widget());
+        label->setText(this->engLocale.formattedDataSize(this->entries[r].getMemory() * 1024, 2, QLocale::DataSizeTraditionalFormat));
+    }
+
+    for (; r < ui->processGridLayout->rowCount(); ++r) {
+        QLabel *label = dynamic_cast<QLabel*>(ui->processGridLayout->itemAtPosition(r, 0)->widget());
+        label->clear();
+
+        label = dynamic_cast<QLabel*>(ui->processGridLayout->itemAtPosition(r, 1)->widget());
+        label->clear();
+
+        label = dynamic_cast<QLabel*>(ui->processGridLayout->itemAtPosition(r, 2)->widget());
+        label->clear();
+    }
 }

@@ -32,7 +32,7 @@ void PercentColorBar::paintEvent(QPaintEvent *event) {
 
     painter.setPen(QPen(Qt::white, 1));
     painter.setBrush(Qt::NoBrush);
-    painter.drawRoundRect(event->rect(), 5, 5);
+    painter.drawRoundRect(event->rect(), 1, 1);
 }
 
 void PercentColorBar::setPercents(QMap<QString, qreal> percentMap, QMap<QString, QColor> colorMap, QList<QString> orderList) {

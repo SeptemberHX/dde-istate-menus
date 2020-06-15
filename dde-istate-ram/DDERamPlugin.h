@@ -24,6 +24,7 @@ public:
     explicit DDERamPlugin(QObject *parent = nullptr);
 
     void updateRamInfo(qreal usedPercent, mem_stat memStat);
+    void updateProcesses(QList<ProcessEntry> processEntries);
 
     // 返回插件的名称，必须是唯一值，不可以和其它插件冲突
     const QString pluginName() const override;

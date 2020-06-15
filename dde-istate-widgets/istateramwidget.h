@@ -5,6 +5,7 @@
 #include <QMap>
 #include <QLocale>
 #include "../utils/system_stat.h"
+#include "../utils/process_entry.h"
 
 namespace Ui {
 class IstateRamWidget;
@@ -19,14 +20,16 @@ public:
     ~IstateRamWidget();
 
     void updateMemStat(mem_stat memStat);
-
+    void updateProcessList(QList<ProcessEntry> processEntries);
     void initRamWidget();
-    void redrawRamUsage();
 
 protected:
     void showEvent(QShowEvent *event) override;
 
 private:
+    void redrawRamUsage();
+    void redrawProcesses();
+
     Ui::IstateRamWidget *ui;
 
     QColor memUsedColor;
@@ -39,6 +42,8 @@ private:
 
     mem_stat currMemStat;
     QLocale engLocale = QLocale(QLocale::English, QLocale::UnitedStates);
+
+    QList<ProcessEntry> entries;
 };
 
 #endif // ISTATERAMWIDGET_H

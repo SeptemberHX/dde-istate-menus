@@ -132,6 +132,7 @@ void DDEIstateMenuPlugin::updateProcessList(QList<ProcessEntry> procList) {
     if (this->netspeedPlugin != nullptr) {
         this->netspeedPlugin->updateProcesses(procList);
         this->cpuPlugin->updateProcesses(procList);
+        this->ramPlugin->updateProcesses(procList);
     }
 }
 
