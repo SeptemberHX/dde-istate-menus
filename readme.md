@@ -58,10 +58,12 @@ popup widget:
 
 #### Network
 
-![](./screenshots/network.png)
+<img src="./screenshots/network.png" width="400px" />
 
 
 ### How to use
+
+#### Deepin V20
 
 Download the `libdde_istate_menus.so` and put it to `~/.local/lib/dde-dock/plugins` or `/usr/lib/dde-dock/plugins`
 
@@ -72,3 +74,7 @@ sudo setcap cap_net_raw,cap_dac_read_search,cap_sys_ptrace+ep `which dde-dock`
 ```
 
 logout out or reboot.
+
+#### Other distributions
+
+It needs to be built from source on your own.
