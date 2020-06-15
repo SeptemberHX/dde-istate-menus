@@ -61,6 +61,10 @@ struct mem_stat {
     unsigned long long swap_cached_kb;      // SwapCached
     unsigned long long active_kb;           // Active
     unsigned long long inactive_kb;         // Inactive
+    unsigned long long active_anon_kb;
+    unsigned long long inactive_anon_kb;
+    unsigned long long active_file_kb;
+    unsigned long long inactive_file_kb;
     unsigned long long slab_kb;             // Slab
     unsigned long long swap_total_kb;       // SwapTotal
     unsigned long long swap_free_kb;        // SwapFree

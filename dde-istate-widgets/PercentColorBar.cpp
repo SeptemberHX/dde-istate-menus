@@ -30,6 +30,13 @@ void PercentColorBar::paintEvent(QPaintEvent *event) {
         x0 += width;
     }
 
+    if (x0 < event->rect().right() - 1) {
+        painter.setPen(this->defaultColor);
+        painter.setBrush(this->defaultColor);
+        qreal width = event->rect().width() - 1 - x0;
+        painter.drawRect(QRectF(x0, y0, width, height));
+    }
+
     painter.setPen(QPen(Qt::white, 1));
     painter.setBrush(Qt::NoBrush);
     painter.drawRoundRect(event->rect(), 1, 1);

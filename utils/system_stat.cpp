@@ -265,6 +265,18 @@ bool SystemStat::readMemStats(MemStat &memStat)
         } else if (!strncmp(line.data(), "SReclaimable:", 13)) {
             rc = sscanf(line.data() + 13, "%llu", &memStat->sreclaimable_kb);
             b = (rc == 1);
+        } else if (!strncmp(line.data(), "Active(anon):", 13)) {
+            rc = sscanf(line.data() + 13, "%llu", &memStat->active_anon_kb);
+            b = (rc == 1);
+        } else if (!strncmp(line.data(), "Inactive(anon):", 15)) {
+            rc = sscanf(line.data() + 15, "%llu", &memStat->inactive_anon_kb);
+            b = (rc == 1);
+        } else if (!strncmp(line.data(), "Active(file):", 13)) {
+            rc = sscanf(line.data() + 13, "%llu", &memStat->active_file_kb);
+            b = (rc == 1);
+        } else if (!strncmp(line.data(), "Inactive(file):", 15)) {
+            rc = sscanf(line.data() + 15, "%llu", &memStat->inactive_file_kb);
+            b = (rc == 1);
         }
     }
 

@@ -7,6 +7,14 @@
 #define RAM_CACHED "Cached"
 #define RAM_FREE "Free"
 
+#define SWAP_USED "SwapUsed"
+#define SWAP_FREE "SwapFree"
+
+#define ACTIVE_ANON "ActiveAnon"
+#define INACTIVE_ANON "InactiveAnon"
+#define ACTIVE_FILE "ActiveFile"
+#define INACTIVE_FILE "InactiveFile"
+
 IstateRamWidget::IstateRamWidget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::IstateRamWidget),
@@ -19,14 +27,33 @@ IstateRamWidget::IstateRamWidget(QWidget *parent) :
     this->memCachedColor = QColor("#825ACA");
     this->memFreeColor = QColor("#122534");
 
+    this->swapUsedColor = this->memUsedColor;
+    this->swapFreeColor = this->memFreeColor;
+
+    this->activeAnonColor = this->memUsedColor;
+    this->inactiveAnonColor = this->memFreeColor;
+    this->activeFileColor = this->memCachedColor;
+    this->inactiveFileColor = QColor("#404244");
+
     this->ramColorMap.insert(RAM_USED, this->memUsedColor);
     this->ramColorMap.insert(RAM_BUFFERS, this->memBuffersColor);
     this->ramColorMap.insert(RAM_CACHED, this->memCachedColor);
     this->ramColorMap.insert(RAM_FREE, this->memFreeColor);
 
+    this->swapColorMap.insert(SWAP_USED, this->swapUsedColor);
+    this->swapColorMap.insert(SWAP_FREE, this->swapFreeColor);
+
+    this->activeColorMap.insert(ACTIVE_ANON, this->activeAnonColor);
+    this->activeColorMap.insert(INACTIVE_ANON, this->inactiveAnonColor);
+    this->activeColorMap.insert(ACTIVE_FILE, this->activeFileColor);
+    this->activeColorMap.insert(INACTIVE_FILE, this->inactiveFileColor);
+
     this->ramItemList << RAM_USED << RAM_BUFFERS << RAM_CACHED << RAM_FREE;
+    this->swapItemList << SWAP_USED << SWAP_FREE;
+    this->activeItemList << ACTIVE_ANON << INACTIVE_ANON << ACTIVE_FILE << INACTIVE_FILE;
 
     this->initRamWidget();
+    this->initActiveWidget();
 }
 
 IstateRamWidget::~IstateRamWidget()
@@ -44,6 +71,8 @@ void IstateRamWidget::initRamWidget() {
 void IstateRamWidget::updateMemStat(mem_stat memStat) {
     this->currMemStat = memStat;
     this->redrawRamUsage();
+    this->redrawSwapUsage();
+    this->redrawActiveUsage();
 }
 
 void IstateRamWidget::redrawRamUsage() {
@@ -75,6 +104,8 @@ void IstateRamWidget::redrawRamUsage() {
 void IstateRamWidget::showEvent(QShowEvent *event) {
     this->redrawRamUsage();
     this->redrawProcesses();
+    this->redrawRamUsage();
+    this->redrawActiveUsage();
     QWidget::showEvent(event);
 }
 
@@ -111,4 +142,52 @@ void IstateRamWidget::redrawProcesses() {
         label = dynamic_cast<QLabel*>(ui->processGridLayout->itemAtPosition(r, 2)->widget());
         label->clear();
     }
+}
+
+void IstateRamWidget::redrawSwapUsage() {
+    if (this->isHidden()) return;
+
+    qulonglong swapFree = this->currMemStat.swap_free_kb;
+    qulonglong swapTotal = this->currMemStat.swap_total_kb;
+    qulonglong swapUsed = swapTotal - swapFree;
+
+    QMap<QString, qreal> percentMap;
+    percentMap.insert(SWAP_USED, swapTotal ? swapUsed * 100.0 / swapTotal : 0);
+    percentMap.insert(SWAP_FREE, swapTotal ? swapFree * 100.0 / swapTotal : 0);
+    ui->swapBarLabel->setPercents(percentMap, this->swapColorMap, this->swapItemList);
+
+    ui->swapLabel->setText(QString("%1 of %2")
+        .arg(this->engLocale.formattedDataSize(swapUsed * 1024, 2, QLocale::DataSizeTraditionalFormat))
+        .arg(this->engLocale.formattedDataSize(swapTotal * 1024, 2, QLocale::DataSizeTraditionalFormat))
+    );
+}
+
+void IstateRamWidget::initActiveWidget() {
+    ui->activeAnonColorLabel->setStyleSheet(QString("QLabel { background-color: %1; }").arg(this->activeAnonColor.name()));
+    ui->inactiveAnonColorLabel->setStyleSheet(QString("QLabel { background-color: %1; }").arg(this->inactiveAnonColor.name()));
+    ui->activeFileColorLabel->setStyleSheet(QString("QLabel { background-color: %1; }").arg(this->activeFileColor.name()));
+    ui->inactiveFileColorLabel->setStyleSheet(QString("QLabel { background-color: %1; }").arg(this->inactiveFileColor.name()));
+}
+
+void IstateRamWidget::redrawActiveUsage() {
+    if (this->isHidden()) return;
+
+    qulonglong activeTotal = this->currMemStat.active_kb;
+    qulonglong inactiveTotal = this->currMemStat.inactive_kb;
+    qulonglong total = activeTotal + inactiveTotal;
+    qulonglong activeAnon = this->currMemStat.active_anon_kb;
+    qulonglong inactiveAnon = this->currMemStat.inactive_anon_kb;
+    qulonglong activeFile = this->currMemStat.active_file_kb;
+    qulonglong inactiveFile = this->currMemStat.inactive_file_kb;
+
+    QMap<QString, qreal> percentMap;
+    percentMap.insert(ACTIVE_ANON, total ? activeAnon * 100.0 / total : 0);
+    percentMap.insert(INACTIVE_ANON, total ? inactiveAnon * 100.0 / total : 0);
+    percentMap.insert(ACTIVE_FILE, total ? activeFile * 100.0 / total : 0);
+    percentMap.insert(INACTIVE_FILE, total ? inactiveFile * 100.0 / total : 0);
+    ui->activeBarLabel->setPercents(percentMap, this->activeColorMap, this->activeItemList);
+    ui->activeAnonLabel->setText(this->engLocale.formattedDataSize(activeAnon * 1024, 2, QLocale::DataSizeTraditionalFormat));
+    ui->inactiveAnonLabel->setText(this->engLocale.formattedDataSize(inactiveAnon * 1024, 2, QLocale::DataSizeTraditionalFormat));
+    ui->activeFileLabel->setText(this->engLocale.formattedDataSize(activeFile * 1024, 2, QLocale::DataSizeTraditionalFormat));
+    ui->inactiveFileLabel->setText(this->engLocale.formattedDataSize(inactiveFile * 1024, 2, QLocale::DataSizeTraditionalFormat));
 }
