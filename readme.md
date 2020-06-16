@@ -78,3 +78,15 @@ logout out or reboot.
 #### Other distributions
 
 It needs to be built from source on your own.
+
+```shell
+git clone https://github.com/SeptemberHX/dde-istate-menus.git
+cd dde-istate-menus
+cd nethogs
+make
+cd ..
+mkdir build
+cd build
+cmake ..
+make
+```
