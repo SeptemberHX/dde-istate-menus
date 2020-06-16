@@ -46,10 +46,10 @@
 #include <QtDBus>
 #include <QtMath>
 #include <QtX11Extras/QX11Info>
+#include <QPainterPath>
 
 #include <X11/extensions/shape.h>
 
-#include "hashqstring.h"
 #include "utils.h"
 
 DCORE_USE_NAMESPACE

@@ -27,6 +27,7 @@
 #include <QTimer>
 #include <QHash>
 #include <QThread>
+#include <QUrl>
 
 #include "system_stat.h"
 #include "process_stat.h"

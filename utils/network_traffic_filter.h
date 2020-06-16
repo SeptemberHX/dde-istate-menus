@@ -24,7 +24,7 @@
 #ifndef NETWORKTRAFFICFILTER_H
 #define NETWORKTRAFFICFILTER_H
 
-#include "../nethogs/src/libnethogs.h"
+#include "nethogs/src/libnethogs.h"
 #include <map>
 #include <mutex>
 

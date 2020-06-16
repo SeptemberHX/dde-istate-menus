@@ -23,6 +23,7 @@
 #include <QPixmap>
 #include <QDateTime>
 #include <DApplication>
+#include <QUrl>
 
 #include "stats_collector.h"
 #include "process_entry.h"

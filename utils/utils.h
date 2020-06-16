@@ -34,6 +34,7 @@
 #include "find_window_title.h"
 #include "hashqstring.h"
 #include <QDebug>
+#include <QPainterPath>
 
 #include <QVariant>
 
