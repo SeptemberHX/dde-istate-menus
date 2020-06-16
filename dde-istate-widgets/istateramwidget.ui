@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>320</width>
-    <height>588</height>
+    <height>555</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -47,18 +47,21 @@
       <set>Qt::AlignCenter</set>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
+      <property name="spacing">
+       <number>1</number>
+      </property>
       <item>
        <widget class="PercentColorBar" name="ramColorProBar">
         <property name="minimumSize">
          <size>
           <width>0</width>
-          <height>24</height>
+          <height>16</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
           <width>16777215</width>
-          <height>24</height>
+          <height>16</height>
          </size>
         </property>
         <property name="text">
@@ -82,14 +85,14 @@
          <widget class="QLabel" name="ramUsedColorLabel">
           <property name="minimumSize">
            <size>
-            <width>16</width>
-            <height>16</height>
+            <width>12</width>
+            <height>12</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>16</width>
-            <height>16</height>
+            <width>12</width>
+            <height>12</height>
            </size>
           </property>
           <property name="text">
@@ -115,14 +118,14 @@
          <widget class="QLabel" name="ramCachedColorLabel">
           <property name="minimumSize">
            <size>
-            <width>16</width>
-            <height>16</height>
+            <width>12</width>
+            <height>12</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>16</width>
-            <height>16</height>
+            <width>12</width>
+            <height>12</height>
            </size>
           </property>
           <property name="text">
@@ -134,14 +137,14 @@
          <widget class="QLabel" name="ramFreeColorLabel">
           <property name="minimumSize">
            <size>
-            <width>16</width>
-            <height>16</height>
+            <width>12</width>
+            <height>12</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>16</width>
-            <height>16</height>
+            <width>12</width>
+            <height>12</height>
            </size>
           </property>
           <property name="text">
@@ -153,14 +156,14 @@
          <widget class="QLabel" name="ramBuffersColorLabel">
           <property name="minimumSize">
            <size>
-            <width>16</width>
-            <height>16</height>
+            <width>12</width>
+            <height>12</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>16</width>
-            <height>16</height>
+            <width>12</width>
+            <height>12</height>
            </size>
           </property>
           <property name="text">
@@ -251,6 +254,9 @@
       <set>Qt::AlignCenter</set>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
+      <property name="spacing">
+       <number>1</number>
+      </property>
       <item>
        <layout class="QGridLayout" name="processGridLayout">
         <property name="verticalSpacing">
@@ -532,18 +538,21 @@
       <set>Qt::AlignCenter</set>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_5">
+      <property name="spacing">
+       <number>1</number>
+      </property>
       <item>
        <widget class="PercentColorBar" name="activeBarLabel">
         <property name="minimumSize">
          <size>
           <width>0</width>
-          <height>24</height>
+          <height>16</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
           <width>16777215</width>
-          <height>24</height>
+          <height>16</height>
          </size>
         </property>
         <property name="text">
@@ -574,14 +583,14 @@
          <widget class="QLabel" name="activeFileColorLabel">
           <property name="minimumSize">
            <size>
-            <width>16</width>
-            <height>16</height>
+            <width>12</width>
+            <height>12</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>16</width>
-            <height>16</height>
+            <width>12</width>
+            <height>12</height>
            </size>
           </property>
           <property name="text">
@@ -593,14 +602,14 @@
          <widget class="QLabel" name="inactiveAnonColorLabel">
           <property name="minimumSize">
            <size>
-            <width>16</width>
-            <height>16</height>
+            <width>12</width>
+            <height>12</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>16</width>
-            <height>16</height>
+            <width>12</width>
+            <height>12</height>
            </size>
           </property>
           <property name="text">
@@ -612,14 +621,14 @@
          <widget class="QLabel" name="activeAnonColorLabel">
           <property name="minimumSize">
            <size>
-            <width>16</width>
-            <height>16</height>
+            <width>12</width>
+            <height>12</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>16</width>
-            <height>16</height>
+            <width>12</width>
+            <height>12</height>
            </size>
           </property>
           <property name="text">
@@ -638,14 +647,14 @@
          <widget class="QLabel" name="inactiveFileColorLabel">
           <property name="minimumSize">
            <size>
-            <width>16</width>
-            <height>16</height>
+            <width>12</width>
+            <height>12</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>16</width>
-            <height>16</height>
+            <width>12</width>
+            <height>12</height>
            </size>
           </property>
           <property name="text">
@@ -736,18 +745,21 @@
       <set>Qt::AlignCenter</set>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_4">
+      <property name="spacing">
+       <number>1</number>
+      </property>
       <item>
        <widget class="PercentColorBar" name="swapBarLabel">
         <property name="minimumSize">
          <size>
           <width>0</width>
-          <height>24</height>
+          <height>16</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
           <width>16777215</width>
-          <height>24</height>
+          <height>16</height>
          </size>
         </property>
         <property name="text">
