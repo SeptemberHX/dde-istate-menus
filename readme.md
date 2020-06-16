@@ -83,7 +83,7 @@ It needs to be built from source on your own.
 git clone https://github.com/SeptemberHX/dde-istate-menus.git
 cd dde-istate-menus
 cd nethogs
-make
+make libnethogs
 cd ..
 mkdir build
 cd build
