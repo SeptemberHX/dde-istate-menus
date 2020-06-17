@@ -32,7 +32,10 @@
 #include <QString>
 #include <unordered_set>
 #include "find_window_title.h"
+#include <QtGlobal>
+#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
 #include "hashqstring.h"
+#endif
 #include <QDebug>
 #include <QPainterPath>
 

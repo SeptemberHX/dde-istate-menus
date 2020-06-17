@@ -5,3 +5,4 @@ binary
 .idea
 *.o
 *.a
+*.so.
