@@ -125,10 +125,10 @@ void IstateRamWidget::redrawProcesses() {
         QLabel *label = dynamic_cast<QLabel*>(ui->processGridLayout->itemAtPosition(r, 0)->widget());
         label->setPixmap(this->entries[r].getIcon().pixmap(label->size()));
 
-        label = dynamic_cast<QLabel*>(ui->processGridLayout->itemAtPosition(r, 1)->widget());
+        label = dynamic_cast<QLabel*>(ui->processGridLayout->itemAtPosition(r, 2)->widget());
         label->setText(this->entries[r].getName());
 
-        label = dynamic_cast<QLabel*>(ui->processGridLayout->itemAtPosition(r, 2)->widget());
+        label = dynamic_cast<QLabel*>(ui->processGridLayout->itemAtPosition(r, 3)->widget());
         label->setText(this->engLocale.formattedDataSize(this->entries[r].getMemory() * 1024, 2, QLocale::DataSizeTraditionalFormat));
     }
 
@@ -136,10 +136,10 @@ void IstateRamWidget::redrawProcesses() {
         QLabel *label = dynamic_cast<QLabel*>(ui->processGridLayout->itemAtPosition(r, 0)->widget());
         label->clear();
 
-        label = dynamic_cast<QLabel*>(ui->processGridLayout->itemAtPosition(r, 1)->widget());
+        label = dynamic_cast<QLabel*>(ui->processGridLayout->itemAtPosition(r, 2)->widget());
         label->clear();
 
-        label = dynamic_cast<QLabel*>(ui->processGridLayout->itemAtPosition(r, 2)->widget());
+        label = dynamic_cast<QLabel*>(ui->processGridLayout->itemAtPosition(r, 3)->widget());
         label->clear();
     }
 }

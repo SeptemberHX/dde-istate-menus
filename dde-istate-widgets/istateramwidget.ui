@@ -74,7 +74,7 @@
         <property name="verticalSpacing">
          <number>0</number>
         </property>
-        <item row="3" column="1">
+        <item row="3" column="2">
          <widget class="QLabel" name="label_9">
           <property name="text">
            <string>Free</string>
@@ -100,14 +100,14 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="1">
+        <item row="1" column="2">
          <widget class="QLabel" name="label_7">
           <property name="text">
            <string>Buffers</string>
           </property>
          </widget>
         </item>
-        <item row="0" column="1">
+        <item row="0" column="2">
          <widget class="QLabel" name="label_6">
           <property name="text">
            <string>Used</string>
@@ -171,7 +171,7 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="2">
+        <item row="0" column="3">
          <widget class="QLabel" name="ramUsedLabel">
           <property name="text">
            <string/>
@@ -181,14 +181,14 @@
           </property>
          </widget>
         </item>
-        <item row="2" column="1">
+        <item row="2" column="2">
          <widget class="QLabel" name="label_8">
           <property name="text">
            <string>Cached</string>
           </property>
          </widget>
         </item>
-        <item row="1" column="2">
+        <item row="1" column="3">
          <widget class="QLabel" name="ramBuffersLabel">
           <property name="text">
            <string/>
@@ -198,7 +198,7 @@
           </property>
          </widget>
         </item>
-        <item row="2" column="2">
+        <item row="2" column="3">
          <widget class="QLabel" name="ramCachedLabel">
           <property name="text">
            <string/>
@@ -208,7 +208,7 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="2">
+        <item row="3" column="3">
          <widget class="QLabel" name="ramFreeLabel">
           <property name="text">
            <string/>
@@ -217,6 +217,22 @@
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
          </widget>
+        </item>
+        <item row="0" column="1">
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Fixed</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>4</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
         </item>
        </layout>
       </item>
@@ -259,6 +275,9 @@
       </property>
       <item>
        <layout class="QGridLayout" name="processGridLayout">
+        <property name="horizontalSpacing">
+         <number>1</number>
+        </property>
         <property name="verticalSpacing">
          <number>0</number>
         </property>
@@ -338,14 +357,14 @@
           </property>
          </widget>
         </item>
-        <item row="2" column="1">
+        <item row="2" column="2">
          <widget class="QLabel" name="label_12">
           <property name="text">
            <string/>
           </property>
          </widget>
         </item>
-        <item row="3" column="1">
+        <item row="3" column="2">
          <widget class="QLabel" name="label_13">
           <property name="text">
            <string/>
@@ -371,28 +390,28 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="1">
+        <item row="1" column="2">
          <widget class="QLabel" name="label_11">
           <property name="text">
            <string/>
           </property>
          </widget>
         </item>
-        <item row="0" column="1">
+        <item row="0" column="2">
          <widget class="QLabel" name="label_10">
           <property name="text">
            <string/>
           </property>
          </widget>
         </item>
-        <item row="4" column="1">
+        <item row="4" column="2">
          <widget class="QLabel" name="label_14">
           <property name="text">
            <string/>
           </property>
          </widget>
         </item>
-        <item row="0" column="2">
+        <item row="0" column="3">
          <widget class="QLabel" name="label_15">
           <property name="minimumSize">
            <size>
@@ -414,7 +433,7 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="2">
+        <item row="1" column="3">
          <widget class="QLabel" name="label_16">
           <property name="minimumSize">
            <size>
@@ -436,7 +455,7 @@
           </property>
          </widget>
         </item>
-        <item row="2" column="2">
+        <item row="2" column="3">
          <widget class="QLabel" name="label_17">
           <property name="minimumSize">
            <size>
@@ -458,7 +477,7 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="2">
+        <item row="3" column="3">
          <widget class="QLabel" name="label_18">
           <property name="minimumSize">
            <size>
@@ -480,7 +499,7 @@
           </property>
          </widget>
         </item>
-        <item row="4" column="2">
+        <item row="4" column="3">
          <widget class="QLabel" name="label_19">
           <property name="minimumSize">
            <size>
@@ -501,6 +520,22 @@
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
          </widget>
+        </item>
+        <item row="0" column="1">
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Fixed</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>4</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
         </item>
        </layout>
       </item>
@@ -565,14 +600,14 @@
         <property name="verticalSpacing">
          <number>0</number>
         </property>
-        <item row="0" column="1">
+        <item row="0" column="2">
          <widget class="QLabel" name="label_24">
           <property name="text">
            <string>Active(anon)</string>
           </property>
          </widget>
         </item>
-        <item row="1" column="1">
+        <item row="1" column="2">
          <widget class="QLabel" name="label_26">
           <property name="text">
            <string>Inactive(anon)</string>
@@ -636,7 +671,7 @@
           </property>
          </widget>
         </item>
-        <item row="2" column="1">
+        <item row="2" column="2">
          <widget class="QLabel" name="label_25">
           <property name="text">
            <string>Active(file)</string>
@@ -662,14 +697,14 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="1">
+        <item row="3" column="2">
          <widget class="QLabel" name="label_27">
           <property name="text">
            <string>Inactive(file)</string>
           </property>
          </widget>
         </item>
-        <item row="0" column="2">
+        <item row="0" column="3">
          <widget class="QLabel" name="activeAnonLabel">
           <property name="text">
            <string/>
@@ -679,7 +714,7 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="2">
+        <item row="1" column="3">
          <widget class="QLabel" name="inactiveAnonLabel">
           <property name="text">
            <string/>
@@ -689,7 +724,7 @@
           </property>
          </widget>
         </item>
-        <item row="2" column="2">
+        <item row="2" column="3">
          <widget class="QLabel" name="activeFileLabel">
           <property name="text">
            <string/>
@@ -699,7 +734,7 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="2">
+        <item row="3" column="3">
          <widget class="QLabel" name="inactiveFileLabel">
           <property name="text">
            <string/>
@@ -708,6 +743,22 @@
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
          </widget>
+        </item>
+        <item row="0" column="1">
+         <spacer name="horizontalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Fixed</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>4</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
         </item>
        </layout>
       </item>
