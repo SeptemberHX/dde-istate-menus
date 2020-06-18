@@ -65,6 +65,10 @@ popup widget:
 
 #### Deepin V20
 
+```shell
+sudo apt install libqt5charts5
+```
+
 Download the `libdde_istate_menus.so` and put it to `~/.local/lib/dde-dock/plugins` or `/usr/lib/dde-dock/plugins`
 
 Then:
