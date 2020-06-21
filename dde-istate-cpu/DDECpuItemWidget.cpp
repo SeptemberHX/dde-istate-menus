@@ -3,6 +3,7 @@
 //
 
 #include "DDECpuItemWidget.h"
+#include <QtSvg/QSvgRenderer>
 
 DDECpuItemWidget::DDECpuItemWidget(QWidget *parent)
     : QWidget(parent)
@@ -16,12 +17,16 @@ DDECpuItemWidget::DDECpuItemWidget(QWidget *parent)
     this->m_layout->addWidget(this->m_plotWidget);
 
     this->m_layout->setContentsMargins(0, 0, 0, 0);
-    this->m_layout->setSpacing(0);
+    this->m_layout->setSpacing(2);
     this->m_layout->setMargin(0);
 
     this->m_label->setAlignment(Qt::AlignCenter);
-    this->m_label->setPixmap(QPixmap::fromImage(QImage(":/icons/cpu.svg")).scaled(10, 24, Qt::KeepAspectRatio));
-    this->m_label->hide();
+    auto image = QImage(":/icons/cpu-dark.svg");
+    image.setDevicePixelRatio(this->devicePixelRatioF());
+    image.scaled(10, 28);
+
+    this->m_label->setFixedSize(10, 28);
+    this->m_label->setPixmap(QPixmap::fromImage(image));
 }
 
 void DDECpuItemWidget::addData(qreal usagePer) {

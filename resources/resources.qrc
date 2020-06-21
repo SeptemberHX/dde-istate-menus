@@ -4,6 +4,7 @@
         <file alias="pixel.ttf">font/pixel-inversions.ttf</file>
     </qresource>
     <qresource prefix="/icons">
-        <file alias="cpu.svg">icons/cpu.svg</file>
+        <file alias="cpu-dark.svg">icons/cpu-dark.svg</file>
+        <file alias="ram-dark.svg">icons/ram-dark.svg</file>
     </qresource>
 </RCC>
