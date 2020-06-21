@@ -35,7 +35,7 @@ DCORE_USE_NAMESPACE
 
 static const int kUpdateInterval = 1000 * 300; // 5 minutes interval
 
-auto print_err = [](decltype(errno) e, const QString &msg)
+auto print_err_entry = [](decltype(errno) e, const QString &msg)
 {
     qDebug() << QString("Error: [%1] %2, ").arg(e).arg(strerror(e)) << msg;
 };
@@ -98,7 +98,7 @@ void DesktopEntryStat::refresh()
     errno = 0;
     dir = opendir(DESKTOP_ENTRY_PATH);
     if (!dir) {
-        print_err(errno, QString("open %1 failed").arg(DESKTOP_ENTRY_PATH));
+        print_err_entry(errno, QString("open %1 failed").arg(DESKTOP_ENTRY_PATH));
         return;
     }
 
@@ -121,7 +121,7 @@ void DesktopEntryStat::refresh()
         }
     }
     if (errno && !cache.size()) {
-        print_err(errno, QString("read %1 failed").arg(DESKTOP_ENTRY_PATH));
+        print_err_entry(errno, QString("read %1 failed").arg(DESKTOP_ENTRY_PATH));
     }
     closedir(dir);
 

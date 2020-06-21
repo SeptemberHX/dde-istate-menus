@@ -122,6 +122,7 @@ target_compile_definitions(${PLUGIN_NAME} PUBLIC
         )
 
 find_library(pcap REQUIRED)
+find_library(procps REQUIRED)
 
 # 设置目标要使用的链接库
 # 变量 ${DtkWidget_LIBRARIES} 和 ${Qt5Widgets_LIBRARIES} 是在前面执行 find_package 命令时引入的
@@ -132,6 +133,7 @@ target_link_libraries(${PLUGIN_NAME} PRIVATE
         ${DdeDockInterface_LIBRARIES}
         ${CMAKE_CURRENT_SOURCE_DIR}/nethogs/src/libnethogs.a
         pcap
+        procps
         dde_istate_netspeed
         dde_istate_datetime
         dde_istate_cpu

@@ -42,7 +42,7 @@
 #define PROC_FD_NAME_PATH       "/proc/%u/fd/%s"
 #define PROC_SCHEDSTAT_PATH     "/proc/%u/schedstat"
 
-auto print_err = [](decltype(errno) e, const QString &msg)
+auto print_err_process = [](decltype(errno) e, const QString &msg)
 {
 //    qDebug() << QString("Error: [%1] %2, ").arg(e).arg(strerror(e)) << msg;
 };
@@ -91,7 +91,7 @@ bool ProcessStat::readProcStats(ProcIterateCallback pfnCallback, void *context)
     errno = 0;
     dp = opendir(PROC_PATH);
     if (!dp) {
-        print_err(errno, "open /proc failed");
+        print_err_process(errno, "open /proc failed");
         return b;
     }
 
@@ -116,7 +116,7 @@ bool ProcessStat::readProcStats(ProcIterateCallback pfnCallback, void *context)
         }
     }
     if (errno) {
-        print_err(errno, "read /proc failed");
+        print_err_process(errno, "read /proc failed");
         closedir(dp);
         return b;
     }
@@ -143,13 +143,13 @@ bool ProcessStat::readStat(ProcStat &ps)
     errno = 0;
     sprintf(path, PROC_STAT_PATH, ps->pid);
     if ((fd = open(path, O_RDONLY)) < 0) {
-        print_err(errno, QString("open %1 failed").arg(path));
+        print_err_process(errno, QString("open %1 failed").arg(path));
         return b;
     }
 
     sz = read(fd, buf.data(), 1024);
     if (sz < 0) {
-        print_err(errno, QString("read %1 failed").arg(path));
+        print_err_process(errno, QString("read %1 failed").arg(path));
         close(fd);
         return b;
     }
@@ -216,13 +216,13 @@ bool ProcessStat::readCmdline(ProcStat &ps)
 
     errno = 0;
     if (!(fp = fopen(path, "r"))) {
-        print_err(errno, QString("open %1 failed").arg(path));
+        print_err_process(errno, QString("open %1 failed").arg(path));
         return b;
     }
 
     nb = fread(cmd.data(), 1, bsiz - 1, fp);
     if (ferror(fp)) {
-        print_err(errno, QString("read %1 failed").arg(path));
+        print_err_process(errno, QString("read %1 failed").arg(path));
         fclose(fp);
         return b;
     }
@@ -263,7 +263,7 @@ void ProcessStat::readEnviron(ProcStat &ps)
     errno = 0;
     fd = open(path, O_RDONLY);
     if (fd < 0) {
-        print_err(errno, QString("open %1 failed").arg(path));
+        print_err_process(errno, QString("open %1 failed").arg(path));
         return;
     }
 
@@ -272,7 +272,7 @@ void ProcessStat::readEnviron(ProcStat &ps)
         sbuf.append(buf, int(nb));
     }
     if (nb == 0 && errno != 0) {
-        print_err(errno, QString("read %1 failed").arg(path));
+        print_err_process(errno, QString("read %1 failed").arg(path));
     }
     close(fd);
 
@@ -302,13 +302,13 @@ bool ProcessStat::readSchedStat(ProcStat &ps, struct stat_context &ctx)
 
     errno = 0;
     if ((fd = open(path, O_RDONLY)) < 0) {
-        print_err(errno, QString("open %1 failed").arg(path));
+        print_err_process(errno, QString("open %1 failed").arg(path));
         return b;
     }
 
     n = read(fd, buf.data(), bsiz - 1);
     if (n < 0) {
-        print_err(errno, QString("read %1 failed").arg(path));
+        print_err_process(errno, QString("read %1 failed").arg(path));
         close(fd);
         return b;
     }
@@ -336,7 +336,7 @@ bool ProcessStat::readStatus(ProcStat &ps)
 
     errno = 0;
     if (!(fp = fopen(path, "r)"))) {
-        print_err(errno, QString("open %1 failed").arg(path));
+        print_err_process(errno, QString("open %1 failed").arg(path));
         return b;
     }
 
@@ -360,7 +360,7 @@ bool ProcessStat::readStatus(ProcStat &ps)
         }
     }
     if (ferror(fp)) {
-        print_err(errno, QString("open %1 failed").arg(path));
+        print_err_process(errno, QString("open %1 failed").arg(path));
     } else {
         b = true;
     }
@@ -381,13 +381,13 @@ bool ProcessStat::readStatm(ProcStat &ps, struct stat_context &ctx)
 
     errno = 0;
     if ((fd = open(path, O_RDONLY)) < 0) {
-        print_err(errno, QString("open %1 failed").arg(path));
+        print_err_process(errno, QString("open %1 failed").arg(path));
         return b;
     }
 
     nr = read(fd, buf, bsiz);
     if (nr < 0) {
-        print_err(errno, QString("read %1 failed").arg(path));
+        print_err_process(errno, QString("read %1 failed").arg(path));
         close(fd);
         return b;
     }
@@ -398,7 +398,7 @@ bool ProcessStat::readStatm(ProcStat &ps, struct stat_context &ctx)
     if (nr != 2) {
         ps->rss = 0;
         ps->shm = 0;
-        print_err(errno, QString("read %1 failed").arg(path));
+        print_err_process(errno, QString("read %1 failed").arg(path));
     } else {
         ps->rss <<= ctx.kb_shift;
         ps->shm <<= ctx.kb_shift;
@@ -418,7 +418,7 @@ bool ProcessStat::readIO(ProcStat &ps)
 
     errno = 0;
     if (!(fp = fopen(path, "r"))) {
-        print_err(errno, QString("open %1 failed").arg(path));
+        print_err_process(errno, QString("open %1 failed").arg(path));
         return b;
     }
 
@@ -432,7 +432,7 @@ bool ProcessStat::readIO(ProcStat &ps)
         }
     }
     if (ferror(fp)) {
-        print_err(errno, QString("read %1 failed").arg(path));
+        print_err_process(errno, QString("read %1 failed").arg(path));
     } else {
         b = true;
     }
@@ -453,7 +453,7 @@ bool ProcessStat::readSockInodes(ProcStat &ps)
 
     errno = 0;
     if (!(dir = opendir(path))) {
-        print_err(errno, QString("open %1 failed").arg(path));
+        print_err_process(errno, QString("open %1 failed").arg(path));
         return b;
     }
 
@@ -469,7 +469,7 @@ bool ProcessStat::readSockInodes(ProcStat &ps)
         }
     }
     if (errno) {
-        print_err(errno, QString("read %1 failed").arg(path));
+        print_err_process(errno, QString("read %1 failed").arg(path));
     } else {
         b = true;
     }
