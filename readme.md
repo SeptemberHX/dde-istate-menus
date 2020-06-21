@@ -79,6 +79,10 @@ sudo setcap cap_net_raw,cap_dac_read_search,cap_sys_ptrace+ep `which dde-dock`
 
 logout out or reboot.
 
+#### Arch
+
+Thanks to @JunioCalu . It is on AUR now: [https://aur.archlinux.org/packages/dde-istate-menus/](https://aur.archlinux.org/packages/dde-istate-menus/)
+
 #### Other distributions
 
 It needs to be built from source on your own.
