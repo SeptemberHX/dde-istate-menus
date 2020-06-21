@@ -65,6 +65,10 @@ popup widget:
 
 #### Deepin V20
 
+```shell
+sudo apt install libqt5charts5
+```
+
 Download the `libdde_istate_menus.so` and put it to `~/.local/lib/dde-dock/plugins` or `/usr/lib/dde-dock/plugins`
 
 Then:
@@ -74,6 +78,10 @@ sudo setcap cap_net_raw,cap_dac_read_search,cap_sys_ptrace+ep `which dde-dock`
 ```
 
 logout out or reboot.
+
+#### Arch
+
+Thanks to @JunioCalu . It is on AUR now: [https://aur.archlinux.org/packages/dde-istate-menus/](https://aur.archlinux.org/packages/dde-istate-menus/)
 
 #### Other distributions
 
