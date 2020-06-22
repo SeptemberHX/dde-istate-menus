@@ -6,19 +6,19 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>320</width>
+    <width>280</width>
     <height>580</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>320</width>
+    <width>280</width>
     <height>0</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>320</width>
+    <width>280</width>
     <height>16777215</height>
    </size>
   </property>
@@ -109,13 +109,13 @@
           <widget class="QChartView" name="cpuBarChartView" native="true">
            <property name="minimumSize">
             <size>
-             <width>80</width>
+             <width>70</width>
              <height>75</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>80</width>
+             <width>70</width>
              <height>75</height>
             </size>
            </property>

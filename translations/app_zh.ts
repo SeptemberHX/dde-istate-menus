@@ -322,6 +322,21 @@
     </message>
 </context>
 <context>
+    <name>IstateSensorWidget</name>
+    <message>
+        <location filename="../dde-istate-widgets/istatesensorwidget.ui" line="32"/>
+        <location filename="../cmake-build-debug/dde-istate-sensor/dde_istate_sensor_autogen/include/ui_istatesensorwidget.h" line="71"/>
+        <source>Form</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../dde-istate-widgets/istatesensorwidget.ui" line="50"/>
+        <location filename="../cmake-build-debug/dde-istate-sensor/dde_istate_sensor_autogen/include/ui_istatesensorwidget.h" line="72"/>
+        <source>SENSORS</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>MainWindow</name>
     <message>
         <location filename="../dde-istate-widgets/mainwindow.ui" line="13"/>
@@ -333,8 +348,8 @@
 <context>
     <name>Process.Table</name>
     <message>
-        <location filename="../utils/stats_collector.cpp" line="692"/>
-        <location filename="../utils/stats_collector.cpp" line="701"/>
+        <location filename="../utils/stats_collector.cpp" line="700"/>
+        <location filename="../utils/stats_collector.cpp" line="709"/>
         <source>Tray</source>
         <translation type="unfinished"></translation>
     </message>

@@ -25,6 +25,7 @@
 #include <unistd.h>
 #include <linux/limits.h>
 #include <pwd.h>
+#include <sensors/sensors.h>
 
 #include <QMap>
 #include <QScopedArrayPointer>
@@ -48,6 +49,7 @@ auto print_err = [](decltype(errno) e, const QString &msg)
     qDebug() << QString("Error: [%1] %2, ").arg(e).arg(strerror(e)) << msg;
 };
 
+bool SystemStat::firstRound = true;
 
 bool SystemStat::readLoadAvg(qreal &loadAvg1, qreal &loadAvg5, qreal &loadAvg15) {
     bool b = false;
@@ -491,4 +493,50 @@ QString SystemStat::getGroupName(gid_t gid)
     } else {
         return { getenv("GROUP") };
     }
+}
+
+bool SystemStat::readTemp(QList<TempInfo> &infoList) {
+    if (firstRound) {
+        firstRound = false;
+        if (sensors_init(nullptr) != 0) {
+            return false;
+        }
+    }
+
+    sensors_chip_name const * cn;
+    int c = 0;
+    while ((cn = sensors_get_detected_chips(nullptr, &c)) != 0) {
+        sensors_feature const *feat;
+        int f = 0;
+
+        while ((feat = sensors_get_features(cn, &f)) != 0) {
+            sensors_subfeature const *subf;
+            int s = 0;
+
+            TempInfo tempInfo;
+
+            while ((subf = sensors_get_all_subfeatures(cn, feat, &s)) != 0) {
+                QString subFeatureName(subf->name);
+                if (!subFeatureName.startsWith("temp") || !subFeatureName.endsWith("_input")) {
+                    continue;
+                }
+                tempInfo.deviceName = QString(sensors_get_label(cn, feat));
+                if (tempInfo.deviceName.startsWith("temp")) {
+                    tempInfo.deviceName = cn->prefix;
+                }
+
+                double val;
+                if (subf->flags & SENSORS_MODE_R) {
+                    int rc = sensors_get_value(cn, subf->number, &val);
+                    if (rc < 0) {
+                        qDebug() << "err: " << rc;
+                    } else {
+                        tempInfo.deviceTemp = val;
+                        infoList.append(tempInfo);
+                    }
+                }
+            }
+        }
+    }
+    return true;
 }

@@ -10,6 +10,7 @@
 #include "dde-istate-datetime/datetimeplugin.h"
 #include "dde-istate-ram/DDERamPlugin.h"
 #include "dde-istate-cpu/DDECpuPlugin.h"
+#include "dde-istate-sensor/DDESensorPlugin.h"
 #include "utils/stats_collector.h"
 #include <dde-dock/pluginsiteminterface.h>
 #include <QObject>
@@ -49,6 +50,7 @@ public:
 private slots:
     void updateProcessList(const QList<ProcessEntry> procList);
     void updateCpuUsage(qreal cpuPercent, const QList<double> cpuPercents, cpu_usage separatorUsage, QList<cpu_usage> cpuUsageList);
+    void updateTempInfo(QList<TempInfo> tempInfoList);
 
 private:
     StatsCollector *m_statsCollector {nullptr};
@@ -58,6 +60,7 @@ private:
     DatetimePlugin *datetimePlugin;
     DDECpuPlugin *cpuPlugin;
     DDERamPlugin *ramPlugin;
+    DDESensorPlugin *sensorPlugin;
 };
 
 

@@ -96,6 +96,11 @@ struct netif_stat {
     char iface[IF_NAMESIZE];
 };
 
+struct TempInfo {
+    QString deviceName;
+    qreal deviceTemp;
+};
+
 using CPUStat = QSharedPointer<struct cpu_stat>;
 using CPUStatMap = QMap<int, QSharedPointer<struct cpu_stat>>;
 using MemStat = QSharedPointer<struct mem_stat>;
@@ -114,6 +119,7 @@ public:
     static bool readDiskIOStats(DiskIOStat &statSum, DiskIOStatMap &statIOMap);
     static bool readNetIfStats(NetIFStat &statSum, NetIFStatMap &statNetIfMap);
     static bool readLoadAvg(qreal &loadAvg1, qreal &loadAvg5, qreal &loadAvg15);
+    static bool readTemp(QList<TempInfo> &infoList);
 
     static QString getCurrentRealUserName();
     static QString getCurrentRealGroupName();
@@ -124,6 +130,7 @@ public:
     static QString getUserName(uid_t uid);
     static QString getGroupName(gid_t gid);
 private:
+    static bool firstRound;
     SystemStat() = default;
 };
 

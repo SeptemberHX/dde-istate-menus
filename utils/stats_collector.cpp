@@ -126,6 +126,7 @@ StatsCollector::StatsCollector(QObject *parent) :
     qRegisterMetaType<cpu_usage>("CpuUsage");
     qRegisterMetaType<QList<cpu_usage>>("CpuUsageList");
     qRegisterMetaType<mem_stat>("MemStat");
+    qRegisterMetaType<QList<TempInfo>>("TempInfoList");
 
     m_cpuStat[kLastStat] = CPUStat(new cpu_stat {});
     m_cpuStat[kCurrentStat] = CPUStat(new cpu_stat {});
@@ -359,6 +360,13 @@ void StatsCollector::updateStatus()
             );
         }
     }
+
+    QList<TempInfo> infoList;
+    b = SystemStat::readTemp(infoList);
+    if (b) {
+        Q_EMIT tempInfoUpdated(infoList);
+    }
+
 
     b = SystemStat::readDiskIOStats(iostat, iostatMap);
     if (b) {

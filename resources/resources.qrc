@@ -6,5 +6,6 @@
     <qresource prefix="/icons">
         <file alias="cpu-dark.svg">icons/cpu-dark.svg</file>
         <file alias="ram-dark.svg">icons/ram-dark.svg</file>
+        <file alias="sensor-dark.svg">icons/sensor-dark.svg</file>
     </qresource>
 </RCC>

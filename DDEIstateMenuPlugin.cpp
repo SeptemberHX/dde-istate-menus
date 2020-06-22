@@ -25,6 +25,7 @@ DDEIstateMenuPlugin::DDEIstateMenuPlugin(QObject *parent) : QObject(parent) {
             this,[this](qulonglong usedMemory, qulonglong totalMemory, qulonglong usedSwap, qulonglong totalSwap, mem_stat memStat) {
         this->ramPlugin->updateRamInfo(usedMemory * 100.0 / totalMemory, memStat);
     });
+    connect(this->m_statsCollector, &StatsCollector::tempInfoUpdated, this, &DDEIstateMenuPlugin::updateTempInfo);
 
     connect(&m_workerThread, &QThread::started, m_statsCollector, &StatsCollector::start);
     connect(&m_workerThread, &QThread::finished, m_statsCollector, &QObject::deleteLater);
@@ -46,6 +47,8 @@ void DDEIstateMenuPlugin::init(PluginProxyInterface *proxyInter) {
     this->cpuPlugin->init(this->m_proxyInter);
     this->ramPlugin = new DDERamPlugin();
     this->ramPlugin->init(this->m_proxyInter);
+    this->sensorPlugin = new DDESensorPlugin();
+    this->sensorPlugin->init(this->m_proxyInter);
 
     if (!NetworkTrafficFilter::hasInstance) {
         NetworkTrafficFilter::hasInstance = true;
@@ -59,6 +62,7 @@ void DDEIstateMenuPlugin::init(PluginProxyInterface *proxyInter) {
         this->m_proxyInter->itemAdded(this->datetimePlugin, this->datetimePlugin->pluginName());
         this->m_proxyInter->itemAdded(this->cpuPlugin, this->cpuPlugin->pluginName());
         this->m_proxyInter->itemAdded(this->ramPlugin, this->ramPlugin->pluginName());
+        this->m_proxyInter->itemAdded(this->sensorPlugin, this->sensorPlugin->pluginName());
     }
 }
 
@@ -76,6 +80,7 @@ void DDEIstateMenuPlugin::pluginStateSwitched() {
     m_proxyInter->saveValue(this->datetimePlugin, PLUGIN_STATE_KEY, pluginIsDisable());
     m_proxyInter->saveValue(this->cpuPlugin, PLUGIN_STATE_KEY, pluginIsDisable());
     m_proxyInter->saveValue(this->ramPlugin, PLUGIN_STATE_KEY, pluginIsDisable());
+    m_proxyInter->saveValue(this->sensorPlugin, PLUGIN_STATE_KEY, pluginIsDisable());
 
     if (pluginIsDisable()) {
 //        m_proxyInter->itemRemoved(this, pluginName());
@@ -83,6 +88,7 @@ void DDEIstateMenuPlugin::pluginStateSwitched() {
         m_proxyInter->itemRemoved(this->netspeedPlugin, this->netspeedPlugin->pluginName());
         m_proxyInter->itemRemoved(this->cpuPlugin, this->cpuPlugin->pluginName());
         m_proxyInter->itemRemoved(this->ramPlugin, this->ramPlugin->pluginName());
+        m_proxyInter->itemRemoved(this->sensorPlugin, this->ramPlugin->pluginName());
         return;
     }
 
@@ -91,6 +97,7 @@ void DDEIstateMenuPlugin::pluginStateSwitched() {
     this->m_proxyInter->itemAdded(this->datetimePlugin, this->datetimePlugin->pluginName());
     this->m_proxyInter->itemAdded(this->cpuPlugin, this->cpuPlugin->pluginName());
     this->m_proxyInter->itemAdded(this->ramPlugin, this->ramPlugin->pluginName());
+    this->m_proxyInter->itemAdded(this->sensorPlugin, this->sensorPlugin->pluginName());
 }
 
 const QString DDEIstateMenuPlugin::pluginDisplayName() const {
@@ -104,6 +111,7 @@ void DDEIstateMenuPlugin::pluginSettingsChanged() {
         m_proxyInter->itemRemoved(this->netspeedPlugin, this->netspeedPlugin->pluginName());
         m_proxyInter->itemRemoved(this->cpuPlugin, this->cpuPlugin->pluginName());
         m_proxyInter->itemRemoved(this->ramPlugin, this->ramPlugin->pluginName());
+        m_proxyInter->itemRemoved(this->sensorPlugin, this->ramPlugin->pluginName());
         return;
     }
 
@@ -112,6 +120,7 @@ void DDEIstateMenuPlugin::pluginSettingsChanged() {
     this->m_proxyInter->itemAdded(this->netspeedPlugin, this->netspeedPlugin->pluginName());
     this->m_proxyInter->itemAdded(this->cpuPlugin, this->cpuPlugin->pluginName());
     this->m_proxyInter->itemAdded(this->ramPlugin, this->ramPlugin->pluginName());
+    this->m_proxyInter->itemAdded(this->sensorPlugin, this->sensorPlugin->pluginName());
 }
 
 QWidget *DDEIstateMenuPlugin::itemWidget(const QString &itemKey) {
@@ -139,4 +148,19 @@ void DDEIstateMenuPlugin::updateProcessList(QList<ProcessEntry> procList) {
 void DDEIstateMenuPlugin::updateCpuUsage(qreal cpuPercent, const QList<double> cpuPercents, cpu_usage separatorUsage, QList<cpu_usage> cpuUsageList)
 {
     this->cpuPlugin->addCpuUsage(cpuPercent, separatorUsage, cpuUsageList);
+}
+
+void DDEIstateMenuPlugin::updateTempInfo(QList<TempInfo> tempInfoList) {
+    std::sort(tempInfoList.begin(), tempInfoList.end(), [](const TempInfo& t1, const TempInfo& t2) {
+        return t1.deviceName < t2.deviceName;
+    });
+
+    qreal cpuTemp = 0;
+    for (const auto& info : tempInfoList) {
+        if (info.deviceName.startsWith("Package") || info.deviceName.startsWith("Physical")) {
+            cpuTemp = info.deviceTemp;
+        }
+    }
+    this->sensorPlugin->setCpuTemp(cpuTemp);
+    this->sensorPlugin->updateTempInfos(tempInfoList);
 }

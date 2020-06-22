@@ -70,6 +70,7 @@ Q_SIGNALS:
     void processListUpdated(const QList<ProcessEntry> procList);
     void uptimeInfoUpdated(qulonglong uptime);
     void loadAvgInfoUpdated(qreal loadAvg1, qreal loadAvg5, qreal loadAvg15);
+    void tempInfoUpdated(QList<TempInfo> infoList);
 
     void initialSysInfoLoaded();    // simply put here to help defer initialize some of the widgets
 
@@ -161,5 +162,6 @@ void setProcDisplayNameAndIcon(StatsCollector &ctx, ProcessEntry &proc, const Pr
 
 Q_DECLARE_METATYPE(cpu_usage)
 Q_DECLARE_METATYPE(mem_stat)
+Q_DECLARE_METATYPE(TempInfo);
 
 #endif // STATS_COLLECTOR_H
