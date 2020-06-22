@@ -27,6 +27,7 @@ DDESensorItemWidget::DDESensorItemWidget(QWidget *parent)
 
     this->m_label->setFixedSize(10, 28);
     this->m_label->setPixmap(QPixmap::fromImage(image));
+    this->m_plotWidget->setStyleSheet("QLabel { color: black; }");
 }
 
 void DDESensorItemWidget::setTemp(qreal percent) {
