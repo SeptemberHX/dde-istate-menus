@@ -74,7 +74,7 @@ Download the `libdde_istate_menus.so` and put it to `~/.local/lib/dde-dock/plugi
 Then:
 
 ```
-sudo setcap cap_net_raw,cap_dac_read_search,cap_sys_ptrace+ep `which dde-dock`
+sudo setcap cap_sys_rawio,cap_net_raw,cap_dac_read_search,cap_sys_ptrace+ep `which dde-dock`
 ```
 
 logout out or reboot.
