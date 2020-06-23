@@ -61,6 +61,8 @@ private:
     DDECpuPlugin *cpuPlugin;
     DDERamPlugin *ramPlugin;
     DDESensorPlugin *sensorPlugin;
+
+    PowerConsumption prevPc {};
 };
 
 

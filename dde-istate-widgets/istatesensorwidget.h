@@ -5,6 +5,7 @@
 #include <QVBoxLayout>
 #include "../dde-istate-sensor/DDESensorTempItemWidget.h"
 #include "../utils/system_stat.h"
+#include "../utils/rapl_read.h"
 
 namespace Ui {
 class IstateSensorWidget;
@@ -18,9 +19,11 @@ public:
     explicit IstateSensorWidget(QWidget *parent = nullptr);
     ~IstateSensorWidget();
     void updateTempInfos(QList<TempInfo> infoList);
+    void updatePowerConsumption(PowerConsumption pc);
 
 private:
     void redrawTemp();
+    void redrawPowerC();
 
 protected:
     void showEvent(QShowEvent *event) override;
@@ -31,6 +34,7 @@ private:
     QVBoxLayout *m_tempLayout;
 
     QList<TempInfo> infoList;
+    PowerConsumption pc;
 };
 
 #endif // ISTATESENSORWIDGET_H

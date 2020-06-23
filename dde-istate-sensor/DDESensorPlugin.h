@@ -19,6 +19,7 @@ public:
     explicit DDESensorPlugin(QObject *parent = 0);
     void setCpuTemp(qreal temp);
     void updateTempInfos(QList<TempInfo> infoList);
+    void updatePowerConsumption(PowerConsumption pc);
 
     // 返回插件的名称，必须是唯一值，不可以和其它插件冲突
     const QString pluginName() const override;
@@ -46,7 +47,7 @@ public:
 
 private:
     DDESensorItemWidget *m_pluginWidget;
-    QWidget *m_tipWidget;
+    QLabel *m_tipWidget;
     IstateSensorWidget *m_popupWidget;
 };
 

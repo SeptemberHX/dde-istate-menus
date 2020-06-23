@@ -9,7 +9,7 @@
 
 DDESensorPlugin::DDESensorPlugin(QObject *parent) : QObject(parent)
 {
-    this->m_tipWidget = new QWidget();
+    this->m_tipWidget = new QLabel();
     this->m_popupWidget = new IstateSensorWidget();
     this->m_pluginWidget = new DDESensorItemWidget();
 }
@@ -102,4 +102,9 @@ void DDESensorPlugin::setCpuTemp(qreal temp) {
 
 void DDESensorPlugin::updateTempInfos(QList<TempInfo> infoList) {
     this->m_popupWidget->updateTempInfos(infoList);
+}
+
+void DDESensorPlugin::updatePowerConsumption(PowerConsumption pc) {
+    this->m_popupWidget->updatePowerConsumption(pc);
+    this->m_tipWidget->setText(QString("Power: %1 W").arg(QString::number(pc.package * 1000 / pc.timestamp, 'f', 1)));
 }

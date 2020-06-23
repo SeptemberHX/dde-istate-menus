@@ -325,14 +325,44 @@
     <name>IstateSensorWidget</name>
     <message>
         <location filename="../dde-istate-widgets/istatesensorwidget.ui" line="32"/>
-        <location filename="../cmake-build-debug/dde-istate-sensor/dde_istate_sensor_autogen/include/ui_istatesensorwidget.h" line="71"/>
+        <location filename="../cmake-build-debug/dde-istate-sensor/dde_istate_sensor_autogen/include/ui_istatesensorwidget.h" line="159"/>
         <source>Form</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../dde-istate-widgets/istatesensorwidget.ui" line="50"/>
-        <location filename="../cmake-build-debug/dde-istate-sensor/dde_istate_sensor_autogen/include/ui_istatesensorwidget.h" line="72"/>
+        <location filename="../cmake-build-debug/dde-istate-sensor/dde_istate_sensor_autogen/include/ui_istatesensorwidget.h" line="160"/>
         <source>SENSORS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../dde-istate-widgets/istatesensorwidget.ui" line="92"/>
+        <location filename="../cmake-build-debug/dde-istate-sensor/dde_istate_sensor_autogen/include/ui_istatesensorwidget.h" line="161"/>
+        <source>Package</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../dde-istate-widgets/istatesensorwidget.ui" line="109"/>
+        <location filename="../cmake-build-debug/dde-istate-sensor/dde_istate_sensor_autogen/include/ui_istatesensorwidget.h" line="163"/>
+        <source>Cores</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../dde-istate-widgets/istatesensorwidget.ui" line="116"/>
+        <location filename="../cmake-build-debug/dde-istate-sensor/dde_istate_sensor_autogen/include/ui_istatesensorwidget.h" line="164"/>
+        <source>DRAM</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../dde-istate-widgets/istatesensorwidget.ui" line="143"/>
+        <location filename="../cmake-build-debug/dde-istate-sensor/dde_istate_sensor_autogen/include/ui_istatesensorwidget.h" line="167"/>
+        <source>On Core Gpu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../dde-istate-widgets/istatesensorwidget.ui" line="160"/>
+        <location filename="../cmake-build-debug/dde-istate-sensor/dde_istate_sensor_autogen/include/ui_istatesensorwidget.h" line="169"/>
+        <source>PSYS</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -348,8 +378,8 @@
 <context>
     <name>Process.Table</name>
     <message>
-        <location filename="../utils/stats_collector.cpp" line="700"/>
-        <location filename="../utils/stats_collector.cpp" line="709"/>
+        <location filename="../utils/stats_collector.cpp" line="706"/>
+        <location filename="../utils/stats_collector.cpp" line="715"/>
         <source>Tray</source>
         <translation type="unfinished"></translation>
     </message>

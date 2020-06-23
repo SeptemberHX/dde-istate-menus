@@ -127,6 +127,7 @@ StatsCollector::StatsCollector(QObject *parent) :
     qRegisterMetaType<QList<cpu_usage>>("CpuUsageList");
     qRegisterMetaType<mem_stat>("MemStat");
     qRegisterMetaType<QList<TempInfo>>("TempInfoList");
+    qRegisterMetaType<QList<PowerConsumption>>("PowerConsumptionList");
 
     m_cpuStat[kLastStat] = CPUStat(new cpu_stat {});
     m_cpuStat[kCurrentStat] = CPUStat(new cpu_stat {});
@@ -367,6 +368,11 @@ void StatsCollector::updateStatus()
         Q_EMIT tempInfoUpdated(infoList);
     }
 
+    QList<PowerConsumption> pcList;
+    b = readPowerConsumption(pcList);
+    if (b) {
+        Q_EMIT powerInfoUpdated(pcList);
+    }
 
     b = SystemStat::readDiskIOStats(iostat, iostatMap);
     if (b) {

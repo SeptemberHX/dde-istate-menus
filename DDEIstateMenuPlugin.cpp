@@ -26,6 +26,20 @@ DDEIstateMenuPlugin::DDEIstateMenuPlugin(QObject *parent) : QObject(parent) {
         this->ramPlugin->updateRamInfo(usedMemory * 100.0 / totalMemory, memStat);
     });
     connect(this->m_statsCollector, &StatsCollector::tempInfoUpdated, this, &DDEIstateMenuPlugin::updateTempInfo);
+    connect(this->m_statsCollector, &StatsCollector::powerInfoUpdated, this, [this](QList<PowerConsumption> pcList) {
+        if (!pcList.isEmpty()) {
+            PowerConsumption pc = pcList.first();
+            PowerConsumption targetPc {};
+            targetPc.cores = pc.cores - this->prevPc.cores;
+            targetPc.psys = pc.psys - this->prevPc.psys;
+            targetPc.dram = pc.dram - this->prevPc.dram;
+            targetPc.onCoreGpu = pc.onCoreGpu - this->prevPc.onCoreGpu;
+            targetPc.package = pc.package - this->prevPc.package;
+            targetPc.timestamp = pc.timestamp - this->prevPc.timestamp;
+            this->prevPc = pc;
+            this->sensorPlugin->updatePowerConsumption(targetPc);
+        }
+    });
 
     connect(&m_workerThread, &QThread::started, m_statsCollector, &StatsCollector::start);
     connect(&m_workerThread, &QThread::finished, m_statsCollector, &QObject::deleteLater);

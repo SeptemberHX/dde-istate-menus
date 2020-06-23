@@ -96,9 +96,7 @@ void DDENetspeedPlugin::refreshData() {
     QMap<QString, QPair<ulong, ulong>> dataMap = DDEUtils::currNetInOutBytes();
     QMap<QString, QString> netIpv4Map = DDEUtils::netIpv4Map();
 
-//    if (this->defaultNetDeviceName.isEmpty()) {
-        this->determineNetDevice(dataMap);
-//    }
+    this->determineNetDevice(dataMap);
 
     if (!this->defaultNetDeviceName.isEmpty()) {
         if (dataMap.contains(this->defaultNetDeviceName)) {
@@ -146,14 +144,14 @@ void DDENetspeedPlugin::determineNetDevice(QMap<QString, QPair<ulong, ulong>> da
     for (const QString& devName : interfaceList) {
         if (devName.startsWith("eth") || devName.startsWith("en")) {
             this->defaultNetDeviceName = devName;
-            break;
+            return;
         }
     }
 
     for (const QString& devName : interfaceList) {
         if (devName.startsWith("wlan") || devName.startsWith("wlp")) {
             this->defaultNetDeviceName = devName;
-            break;
+            return;
         }
     }
 }

@@ -48,11 +48,28 @@ void IstateSensorWidget::redrawTemp() {
         this->m_tempLayout->addWidget(itemWidget);
     }
     ui->tempWidget->setFixedHeight(infoList.size() * 20 + infoList.size() - 1);
-    ui->groupBox->setFixedHeight(ui->tempWidget->height() + 40);
+    ui->widget->setFixedHeight(100);
+    ui->groupBox->setFixedHeight(ui->tempWidget->height() + 50 + ui->widget->height());
     this->setFixedHeight(ui->groupBox->height());
 }
 
 void IstateSensorWidget::showEvent(QShowEvent *event) {
     this->redrawTemp();
+    this->redrawPowerC();
     QWidget::showEvent(event);
+}
+
+void IstateSensorWidget::updatePowerConsumption(PowerConsumption pc) {
+    this->pc = pc;
+    this->redrawPowerC();
+}
+
+void IstateSensorWidget::redrawPowerC() {
+    if (this->isHidden()) return;
+
+    ui->packageLabel->setText(QString("%1 W").arg(QString::number(pc.package * 1000 / pc.timestamp, 'f', 1)));
+    ui->coresLabel->setText(QString("%1 W").arg(QString::number(pc.cores * 1000 / pc.timestamp, 'f', 1)));
+    ui->onCoreGpuLabel->setText(QString("%1 W").arg(QString::number(pc.onCoreGpu * 1000 / pc.timestamp, 'f', 1)));
+    ui->dramLabel->setText(QString("%1 W").arg(QString::number(pc.dram * 1000 / pc.timestamp, 'f', 1)));
+    ui->psysLabel->setText(QString("%1 W").arg(QString::number(pc.psys * 1000 / pc.timestamp, 'f', 1)));
 }
