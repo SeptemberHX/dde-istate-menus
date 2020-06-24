@@ -107,4 +107,5 @@ void DDESensorPlugin::updateTempInfos(QList<TempInfo> infoList) {
 void DDESensorPlugin::updatePowerConsumption(PowerConsumption pc) {
     this->m_popupWidget->updatePowerConsumption(pc);
     this->m_tipWidget->setText(QString("Power: %1 W").arg(QString::number(pc.package * 1000 / pc.timestamp, 'f', 1)));
+    this->m_pluginWidget->setPower(pc.package * 1000 / pc.timestamp);
 }

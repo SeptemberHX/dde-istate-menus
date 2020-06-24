@@ -13,7 +13,7 @@ DDESensorItemWidget::DDESensorItemWidget(QWidget *parent)
     this->m_label = new QLabel(this);
     this->m_layout->addWidget(this->m_label);
 
-    this->m_plotWidget = new QLabel(this);
+    this->m_plotWidget = new DDESensorTempAndPowerItemWidget(this);
     this->m_layout->addWidget(this->m_plotWidget);
 
     this->m_layout->setContentsMargins(0, 0, 0, 0);
@@ -27,9 +27,12 @@ DDESensorItemWidget::DDESensorItemWidget(QWidget *parent)
 
     this->m_label->setFixedSize(10, 28);
     this->m_label->setPixmap(QPixmap::fromImage(image));
-    this->m_plotWidget->setStyleSheet("QLabel { color: black; }");
+}
+
+void DDESensorItemWidget::setPower(qreal power) {
+    this->m_plotWidget->setPower(power);
 }
 
 void DDESensorItemWidget::setTemp(qreal percent) {
-    this->m_plotWidget->setText(QString("%1°").arg(QString::number(int(ceil(percent)))));
+    this->m_plotWidget->setTemp(percent);
 }

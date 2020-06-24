@@ -8,6 +8,7 @@
 #include <QWidget>
 #include <QLabel>
 #include <QHBoxLayout>
+#include "DDESensorTempAndPowerItemWidget.h"
 
 class DDESensorItemWidget : public QWidget {
 
@@ -17,10 +18,11 @@ public:
     explicit DDESensorItemWidget(QWidget* parent = nullptr);
 
     void setTemp(qreal percent);
+    void setPower(qreal power);
 
 private:
     QHBoxLayout *m_layout;
-    QLabel *m_plotWidget;
+    DDESensorTempAndPowerItemWidget *m_plotWidget;
     QLabel *m_label;
 };
 

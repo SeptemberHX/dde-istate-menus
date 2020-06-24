@@ -18,6 +18,7 @@ class DDESensorPlugin : public QObject, public PluginsItemInterface, public DDEI
 public:
     explicit DDESensorPlugin(QObject *parent = 0);
     void setCpuTemp(qreal temp);
+    void setPower(qreal power);
     void updateTempInfos(QList<TempInfo> infoList);
     void updatePowerConsumption(PowerConsumption pc);
 
