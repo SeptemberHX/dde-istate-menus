@@ -36,7 +36,7 @@ void DDENetspeedTextWidget::paintEvent(QPaintEvent *e) {
     QRect downloadRect = rect();
 
     uploadRect.setBottom(rect().center().y() + 2);
-    downloadRect.setTop(uploadRect.bottom() - 2);
+    downloadRect.setTop(uploadRect.bottom() - 4);
 
     painter.drawText(uploadRect, Qt::AlignBottom | Qt::AlignHCenter, getUploadBpsStr());
     painter.drawText(downloadRect, Qt::AlignTop | Qt::AlignHCenter, getDownloadBpsStr());
