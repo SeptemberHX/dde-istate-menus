@@ -36,6 +36,8 @@ IStat menus on macOS alternative for DDE.
 
 ### Screenshot
 
+![](./screenshots/dock_widget.png)
+
 #### CPU
 
 dock-chart: 
@@ -59,6 +61,10 @@ popup widget:
 #### Network
 
 <img src="./screenshots/network.png" width="400px" />
+
+#### Sensors
+
+<img src="./screenshots/sensors_popup_widget.png" width="400px" />
 
 
 ### How to use
@@ -98,3 +104,8 @@ cd build
 cmake ..
 make
 ```
+
+#### For sensors ability
+
+1. Sensors are based on `lm-sensors` and `msr`
+2. make sure run `sensor-detect` and give the right permission with `setcap`
