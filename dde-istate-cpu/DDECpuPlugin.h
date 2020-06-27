@@ -53,6 +53,8 @@ public:
 
     void setRefreshInterval(int msec) override;
 
+    void reloadSettings() override;
+
 private:
     DDECpuItemWidget *m_pluginWidget;
     DDECpuTipWidget *m_tipWidget;

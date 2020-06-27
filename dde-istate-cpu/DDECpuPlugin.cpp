@@ -3,6 +3,7 @@
 //
 
 #include "DDECpuPlugin.h"
+#include "../DDEIstateMenuSettings.h"
 
 #define PLUGIN_STATE_KEY "enable"
 
@@ -112,4 +113,8 @@ void DDECpuPlugin::updateUptime(qulonglong uptime) {
 void DDECpuPlugin::updateLoadAvg(qreal loadAvg1, qreal loadAvg5, qreal loadAvg15) {
     this->m_popupWidget->updateLoadAvg(loadAvg1, loadAvg5, loadAvg15);
     this->m_tipWidget->updateLoad(loadAvg1, loadAvg5, loadAvg15);
+}
+
+void DDECpuPlugin::reloadSettings() {
+
 }

@@ -216,3 +216,15 @@ QWidget *DatetimePlugin::itemTipsWidget(const QString &itemKey)
 
     return m_dateTipsLabel;
 }
+
+void DatetimePlugin::refreshData() {
+
+}
+
+void DatetimePlugin::setRefreshInterval(int msec) {
+
+}
+
+void DatetimePlugin::reloadSettings() {
+
+}

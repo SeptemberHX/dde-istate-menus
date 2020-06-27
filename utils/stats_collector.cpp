@@ -24,6 +24,7 @@
 #include <QDateTime>
 #include <DApplication>
 #include <QUrl>
+#include <DDEIstateMenuSettings.h>
 
 #include "stats_collector.h"
 #include "process_entry.h"
@@ -37,6 +38,8 @@ using namespace DTK_WIDGET_NAMESPACE;
 
 // unit in milliseconds
 static const int kUpdateInterval = 2000;
+
+StatsCollector *StatsCollector::instancePtr = nullptr;
 
 auto calcCPUUsage = [](const CPUStat &prev, const CPUStat &cur) -> qreal
 {
@@ -168,6 +171,11 @@ StatsCollector::StatsCollector(QObject *parent) :
         // use default path
         m_envPathList << "/usr/bin";
     }
+
+    this->moveToThread(&this->m_workerThread);
+    connect(&m_workerThread, &QThread::started, this, &StatsCollector::start);
+    connect(&m_workerThread, &QThread::finished, this, &QObject::deleteLater);
+    m_workerThread.start();
 }
 
 void StatsCollector::start()
@@ -300,306 +308,317 @@ void StatsCollector::updateStatus()
         b = SystemStat::readBootTime(m_btime);
     }
 
-    b = SystemStat::readUpTime(uptime);
-    if (b) {
-        m_uptime[kLastStat] = m_uptime[kCurrentStat];
-        m_uptime[kCurrentStat] = uptime;
-        m_interval = (m_uptime[kCurrentStat] - m_uptime[kLastStat]) / 100.;
-        if (m_interval <= 1) {
-            m_interval = 2.;
-        }
-        Q_EMIT uptimeInfoUpdated(uptime / 101);
-    }
-
-    b = SystemStat::readCPUStats(cpuStat, cpuStatMap);
-    if (b) {
-        m_cpuStat[kLastStat] = m_cpuStat[kCurrentStat];
-        m_cpuStat[kCurrentStat] = cpuStat;
-        m_cpuStatMap[kLastStat] = m_cpuStatMap[kCurrentStat];
-        m_cpuStatMap[kCurrentStat] = cpuStatMap;
-
-        auto cpuPecent = calcCPUUsage(m_cpuStat[kLastStat], m_cpuStat[kCurrentStat]);
-        auto cpuSeparatorUsage = calcSeparatorCpuUsage(m_cpuStat[kLastStat], m_cpuStat[kCurrentStat]);
-
-        QList<double> cpuPecents;
-        QList<cpu_usage> cpuUsageList;
-        for (auto i = 0; i < cpuStatMap.size(); i++) {
-            auto &cur = m_cpuStatMap[kCurrentStat][i];
-            auto &prev = m_cpuStatMap[kLastStat][i];
-            auto cpp = calcCPUUsage(prev, cur);
-            cpuPecents << cpp;
-            auto cppL = calcSeparatorCpuUsage(prev, cur);
-            cpuUsageList << cppL;
+    if (DDEIstateMenuSettings::inst()->isEnableCpu()) {
+        b = SystemStat::readUpTime(uptime);
+        if (b) {
+            m_uptime[kLastStat] = m_uptime[kCurrentStat];
+            m_uptime[kCurrentStat] = uptime;
+            m_interval = (m_uptime[kCurrentStat] - m_uptime[kLastStat]) / 100.;
+            if (m_interval <= 1) {
+                m_interval = 2.;
+            }
+            Q_EMIT uptimeInfoUpdated(uptime / 101);
         }
 
-        Q_EMIT cpuStatInfoUpdated(cpuPecent * 100., cpuPecents, cpuSeparatorUsage, cpuUsageList);
-    }
+        b = SystemStat::readCPUStats(cpuStat, cpuStatMap);
+        if (b) {
+            m_cpuStat[kLastStat] = m_cpuStat[kCurrentStat];
+            m_cpuStat[kCurrentStat] = cpuStat;
+            m_cpuStatMap[kLastStat] = m_cpuStatMap[kCurrentStat];
+            m_cpuStatMap[kCurrentStat] = cpuStatMap;
 
-    qreal loadAvg1, loadAvg5, loadAvg15;
-    b = SystemStat::readLoadAvg(loadAvg1, loadAvg5, loadAvg15);
-    if (b) {
-        Q_EMIT loadAvgInfoUpdated(loadAvg1, loadAvg5, loadAvg15);
-    }
+            auto cpuPecent = calcCPUUsage(m_cpuStat[kLastStat], m_cpuStat[kCurrentStat]);
+            auto cpuSeparatorUsage = calcSeparatorCpuUsage(m_cpuStat[kLastStat], m_cpuStat[kCurrentStat]);
 
-    b = SystemStat::readMemStats(memStat);
-    if (b) {
-        if (memStat->swap_total_kb > 0) {
-            Q_EMIT memStatInfoUpdated(
-                memStat->mem_total_kb - memStat->mem_avail_kb,
-                memStat->mem_total_kb,
-                memStat->swap_total_kb - memStat->swap_free_kb,
-                memStat->swap_total_kb,
-                *memStat
-            );
-        } else {
-            Q_EMIT memStatInfoUpdated(
-                memStat->mem_total_kb - memStat->mem_avail_kb,
-                memStat->mem_total_kb,
-                0,
-                0,
-                *memStat
-            );
+            QList<double> cpuPecents;
+            QList<cpu_usage> cpuUsageList;
+            for (auto i = 0; i < cpuStatMap.size(); i++) {
+                auto &cur = m_cpuStatMap[kCurrentStat][i];
+                auto &prev = m_cpuStatMap[kLastStat][i];
+                auto cpp = calcCPUUsage(prev, cur);
+                cpuPecents << cpp;
+                auto cppL = calcSeparatorCpuUsage(prev, cur);
+                cpuUsageList << cppL;
+            }
+
+            Q_EMIT cpuStatInfoUpdated(cpuPecent * 100., cpuPecents, cpuSeparatorUsage, cpuUsageList);
+        }
+
+        qreal loadAvg1, loadAvg5, loadAvg15;
+        b = SystemStat::readLoadAvg(loadAvg1, loadAvg5, loadAvg15);
+        if (b) {
+            Q_EMIT loadAvgInfoUpdated(loadAvg1, loadAvg5, loadAvg15);
         }
     }
 
-    QList<TempInfo> infoList;
-    b = SystemStat::readTemp(infoList);
-    if (b) {
-        Q_EMIT tempInfoUpdated(infoList);
-    }
-
-    QList<PowerConsumption> pcList;
-    b = readPowerConsumption(pcList);
-    if (b) {
-        Q_EMIT powerInfoUpdated(pcList);
-    }
-
-    b = SystemStat::readDiskIOStats(iostat, iostatMap);
-    if (b) {
-        m_ioStat[kLastStat] = m_ioStat[kCurrentStat];
-        m_ioStat[kCurrentStat] = iostat;
-
-        qulonglong cr {}, cw {}, cd {}, pr {}, pw {}, pd {};
-        if (!m_ioStat[kCurrentStat].isNull()) {
-            cr = m_ioStat[kCurrentStat]->read_sectors;
-            cw = m_ioStat[kCurrentStat]->write_sectors;
-            cd = m_ioStat[kCurrentStat]->discard_sectors;
-        }
-        if (!m_ioStat[kLastStat].isNull()) {
-            pr = m_ioStat[kLastStat]->read_sectors;
-            pw = m_ioStat[kLastStat]->write_sectors;
-            pd = m_ioStat[kLastStat]->discard_sectors;
-        }
-
-        auto rdiff = (cr > pr) ? (cr - pr) : 0;
-        auto wdiff = (cw > pw) ? (cw - pw) : 0;
-        auto ddiff = (cd > pd) ? (cd - pd) : 0;
-
-        auto rsize = rdiff * SECTOR_SIZE;
-        auto wsize = (wdiff + ddiff) * SECTOR_SIZE;
-
-        Q_EMIT diskStatInfoUpdated(rsize / m_interval, wsize / m_interval);
-    }
-
-    b = SystemStat::readNetIfStats(ifstat, ifstatMap);
-    if (b) {
-        m_ifStat[kLastStat] = m_ifStat[kCurrentStat];
-        m_ifStat[kCurrentStat] = ifstat;
-
-        qulonglong prxb {}, ptxb{}, crxb {}, ctxb {};
-        if (!m_ifStat[kCurrentStat].isNull()) {
-            crxb = m_ifStat[kCurrentStat]->rx_bytes;
-            ctxb = m_ifStat[kCurrentStat]->tx_bytes;
-        }
-        if (!m_ifStat[kLastStat].isNull()) {
-            prxb = m_ifStat[kLastStat]->rx_bytes;
-            ptxb = m_ifStat[kLastStat]->tx_bytes;
-        }
-
-        auto rxdiff = (crxb > prxb) ? (crxb - prxb) : 0;
-        auto txdiff = (ctxb > ptxb) ? (ctxb - ptxb) : 0;
-
-        Q_EMIT networkStatInfoUpdated(
-            crxb,
-            ctxb,
-            rxdiff / m_interval,   // Bps
-            txdiff / m_interval);  // Bps
-    }
-
-    // clear id/name map cache in every cycle in case user change uid/gid on the fly
-    m_uidCache.clear();
-    m_gidCache.clear();
-
-    m_procMap[kLastStat] = m_procMap[kCurrentStat];
-    m_procEntryMap.clear();
-
-    m_pidCtoPMapping.clear();
-    m_pidPtoCMapping.clear();
-
-    m_gioPIDMapping.clear();
-    m_gioDesktopMapping.clear();
-    m_gioRevPIDMapping.clear();
-
-    m_trayPIDToWndMap.clear();
-    m_guiPIDList.clear();
-    m_appList.clear();
-
-    m_wm->updateWindowInfos();
-    m_guiPIDList = m_wm->getWindowPids();
-
-    auto trayProcessXids = Utils::getTrayWindows();
-    for (auto xid : trayProcessXids) {
-        auto pid = m_wm->getWindowPid(xid);
-        m_trayPIDToWndMap[pid] = xid;
-    }
-
-    // Update process's network status.
-    NetworkTrafficFilter::Update update {};
-    m_procNetIO.clear();
-
-    while (NetworkTrafficFilter::getRowUpdate(update)) {
-        if (update.action != NETHOGS_APP_ACTION_REMOVE) {
-            auto pidIO = NetIO(new net_io{});
-            pidIO->recvBps = qreal(update.record.recv_kbs) * 1024;
-            pidIO->sentBps = qreal(update.record.sent_kbs) * 1024;
-            pidIO->recvBytes = update.record.recv_bytes;
-            pidIO->sentBytes = update.record.sent_bytes;
-
-            m_procNetIO[update.record.pid] = pidIO;
+    if (DDEIstateMenuSettings::inst()->isEnableRam()) {
+        b = SystemStat::readMemStats(memStat);
+        if (b) {
+            if (memStat->swap_total_kb > 0) {
+                Q_EMIT memStatInfoUpdated(
+                        memStat->mem_total_kb - memStat->mem_avail_kb,
+                        memStat->mem_total_kb,
+                        memStat->swap_total_kb - memStat->swap_free_kb,
+                        memStat->swap_total_kb,
+                        *memStat
+                );
+            } else {
+                Q_EMIT memStatInfoUpdated(
+                        memStat->mem_total_kb - memStat->mem_avail_kb,
+                        memStat->mem_total_kb,
+                        0,
+                        0,
+                        *memStat
+                );
+            }
         }
     }
 
-    b = ProcessStat::readProcStats(readProcStatsCallback, this);
-
-    // filter duplicate processes with same name (eg: dman, uos browser like apps with chrome engine biltin)
-    // within appList if current display mode is onlyGUI
-    decltype(m_appList) filteredAppList {};
-    std::function<bool(pid_t ppid)> anyRootIsGuiProc;
-    anyRootIsGuiProc = [&](pid_t ppid) -> bool {
-        bool b;
-        b = m_guiPIDList.contains(ppid);
-        if (!b && m_pidCtoPMapping.contains(ppid))
-        {
-            b = anyRootIsGuiProc(m_pidCtoPMapping[ppid]);
+    if (DDEIstateMenuSettings::inst()->isEnableSensors()) {
+        QList<TempInfo> infoList;
+        b = SystemStat::readTemp(infoList);
+        if (b) {
+            Q_EMIT tempInfoUpdated(infoList);
         }
-        return b;
-    };
-    if (m_filterType == OnlyGUI) {
-        for (auto app : m_appList) {
-            if (m_guiPIDList.contains(app))
-                continue;
 
-            auto isCmdInList = [ = ](QByteArray cmd) {
+        QList<PowerConsumption> pcList;
+        b = readPowerConsumption(pcList);
+        if (b) {
+            Q_EMIT powerInfoUpdated(pcList);
+        }
+    }
+
+    if (DDEIstateMenuSettings::inst()->isEnableDisk()) {
+        b = SystemStat::readDiskIOStats(iostat, iostatMap);
+        if (b) {
+            m_ioStat[kLastStat] = m_ioStat[kCurrentStat];
+            m_ioStat[kCurrentStat] = iostat;
+
+            qulonglong cr{}, cw{}, cd{}, pr{}, pw{}, pd{};
+            if (!m_ioStat[kCurrentStat].isNull()) {
+                cr = m_ioStat[kCurrentStat]->read_sectors;
+                cw = m_ioStat[kCurrentStat]->write_sectors;
+                cd = m_ioStat[kCurrentStat]->discard_sectors;
+            }
+            if (!m_ioStat[kLastStat].isNull()) {
+                pr = m_ioStat[kLastStat]->read_sectors;
+                pw = m_ioStat[kLastStat]->write_sectors;
+                pd = m_ioStat[kLastStat]->discard_sectors;
+            }
+
+            auto rdiff = (cr > pr) ? (cr - pr) : 0;
+            auto wdiff = (cw > pw) ? (cw - pw) : 0;
+            auto ddiff = (cd > pd) ? (cd - pd) : 0;
+
+            auto rsize = rdiff * SECTOR_SIZE;
+            auto wsize = (wdiff + ddiff) * SECTOR_SIZE;
+
+            Q_EMIT diskStatInfoUpdated(rsize / m_interval, wsize / m_interval);
+        }
+    }
+
+    if (DDEIstateMenuSettings::inst()->isEnableNetwork()) {
+        b = SystemStat::readNetIfStats(ifstat, ifstatMap);
+        if (b) {
+            m_ifStat[kLastStat] = m_ifStat[kCurrentStat];
+            m_ifStat[kCurrentStat] = ifstat;
+
+            qulonglong prxb{}, ptxb{}, crxb{}, ctxb{};
+            if (!m_ifStat[kCurrentStat].isNull()) {
+                crxb = m_ifStat[kCurrentStat]->rx_bytes;
+                ctxb = m_ifStat[kCurrentStat]->tx_bytes;
+            }
+            if (!m_ifStat[kLastStat].isNull()) {
+                prxb = m_ifStat[kLastStat]->rx_bytes;
+                ptxb = m_ifStat[kLastStat]->tx_bytes;
+            }
+
+            auto rxdiff = (crxb > prxb) ? (crxb - prxb) : 0;
+            auto txdiff = (ctxb > ptxb) ? (ctxb - ptxb) : 0;
+
+            Q_EMIT networkStatInfoUpdated(
+                    crxb,
+                    ctxb,
+                    rxdiff / m_interval,   // Bps
+                    txdiff / m_interval);  // Bps
+        }
+    }
+
+    if (DDEIstateMenuSettings::inst()->isEnableNetwork() || DDEIstateMenuSettings::inst()->isEnableRam() || DDEIstateMenuSettings::inst()->isEnableCpu()) {
+        // clear id/name map cache in every cycle in case user change uid/gid on the fly
+        m_uidCache.clear();
+        m_gidCache.clear();
+
+        m_procMap[kLastStat] = m_procMap[kCurrentStat];
+        m_procEntryMap.clear();
+
+        m_pidCtoPMapping.clear();
+        m_pidPtoCMapping.clear();
+
+        m_gioPIDMapping.clear();
+        m_gioDesktopMapping.clear();
+        m_gioRevPIDMapping.clear();
+
+        m_trayPIDToWndMap.clear();
+        m_guiPIDList.clear();
+        m_appList.clear();
+
+        m_wm->updateWindowInfos();
+        m_guiPIDList = m_wm->getWindowPids();
+
+        auto trayProcessXids = Utils::getTrayWindows();
+        for (auto xid : trayProcessXids) {
+            auto pid = m_wm->getWindowPid(xid);
+            m_trayPIDToWndMap[pid] = xid;
+        }
+
+        // Update process's network status.
+        NetworkTrafficFilter::Update update{};
+        m_procNetIO.clear();
+
+        while (NetworkTrafficFilter::getRowUpdate(update)) {
+            if (update.action != NETHOGS_APP_ACTION_REMOVE) {
+                auto pidIO = NetIO(new net_io{});
+                pidIO->recvBps = qreal(update.record.recv_kbs) * 1024;
+                pidIO->sentBps = qreal(update.record.sent_kbs) * 1024;
+                pidIO->recvBytes = update.record.recv_bytes;
+                pidIO->sentBytes = update.record.sent_bytes;
+
+                m_procNetIO[update.record.pid] = pidIO;
+            }
+        }
+
+        b = ProcessStat::readProcStats(readProcStatsCallback, this);
+
+        // filter duplicate processes with same name (eg: dman, uos browser like apps with chrome engine biltin)
+        // within appList if current display mode is onlyGUI
+        decltype(m_appList) filteredAppList{};
+        std::function<bool(pid_t ppid)> anyRootIsGuiProc;
+        anyRootIsGuiProc = [&](pid_t ppid) -> bool {
+            bool b;
+            b = m_guiPIDList.contains(ppid);
+            if (!b && m_pidCtoPMapping.contains(ppid)) {
+                b = anyRootIsGuiProc(m_pidCtoPMapping[ppid]);
+            }
+            return b;
+        };
+        if (m_filterType == OnlyGUI) {
+            for (auto app : m_appList) {
+                if (m_guiPIDList.contains(app))
+                    continue;
+
+                auto isCmdInList = [=](QByteArray cmd) {
+                    bool b = false;
+
+                    auto subCmd = cmd.mid(cmd.lastIndexOf('/') + 1);
+                    for (auto s : m_shellList) {
+                        if (subCmd.startsWith(s.toLocal8Bit())) {
+                            b = true;
+                            return b;
+                        }
+                    }
+                    for (auto s : m_scriptingList) {
+                        if (cmd.startsWith(s.toLocal8Bit())) {
+                            b = true;
+                            return b;
+                        }
+                    }
+                    return b;
+                };
+                auto cmd = m_procMap[kCurrentStat][app]->cmdline[0];
                 bool b = false;
+                if (cmd[0] == '/') {
+                    // cmd starts with full path
+                    b = isCmdInList(cmd);
+                } else {
+                    // cmd starts with raw name
+                    for (auto p : m_envPathList) {
+                        p = p.append('/').append(cmd); // e.g. /usr/bin/xxx2.7
 
-                auto subCmd = cmd.mid(cmd.lastIndexOf('/') + 1);
-                for (auto s : m_shellList) {
-                    if (subCmd.startsWith(s.toLocal8Bit())) {
-                        b = true;
-                        return b;
+                        b = isCmdInList(p);
+                        if (b) {
+                            break;
+                        }
                     }
                 }
-                for (auto s : m_scriptingList) {
-                    if (cmd.startsWith(s.toLocal8Bit())) {
-                        b = true;
-                        return b;
-                    }
+                if (b) {
+                    continue;
                 }
-                return b;
-            };
-            auto cmd = m_procMap[kCurrentStat][app]->cmdline[0];
-            bool b = false;
-            if (cmd[0] == '/') {
-                // cmd starts with full path
-                b = isCmdInList(cmd);
-            } else {
-                // cmd starts with raw name
-                for (auto p : m_envPathList) {
-                    p = p.append('/').append(cmd); // e.g. /usr/bin/xxx2.7
 
-                    b = isCmdInList(p);
-                    if (b) {
-                        break;
-                    }
-                }
-            }
-            if (b) {
-                continue;
-            }
-
-            if (m_pidCtoPMapping.contains(app) &&
+                if (m_pidCtoPMapping.contains(app) &&
                     anyRootIsGuiProc(m_pidCtoPMapping[app])) {
-                continue;
-            }
-
-            filteredAppList << app;
-        }
-    }
-
-    // check filterType
-    QList<ProcessEntry> filteredList{};
-    for (auto &pe : m_procEntryMap.values()) {
-        ++m_nprocs;
-
-        auto pid = pe.getPID();
-        auto uid = pe.getUID();
-        bool need = false;
-        if (m_filterType == AllProcess) {
-            need = true;
-        } else if (m_filterType == OnlyMe && m_euid == uid) {
-            need = true;
-        } else if (m_filterType == OnlyGUI
-                   && m_euid == uid
-                   && (m_trayPIDToWndMap.contains(pid)
-                       || m_guiPIDList.contains(pid)
-                       || filteredAppList.contains(pid))) {
-            need = true;
-
-            // =================================================================
-            // transfer all children(eg: chrome...) & wineserver.real(winapps) traffic into this process
-            // =================================================================
-            if (m_gioPIDMapping.contains(pid) && !m_trayPIDToWndMap.contains(pid)) {
-                // traffic from wineserver.real
-                auto mpid = m_gioPIDMapping[pid];
-                auto plist = m_gioRevPIDMapping.values(mpid);
-                for (auto p : plist) {
-                    auto xpe = m_procEntryMap[p];
-                    if (xpe.getName().contains("wineserver.real")) {
-                        pe.setRecvBps(pe.getRecvBps() + xpe.getRecvBps());
-                        pe.setRecvBytes(pe.getRecvBytes() + xpe.getRecvBytes());
-                        pe.setSentBps(pe.getSentBps() + xpe.getSentBps());
-                        pe.setSentBytes(pe.getSentBytes() + xpe.getSentBytes());
-
-                        xpe.setRecvBps(0);
-                        xpe.setRecvBytes(0);
-                        xpe.setSentBps(0);
-                        xpe.setSentBytes(0);
-                    }
+                    continue;
                 }
-            } else {
-                // traffic from children
-                NetIO sumIO = NetIO(new net_io{});
 
-                mergeSubProcNetIO(pid, sumIO);
-
-                pe.setRecvBps(sumIO->recvBps);
-                pe.setRecvBytes(sumIO->recvBytes);
-                pe.setSentBps(sumIO->sentBps);
-                pe.setSentBytes(sumIO->sentBytes);
+                filteredAppList << app;
             }
         }
 
-        if (need) {
-            filteredList << pe;
-        }
-    }
+        // check filterType
+        QList<ProcessEntry> filteredList{};
+        for (auto &pe : m_procEntryMap.values()) {
+            ++m_nprocs;
 
-    if (b && filteredList.size() > 0) {
-        Q_EMIT processListUpdated(filteredList);
-    }
-    if (m_procEntryMap.size() > 0) {
-        m_napps = m_guiPIDList.size() + filteredAppList.size() + m_trayPIDToWndMap.size();
-        Q_EMIT processSummaryUpdated(m_napps, m_nprocs - m_napps);
+            auto pid = pe.getPID();
+            auto uid = pe.getUID();
+            bool need = false;
+            if (m_filterType == AllProcess) {
+                need = true;
+            } else if (m_filterType == OnlyMe && m_euid == uid) {
+                need = true;
+            } else if (m_filterType == OnlyGUI
+                       && m_euid == uid
+                       && (m_trayPIDToWndMap.contains(pid)
+                           || m_guiPIDList.contains(pid)
+                           || filteredAppList.contains(pid))) {
+                need = true;
+
+                // =================================================================
+                // transfer all children(eg: chrome...) & wineserver.real(winapps) traffic into this process
+                // =================================================================
+                if (m_gioPIDMapping.contains(pid) && !m_trayPIDToWndMap.contains(pid)) {
+                    // traffic from wineserver.real
+                    auto mpid = m_gioPIDMapping[pid];
+                    auto plist = m_gioRevPIDMapping.values(mpid);
+                    for (auto p : plist) {
+                        auto xpe = m_procEntryMap[p];
+                        if (xpe.getName().contains("wineserver.real")) {
+                            pe.setRecvBps(pe.getRecvBps() + xpe.getRecvBps());
+                            pe.setRecvBytes(pe.getRecvBytes() + xpe.getRecvBytes());
+                            pe.setSentBps(pe.getSentBps() + xpe.getSentBps());
+                            pe.setSentBytes(pe.getSentBytes() + xpe.getSentBytes());
+
+                            xpe.setRecvBps(0);
+                            xpe.setRecvBytes(0);
+                            xpe.setSentBps(0);
+                            xpe.setSentBytes(0);
+                        }
+                    }
+                } else {
+                    // traffic from children
+                    NetIO sumIO = NetIO(new net_io{});
+
+                    mergeSubProcNetIO(pid, sumIO);
+
+                    pe.setRecvBps(sumIO->recvBps);
+                    pe.setRecvBytes(sumIO->recvBytes);
+                    pe.setSentBps(sumIO->sentBps);
+                    pe.setSentBytes(sumIO->sentBytes);
+                }
+            }
+
+            if (need) {
+                filteredList << pe;
+            }
+        }
+
+        if (b && filteredList.size() > 0) {
+            Q_EMIT processListUpdated(filteredList);
+        }
+        if (m_procEntryMap.size() > 0) {
+            m_napps = m_guiPIDList.size() + filteredAppList.size() + m_trayPIDToWndMap.size();
+            Q_EMIT processSummaryUpdated(m_napps, m_nprocs - m_napps);
+        }
     }
 }
 
@@ -886,6 +905,13 @@ void StatsCollector::mergeSubProcNetIO(pid_t ppid, NetIO &sum)
     sum->recvBytes += ppe.getRecvBytes();
     sum->sentBps += ppe.getSentBps();
     sum->sentBytes += ppe.getSentBytes();
+}
+
+StatsCollector *StatsCollector::instance() {
+    if (StatsCollector::instancePtr == nullptr) {
+        StatsCollector::instancePtr = new StatsCollector();
+    }
+    return StatsCollector::instancePtr;
 }
 
 #if 0

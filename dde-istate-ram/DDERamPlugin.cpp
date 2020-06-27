@@ -121,3 +121,7 @@ void DDERamPlugin::setRefreshInterval(int msec) {
 void DDERamPlugin::updateProcesses(QList<ProcessEntry> processEntries) {
     this->m_popupWidget->updateProcessList(processEntries);
 }
+
+void DDERamPlugin::reloadSettings() {
+
+}

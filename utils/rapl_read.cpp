@@ -108,15 +108,12 @@ static int open_msr(int core) {
     if (fd < 0) {
         if (errno == ENXIO) {
             fprintf(stderr, "rdmsr: No CPU %d\n", core);
-            exit(2);
         } else if (errno == EIO) {
             fprintf(stderr, "rdmsr: CPU %d doesn't support MSRs\n",
                     core);
-            exit(3);
         } else {
             perror("rdmsr:open");
             fprintf(stderr, "Trying to open %s\n", msr_filename);
-            exit(127);
         }
     }
 
@@ -443,6 +440,9 @@ static int rapl_msr(int cpu_model, QList<PowerConsumption>& pcList) {
 
     for(j=0;j<total_packages;j++) {
         fd=open_msr(package_map[j]);
+        if (fd < 0) {
+            return 1;
+        }
 
         /* Calculate the units used */
         result=read_msr(fd,msr_rapl_units);

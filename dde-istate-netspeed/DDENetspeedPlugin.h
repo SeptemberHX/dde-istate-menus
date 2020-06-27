@@ -54,6 +54,8 @@ public:
 
     void determineNetDevice(QMap<QString, QPair<ulong, ulong>> netTrafficMap);
 
+    void reloadSettings() override;
+
 private:
     QLabel *m_pluginWidget;
     IstateNetworkWidget *m_appletWidget;

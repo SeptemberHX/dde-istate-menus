@@ -4,30 +4,34 @@
 
 #include "DDEIstateMenuPlugin.h"
 #include "utils/network_traffic_filter.h"
+#include "DDEIstateMenuSettings.h"
 #include <QJsonObject>
 #include <QDebug>
 
 #define PLUGIN_STATE_KEY "enable"
 
 DDEIstateMenuPlugin::DDEIstateMenuPlugin(QObject *parent) : QObject(parent) {
-    m_statsCollector = new StatsCollector();
-    m_statsCollector->moveToThread(&m_workerThread);
-
-    connect(this->m_statsCollector, &StatsCollector::cpuStatInfoUpdated, this, &DDEIstateMenuPlugin::updateCpuUsage);
-    connect(this->m_statsCollector, &StatsCollector::processListUpdated, this, &DDEIstateMenuPlugin::updateProcessList);
-    connect(this->m_statsCollector, &StatsCollector::uptimeInfoUpdated, this, [this](qulonglong uptime) {
-        this->cpuPlugin->updateUptime(uptime);
+    connect(StatsCollector::instance(), &StatsCollector::cpuStatInfoUpdated, this, &DDEIstateMenuPlugin::updateCpuUsage);
+    connect(StatsCollector::instance(), &StatsCollector::processListUpdated, this, &DDEIstateMenuPlugin::updateProcessList);
+    connect(StatsCollector::instance(), &StatsCollector::uptimeInfoUpdated, this, [this](qulonglong uptime) {
+        if (DDEIstateMenuSettings::inst()->isEnableCpu()) {
+            this->cpuPlugin->updateUptime(uptime);
+        }
     });
-    connect(this->m_statsCollector, &StatsCollector::loadAvgInfoUpdated, this, [this](qreal loadAvg1, qreal loadAvg5, qreal loadAvg15) {
-        this->cpuPlugin->updateLoadAvg(loadAvg1, loadAvg5, loadAvg15);
+    connect(StatsCollector::instance(), &StatsCollector::loadAvgInfoUpdated, this, [this](qreal loadAvg1, qreal loadAvg5, qreal loadAvg15) {
+        if (DDEIstateMenuSettings::inst()->isEnableCpu()) {
+            this->cpuPlugin->updateLoadAvg(loadAvg1, loadAvg5, loadAvg15);
+        }
     });
-    connect(this->m_statsCollector, &StatsCollector::memStatInfoUpdated,
+    connect(StatsCollector::instance(), &StatsCollector::memStatInfoUpdated,
             this,[this](qulonglong usedMemory, qulonglong totalMemory, qulonglong usedSwap, qulonglong totalSwap, mem_stat memStat) {
-        this->ramPlugin->updateRamInfo(usedMemory * 100.0 / totalMemory, memStat);
+        if (DDEIstateMenuSettings::inst()->isEnableRam()) {
+            this->ramPlugin->updateRamInfo(usedMemory * 100.0 / totalMemory, memStat);
+        }
     });
-    connect(this->m_statsCollector, &StatsCollector::tempInfoUpdated, this, &DDEIstateMenuPlugin::updateTempInfo);
-    connect(this->m_statsCollector, &StatsCollector::powerInfoUpdated, this, [this](QList<PowerConsumption> pcList) {
-        if (!pcList.isEmpty()) {
+    connect(StatsCollector::instance(), &StatsCollector::tempInfoUpdated, this, &DDEIstateMenuPlugin::updateTempInfo);
+    connect(StatsCollector::instance(), &StatsCollector::powerInfoUpdated, this, [this](QList<PowerConsumption> pcList) {
+        if (!pcList.isEmpty() && DDEIstateMenuSettings::inst()->isEnableSensors()) {
             PowerConsumption pc = pcList.first();
             PowerConsumption targetPc {};
             targetPc.cores = pc.cores - this->prevPc.cores;
@@ -40,10 +44,6 @@ DDEIstateMenuPlugin::DDEIstateMenuPlugin(QObject *parent) : QObject(parent) {
             this->sensorPlugin->updatePowerConsumption(targetPc);
         }
     });
-
-    connect(&m_workerThread, &QThread::started, m_statsCollector, &StatsCollector::start);
-    connect(&m_workerThread, &QThread::finished, m_statsCollector, &QObject::deleteLater);
-    m_workerThread.start();
 }
 
 const QString DDEIstateMenuPlugin::pluginName() const {
@@ -143,28 +143,29 @@ QWidget *DDEIstateMenuPlugin::itemWidget(const QString &itemKey) {
 }
 
 void DDEIstateMenuPlugin::updateProcessList(QList<ProcessEntry> procList) {
-    QSet<pid_t> procIdSet;
-//    for (auto iter = procList.begin(); iter != procList.end(); ++iter) {
-//        if (procIdSet.contains(iter->getPID())) {
-//            procList.erase(iter);
-//        } else {
-//            procIdSet.insert(iter->getPID());
-//        }
-//    }
-
-    if (this->netspeedPlugin != nullptr) {
+    if (DDEIstateMenuSettings::inst()->isEnableNetwork()) {
         this->netspeedPlugin->updateProcesses(procList);
+    }
+
+    if (DDEIstateMenuSettings::inst()->isEnableCpu()) {
         this->cpuPlugin->updateProcesses(procList);
+    }
+
+    if (DDEIstateMenuSettings::inst()->isEnableRam()) {
         this->ramPlugin->updateProcesses(procList);
     }
 }
 
 void DDEIstateMenuPlugin::updateCpuUsage(qreal cpuPercent, const QList<double> cpuPercents, cpu_usage separatorUsage, QList<cpu_usage> cpuUsageList)
 {
-    this->cpuPlugin->addCpuUsage(cpuPercent, separatorUsage, cpuUsageList);
+    if (DDEIstateMenuSettings::inst()->isEnableCpu()) {
+        this->cpuPlugin->addCpuUsage(cpuPercent, separatorUsage, cpuUsageList);
+    }
 }
 
 void DDEIstateMenuPlugin::updateTempInfo(QList<TempInfo> tempInfoList) {
+    if (!DDEIstateMenuSettings::inst()->isEnableSensors()) return;
+
     std::sort(tempInfoList.begin(), tempInfoList.end(), [](const TempInfo& t1, const TempInfo& t2) {
         return t1.deviceName < t2.deviceName;
     });
@@ -177,4 +178,51 @@ void DDEIstateMenuPlugin::updateTempInfo(QList<TempInfo> tempInfoList) {
     }
     this->sensorPlugin->setCpuTemp(cpuTemp);
     this->sensorPlugin->updateTempInfos(tempInfoList);
+}
+
+void DDEIstateMenuPlugin::reloadSettings() {
+    if (DDEIstateMenuSettings::inst()->isEnableCpu() == this->cpuPlugin->pluginIsDisable()) {
+        if (this->cpuPlugin->pluginIsDisable()) {
+            this->m_proxyInter->itemAdded(this->cpuPlugin, this->cpuPlugin->pluginName());
+        } else {
+            m_proxyInter->itemRemoved(this->cpuPlugin, this->cpuPlugin->pluginName());
+        }
+    }
+    this->cpuPlugin->reloadSettings();
+
+    if (DDEIstateMenuSettings::inst()->isEnableRam() == this->ramPlugin->pluginIsDisable()) {
+        if (this->ramPlugin->pluginIsDisable()) {
+            this->m_proxyInter->itemAdded(this->ramPlugin, this->ramPlugin->pluginName());
+        } else {
+            m_proxyInter->itemRemoved(this->ramPlugin, this->ramPlugin->pluginName());
+        }
+    }
+    this->ramPlugin->reloadSettings();
+
+    if (DDEIstateMenuSettings::inst()->isEnableNetwork() == this->netspeedPlugin->pluginIsDisable()) {
+        if (this->netspeedPlugin->pluginIsDisable()) {
+            this->m_proxyInter->itemAdded(this->netspeedPlugin, this->netspeedPlugin->pluginName());
+        } else {
+            m_proxyInter->itemRemoved(this->netspeedPlugin, this->netspeedPlugin->pluginName());
+        }
+    }
+    this->netspeedPlugin->reloadSettings();
+
+    if (DDEIstateMenuSettings::inst()->isEnableSensors() == this->sensorPlugin->pluginIsDisable()) {
+        if (this->sensorPlugin->pluginIsDisable()) {
+            this->m_proxyInter->itemAdded(this->sensorPlugin, this->sensorPlugin->pluginName());
+        } else {
+            m_proxyInter->itemRemoved(this->sensorPlugin, this->ramPlugin->pluginName());
+        }
+    }
+    this->sensorPlugin->reloadSettings();
+
+    if (DDEIstateMenuSettings::inst()->isEnableDatetime() == this->datetimePlugin->pluginIsDisable()) {
+        if (this->datetimePlugin->pluginIsDisable()) {
+            this->m_proxyInter->itemAdded(this->datetimePlugin, this->datetimePlugin->pluginName());
+        } else {
+            m_proxyInter->itemRemoved(this->datetimePlugin, this->datetimePlugin->pluginName());
+        }
+    }
+    this->datetimePlugin->reloadSettings();
 }

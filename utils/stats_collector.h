@@ -52,7 +52,7 @@ class StatsCollector : public QObject
     Q_OBJECT
 
 public:
-    explicit StatsCollector(QObject *parent = nullptr);
+    static StatsCollector* instance();
 
 Q_SIGNALS:
     void cpuStatInfoUpdated(qreal cpuPercent, const QList<double> cpuPercents, cpu_usage separatorUsage, QList<cpu_usage> cpuUsageList);
@@ -82,6 +82,7 @@ public Q_SLOTS:
     void setFilterType(FilterType type);
 
 private:
+    explicit StatsCollector(QObject *parent = nullptr);
     qreal calcProcCPUStats(ProcStat &prev,
                            ProcStat &cur,
                            CPUStat &prevCPU,        // prev total cpu stat
@@ -99,6 +100,8 @@ private:
     void mergeSubProcNetIO(pid_t ppid, NetIO &sum);
 
 private:
+    static StatsCollector *instancePtr;
+    QThread m_workerThread;
     enum StatIndex { kLastStat = 0, kCurrentStat = 1, kStatCount = kCurrentStat + 1 };
 
     FilterType m_filterType {AllProcess};

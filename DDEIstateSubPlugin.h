@@ -11,6 +11,7 @@ class DDEIstateSubPlugin {
 public:
     virtual void refreshData() = 0;
     virtual void setRefreshInterval(int msec) = 0;
+    virtual void reloadSettings() = 0;
 };
 
 

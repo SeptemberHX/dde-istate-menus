@@ -24,13 +24,14 @@
 
 #include <dde-dock/pluginsiteminterface.h>
 #include "datetimewidget.h"
+#include "../DDEIstateSubPlugin.h"
 
 #include <QTimer>
 #include <QLabel>
 #include <QSettings>
 
 class QDBusInterface;
-class DatetimePlugin : public QObject, public PluginsItemInterface
+class DatetimePlugin : public QObject, public PluginsItemInterface, public DDEIstateSubPlugin
 {
 Q_OBJECT
     Q_INTERFACES(PluginsItemInterface)
@@ -55,6 +56,12 @@ public:
     const QString itemContextMenu(const QString &itemKey) override;
 
     void invokedMenuItem(const QString &itemKey, const QString &menuId, const bool checked) override;
+
+    void refreshData() override;
+
+    void setRefreshInterval(int msec) override;
+
+    void reloadSettings() override;
 
 private slots:
     void updateCurrentTimeString();

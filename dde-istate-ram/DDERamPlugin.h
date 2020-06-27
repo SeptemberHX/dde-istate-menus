@@ -50,6 +50,8 @@ public:
 
     void setRefreshInterval(int msec) override;
 
+    void reloadSettings() override;
+
 private:
     DDERamItemWidget *m_pluginWidget;
     QLabel *m_tipWidget;

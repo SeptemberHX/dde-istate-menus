@@ -44,6 +44,8 @@ public:
     const QString pluginDisplayName() const override;
     void pluginSettingsChanged() override;
 
+    void reloadSettings();
+
 //    int itemSortKey(const QString &itemKey) Q_DECL_OVERRIDE;
 //    void setSortKey(const QString &itemKey, const int order) Q_DECL_OVERRIDE;
 
@@ -53,9 +55,6 @@ private slots:
     void updateTempInfo(QList<TempInfo> tempInfoList);
 
 private:
-    StatsCollector *m_statsCollector {nullptr};
-
-    QThread m_workerThread;
     DDENetspeedPlugin *netspeedPlugin;
     DatetimePlugin *datetimePlugin;
     DDECpuPlugin *cpuPlugin;

@@ -38,8 +38,8 @@ void DDENetspeedTextWidget::paintEvent(QPaintEvent *e) {
     uploadRect.setBottom(rect().center().y() + 2);
     downloadRect.setTop(uploadRect.bottom() - 4);
 
-    painter.drawText(uploadRect, Qt::AlignBottom | Qt::AlignHCenter, getUploadBpsStr());
-    painter.drawText(downloadRect, Qt::AlignTop | Qt::AlignHCenter, getDownloadBpsStr());
+    painter.drawText(uploadRect, Qt::AlignBottom | Qt::AlignLeft, getUploadBpsStr());
+    painter.drawText(downloadRect, Qt::AlignTop | Qt::AlignLeft, getDownloadBpsStr());
 }
 
 QString DDENetspeedTextWidget::shortenDataSizeStr(QString dataSizeStr, int fixLength) const {

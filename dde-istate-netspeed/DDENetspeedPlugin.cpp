@@ -155,3 +155,7 @@ void DDENetspeedPlugin::determineNetDevice(QMap<QString, QPair<ulong, ulong>> da
         }
     }
 }
+
+void DDENetspeedPlugin::reloadSettings() {
+
+}
