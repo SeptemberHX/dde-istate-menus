@@ -1,4 +1,4 @@
-<svg width="19" height="55" xmlns="http://www.w3.org/2000/svg">
+<svg width="19" height="54.99999999999999" xmlns="http://www.w3.org/2000/svg">
  <!-- Created with Method Draw - http://github.com/duopixel/Method-Draw/ -->
 
  <g>
@@ -10,8 +10,8 @@
  </g>
  <g>
   <title>Layer 1</title>
-  <text style="cursor: move;" font-weight="bold" xml:space="preserve" text-anchor="start" font-family="'Courier New', Courier, monospace" font-size="24" id="svg_10" y="17.552578" x="2.122407" fill-opacity="null" stroke-opacity="null" stroke-width="0" stroke="#000" fill="#000000">S</text>
-  <text style="cursor: move;" font-weight="bold" xml:space="preserve" text-anchor="start" font-family="'Courier New', Courier, monospace" font-size="24" id="svg_11" y="34.614862" x="2.247406" fill-opacity="null" stroke-opacity="null" stroke-width="0" stroke="#000" fill="#000000">E</text>
-  <text style="cursor: move;" font-weight="bold" xml:space="preserve" text-anchor="start" font-family="'Courier New', Courier, monospace" font-size="24" id="svg_12" y="51.927143" x="2.372406" fill-opacity="null" stroke-opacity="null" stroke-width="0" stroke="#000" fill="#000000">N</text>
+  <text style="cursor: move;" font-weight="bold" xml:space="preserve" text-anchor="start" font-family="'Courier New', Courier, monospace" font-size="20" id="svg_10" y="17.388644" x="2.450276" fill-opacity="null" stroke-opacity="null" stroke-width="0" stroke="#000" fill="#000000">S</text>
+  <text style="cursor: move;" font-weight="bold" xml:space="preserve" text-anchor="start" font-family="'Courier New', Courier, monospace" font-size="20" id="svg_11" y="35.762403" x="2.903143" fill-opacity="null" stroke-opacity="null" stroke-width="0" stroke="#000" fill="#000000">E</text>
+  <text style="cursor: move;" font-weight="bold" xml:space="preserve" text-anchor="start" font-family="'Courier New', Courier, monospace" font-size="20" id="svg_12" y="53.074684" x="2.700275" fill-opacity="null" stroke-opacity="null" stroke-width="0" stroke="#000" fill="#000000">N</text>
  </g>
 </svg>

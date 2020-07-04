@@ -120,14 +120,12 @@
     <name>IstateNetworkWidget</name>
     <message>
         <location filename="../dde-istate-widgets/istatenetworkwidget.ui" line="26"/>
-        <location filename="../build-dde-istate-widgets-default-Debug/ui_istatenetworkwidget.h" line="243"/>
         <location filename="../cmake-build-debug/dde-istate-netspeed/dde_istate_netspeed_autogen/include/ui_istatenetworkwidget.h" line="590"/>
         <source>Form</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../dde-istate-widgets/istatenetworkwidget.ui" line="47"/>
-        <location filename="../build-dde-istate-widgets-default-Debug/ui_istatenetworkwidget.h" line="244"/>
         <location filename="../cmake-build-debug/dde-istate-netspeed/dde_istate_netspeed_autogen/include/ui_istatenetworkwidget.h" line="591"/>
         <source>NETWORK</source>
         <translation type="unfinished"></translation>
@@ -136,7 +134,6 @@
         <location filename="../dde-istate-widgets/istatenetworkwidget.ui" line="179"/>
         <location filename="../dde-istate-widgets/istatenetworkwidget.ui" line="380"/>
         <location filename="../dde-istate-widgets/istatenetworkwidget.ui" line="846"/>
-        <location filename="../build-dde-istate-widgets-default-Debug/ui_istatenetworkwidget.h" line="252"/>
         <location filename="../cmake-build-debug/dde-istate-netspeed/dde_istate_netspeed_autogen/include/ui_istatenetworkwidget.h" line="594"/>
         <location filename="../cmake-build-debug/dde-istate-netspeed/dde_istate_netspeed_autogen/include/ui_istatenetworkwidget.h" line="604"/>
         <location filename="../cmake-build-debug/dde-istate-netspeed/dde_istate_netspeed_autogen/include/ui_istatenetworkwidget.h" line="631"/>
@@ -145,7 +142,6 @@
     </message>
     <message>
         <location filename="../dde-istate-widgets/istatenetworkwidget.ui" line="186"/>
-        <location filename="../build-dde-istate-widgets-default-Debug/ui_istatenetworkwidget.h" line="253"/>
         <location filename="../cmake-build-debug/dde-istate-netspeed/dde_istate_netspeed_autogen/include/ui_istatenetworkwidget.h" line="595"/>
         <source>0.50 KB/s</source>
         <translation type="unfinished"></translation>
@@ -154,7 +150,6 @@
         <location filename="../dde-istate-widgets/istatenetworkwidget.ui" line="196"/>
         <location filename="../dde-istate-widgets/istatenetworkwidget.ui" line="292"/>
         <location filename="../dde-istate-widgets/istatenetworkwidget.ui" line="892"/>
-        <location filename="../build-dde-istate-widgets-default-Debug/ui_istatenetworkwidget.h" line="254"/>
         <location filename="../cmake-build-debug/dde-istate-netspeed/dde_istate_netspeed_autogen/include/ui_istatenetworkwidget.h" line="596"/>
         <location filename="../cmake-build-debug/dde-istate-netspeed/dde_istate_netspeed_autogen/include/ui_istatenetworkwidget.h" line="600"/>
         <location filename="../cmake-build-debug/dde-istate-netspeed/dde_istate_netspeed_autogen/include/ui_istatenetworkwidget.h" line="635"/>
@@ -163,7 +158,6 @@
     </message>
     <message>
         <location filename="../dde-istate-widgets/istatenetworkwidget.ui" line="203"/>
-        <location filename="../build-dde-istate-widgets-default-Debug/ui_istatenetworkwidget.h" line="255"/>
         <location filename="../cmake-build-debug/dde-istate-netspeed/dde_istate_netspeed_autogen/include/ui_istatenetworkwidget.h" line="597"/>
         <source>3.00KB/s</source>
         <translation type="unfinished"></translation>
@@ -182,45 +176,8 @@
     </message>
     <message>
         <location filename="../dde-istate-widgets/istatenetworkwidget.ui" line="732"/>
-        <location filename="../build-dde-istate-widgets-default-Debug/ui_istatenetworkwidget.h" line="257"/>
         <location filename="../cmake-build-debug/dde-istate-netspeed/dde_istate_netspeed_autogen/include/ui_istatenetworkwidget.h" line="623"/>
         <source>PROCESSES</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../build-dde-istate-widgets-default-Debug/ui_istatenetworkwidget.h" line="245"/>
-        <source>Public Ip</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../build-dde-istate-widgets-default-Debug/ui_istatenetworkwidget.h" line="246"/>
-        <source>78.13.198.130</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../build-dde-istate-widgets-default-Debug/ui_istatenetworkwidget.h" line="247"/>
-        <location filename="../build-dde-istate-widgets-default-Debug/ui_istatenetworkwidget.h" line="248"/>
-        <source>AAA</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../build-dde-istate-widgets-default-Debug/ui_istatenetworkwidget.h" line="249"/>
-        <source>Wi-Fi</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../build-dde-istate-widgets-default-Debug/ui_istatenetworkwidget.h" line="250"/>
-        <source>Connected</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../build-dde-istate-widgets-default-Debug/ui_istatenetworkwidget.h" line="251"/>
-        <source>192.168.0.9</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../build-dde-istate-widgets-default-Debug/ui_istatenetworkwidget.h" line="256"/>
-        <source>NOT CONNECTED</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -370,7 +327,6 @@
     <name>MainWindow</name>
     <message>
         <location filename="../dde-istate-widgets/mainwindow.ui" line="13"/>
-        <location filename="../build-dde-istate-widgets-default-Debug/ui_mainwindow.h" line="55"/>
         <source>MainWindow</source>
         <translation type="unfinished"></translation>
     </message>
