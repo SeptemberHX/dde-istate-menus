@@ -17,7 +17,7 @@ DWIDGET_USE_NAMESPACE
 DDENetspeedTextWidget::DDENetspeedTextWidget(QWidget *parent)
         : QWidget(parent) {
     setMinimumSize(PLUGIN_BACKGROUND_MIN_SIZE, PLUGIN_BACKGROUND_MIN_SIZE);
-    this->setFixedHeight(34);
+    this->setFixedHeight(24);
 }
 
 QSize DDENetspeedTextWidget::sizeHint() const {
@@ -28,7 +28,6 @@ void DDENetspeedTextWidget::paintEvent(QPaintEvent *e) {
     QPainter painter(this);
     this->curSize();
     painter.setRenderHint(QPainter::Antialiasing);
-
     painter.setFont(this->m_font);
     painter.setPen(QPen(palette().brightText(), 1));
 
@@ -36,7 +35,7 @@ void DDENetspeedTextWidget::paintEvent(QPaintEvent *e) {
     QRect downloadRect = rect();
 
     uploadRect.setBottom(rect().center().y() + 2);
-    downloadRect.setTop(uploadRect.bottom() - 4);
+    downloadRect.setTop(uploadRect.bottom() - 2);
 
     painter.drawText(uploadRect, Qt::AlignBottom | Qt::AlignLeft, getUploadBpsStr());
     painter.drawText(downloadRect, Qt::AlignTop | Qt::AlignLeft, getDownloadBpsStr());
@@ -81,7 +80,7 @@ QSize DDENetspeedTextWidget::curSize() const {
 
     if (position == Dock::Top || position == Dock::Bottom) {
         while (QFontMetrics(m_font).boundingRect(uploadStr).size().height() +
-               QFontMetrics(m_font).boundingRect(downloadStr).size().height() > height()) {
+               QFontMetrics(m_font).boundingRect(downloadStr).size().height() > height() + 2) {
             m_font.setPixelSize(m_font.pixelSize() - 1);
         }
     } else {

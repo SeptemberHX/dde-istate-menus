@@ -7,8 +7,8 @@
 
 DDECpuPlotItemWidget::DDECpuPlotItemWidget(QWidget *parent)
     : QLabel(parent)
-    , historySize(40)
-    , maxValue(24)      // 1, 2, ..., maxValue
+    , historySize(35)
+    , maxValue(20)      // 1, 2, ..., maxValue
 {
     this->setFixedSize(historySize + 2, maxValue + 2);
 

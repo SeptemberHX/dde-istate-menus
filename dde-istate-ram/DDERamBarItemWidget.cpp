@@ -9,8 +9,8 @@
 DDERamBarItemWidget::DDERamBarItemWidget(QWidget *parent)
     : QLabel(parent)
     , percent(0)
-    , maxValue(24)
-    , width(10)
+    , maxValue(20)
+    , width(8)
 {
     this->setFixedSize(width + 2, maxValue + 2);
 }

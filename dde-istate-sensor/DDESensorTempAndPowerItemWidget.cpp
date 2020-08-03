@@ -14,7 +14,7 @@ DDESensorTempAndPowerItemWidget::DDESensorTempAndPowerItemWidget(QWidget *parent
     , temperature(0)
     , powerConsumption(0)
 {
-    this->setFixedSize(34, 32);
+    this->setFixedSize(34, 24);
 }
 
 void DDESensorTempAndPowerItemWidget::setTempAndPower(qreal percent, qreal powerConsumption) {
@@ -29,7 +29,7 @@ void DDESensorTempAndPowerItemWidget::paintEvent(QPaintEvent *event) {
 
     QFont font = DFontSizeManager::instance()->t4();
     while (QFontMetrics(font).boundingRect(tempStr).size().height() +
-           QFontMetrics(font).boundingRect(powerConStr).size().height() > height() + 8) {
+           QFontMetrics(font).boundingRect(powerConStr).size().height() > height() + 4) {
         font.setPixelSize(font.pixelSize() - 1);
     }
 

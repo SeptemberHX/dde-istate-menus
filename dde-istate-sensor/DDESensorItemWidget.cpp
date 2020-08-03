@@ -23,9 +23,9 @@ DDESensorItemWidget::DDESensorItemWidget(QWidget *parent)
     this->m_label->setAlignment(Qt::AlignCenter);
     auto image = QImage(":/icons/sensor-dark.svg");
     image.setDevicePixelRatio(this->devicePixelRatioF());
-    image = image.scaled(10 * this->devicePixelRatio(), 28 * this->devicePixelRatio(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    image = image.scaled(10 * this->devicePixelRatio(), 22 * this->devicePixelRatio(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
 
-    this->m_label->setFixedSize(10, 28);
+    this->m_label->setFixedSize(10, 22);
     this->m_label->setPixmap(QPixmap::fromImage(image));
 }
 
