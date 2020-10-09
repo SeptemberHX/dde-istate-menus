@@ -108,5 +108,5 @@ make
 #### For sensors ability
 
 1. Sensors are based on `lm-sensors` and `msr`
-2. make sure run `sensor-detect` and give the right permission with `setcap`
+2. make sure run `sensors-detect` and give the right permission with `setcap`
 3. make sure run `modprobe msr`
