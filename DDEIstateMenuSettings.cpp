@@ -3,6 +3,7 @@
 //
 
 #include "DDEIstateMenuSettings.h"
+#include <QSettings>
 
 DDEIstateMenuSettings* DDEIstateMenuSettings::instance = nullptr;
 
@@ -13,21 +14,20 @@ DDEIstateMenuSettings *DDEIstateMenuSettings::inst() {
     return instance;
 }
 
-DDEIstateMenuSettings::DDEIstateMenuSettings()
-    : enableCpu(true)
-    , enableCpuLabel(true)
-    , enableDatetime(true)
-    , enableDatetimeLabel(true)
-    , enableDisk(true)
-    , enableDiskLabel(true)
-    , enableNetwork(true)
-    , enableNetworkLabel(true)
-    , enableRam(true)
-    , enableRamLabel(true)
-    , enableSensors(true)
-    , enableSensorsLabel(true)
-{
-
+DDEIstateMenuSettings::DDEIstateMenuSettings() {
+    QSettings settings("dde-istate-menus", "dde-istate-menus");
+    this->enableCpu = settings.value("plugins/cpu", true).toBool();
+    this->enableCpuLabel = settings.value("plugins/cpuLabel", true).toBool();
+    this->enableDatetime = settings.value("plugins/datetime", true).toBool();
+    this->enableDatetimeLabel = settings.value("plugins/datetimeLabel", true).toBool();
+    this->enableDisk = settings.value("plugins/disk", true).toBool();
+    this->enableDiskLabel = settings.value("plugins/diskLabel", true).toBool();
+    this->enableNetwork = settings.value("plugins/network", true).toBool();
+    this->enableNetworkLabel = settings.value("plugins/networkLabel", true).toBool();
+    this->enableRam = settings.value("plugins/ram", true).toBool();
+    this->enableRamLabel = settings.value("plugins/ramLabel", true).toBool();
+    this->enableSensors = settings.value("plugins/sensors", true).toBool();
+    this->enableSensorsLabel = settings.value("plugins/sensorsLabel", true).toBool();
 }
 
 bool DDEIstateMenuSettings::isEnableSensors() const {

@@ -72,11 +72,7 @@ void DDEIstateMenuPlugin::init(PluginProxyInterface *proxyInter) {
 
     if (!pluginIsDisable()) {
 //        this->m_proxyInter->itemAdded(this, this->pluginName());
-        this->m_proxyInter->itemAdded(this->netspeedPlugin, this->netspeedPlugin->pluginName());
-        this->m_proxyInter->itemAdded(this->datetimePlugin, this->datetimePlugin->pluginName());
-        this->m_proxyInter->itemAdded(this->cpuPlugin, this->cpuPlugin->pluginName());
-        this->m_proxyInter->itemAdded(this->ramPlugin, this->ramPlugin->pluginName());
-        this->m_proxyInter->itemAdded(this->sensorPlugin, this->sensorPlugin->pluginName());
+        this->reloadSettings();
     }
 }
 
@@ -181,8 +177,8 @@ void DDEIstateMenuPlugin::updateTempInfo(QList<TempInfo> tempInfoList) {
 }
 
 void DDEIstateMenuPlugin::reloadSettings() {
-    if (DDEIstateMenuSettings::inst()->isEnableCpu() == this->cpuPlugin->pluginIsDisable()) {
-        if (this->cpuPlugin->pluginIsDisable()) {
+    if (DDEIstateMenuSettings::inst()->isEnableCpu() != this->cpuPlugin->pluginIsDisable()) {
+        if (!this->cpuPlugin->pluginIsDisable()) {
             this->m_proxyInter->itemAdded(this->cpuPlugin, this->cpuPlugin->pluginName());
         } else {
             m_proxyInter->itemRemoved(this->cpuPlugin, this->cpuPlugin->pluginName());
@@ -190,8 +186,8 @@ void DDEIstateMenuPlugin::reloadSettings() {
     }
     this->cpuPlugin->reloadSettings();
 
-    if (DDEIstateMenuSettings::inst()->isEnableRam() == this->ramPlugin->pluginIsDisable()) {
-        if (this->ramPlugin->pluginIsDisable()) {
+    if (DDEIstateMenuSettings::inst()->isEnableRam() != this->ramPlugin->pluginIsDisable()) {
+        if (!this->ramPlugin->pluginIsDisable()) {
             this->m_proxyInter->itemAdded(this->ramPlugin, this->ramPlugin->pluginName());
         } else {
             m_proxyInter->itemRemoved(this->ramPlugin, this->ramPlugin->pluginName());
@@ -199,8 +195,8 @@ void DDEIstateMenuPlugin::reloadSettings() {
     }
     this->ramPlugin->reloadSettings();
 
-    if (DDEIstateMenuSettings::inst()->isEnableNetwork() == this->netspeedPlugin->pluginIsDisable()) {
-        if (this->netspeedPlugin->pluginIsDisable()) {
+    if (DDEIstateMenuSettings::inst()->isEnableNetwork() != this->netspeedPlugin->pluginIsDisable()) {
+        if (!this->netspeedPlugin->pluginIsDisable()) {
             this->m_proxyInter->itemAdded(this->netspeedPlugin, this->netspeedPlugin->pluginName());
         } else {
             m_proxyInter->itemRemoved(this->netspeedPlugin, this->netspeedPlugin->pluginName());
@@ -217,8 +213,8 @@ void DDEIstateMenuPlugin::reloadSettings() {
     }
     this->sensorPlugin->reloadSettings();
 
-    if (DDEIstateMenuSettings::inst()->isEnableDatetime() == this->datetimePlugin->pluginIsDisable()) {
-        if (this->datetimePlugin->pluginIsDisable()) {
+    if (DDEIstateMenuSettings::inst()->isEnableDatetime() != this->datetimePlugin->pluginIsDisable()) {
+        if (!this->datetimePlugin->pluginIsDisable()) {
             this->m_proxyInter->itemAdded(this->datetimePlugin, this->datetimePlugin->pluginName());
         } else {
             m_proxyInter->itemRemoved(this->datetimePlugin, this->datetimePlugin->pluginName());
