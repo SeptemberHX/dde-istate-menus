@@ -115,7 +115,7 @@ make
 #### How to disable some sub-plugins ?
 
 It supports enable/disable sub-plugins by configuration file.
-Just make a new file names ~/.config/dde-istate-menus/dde-istate-menus.conf with contents below:
+Just make a new file names `~/.config/dde-istate-menus/dde-istate-menus.conf` with contents below:
 
 ```
 [plugins]
