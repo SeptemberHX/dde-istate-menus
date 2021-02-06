@@ -110,3 +110,21 @@ make
 1. Sensors are based on `lm-sensors` and `msr`
 2. make sure run `sensors-detect` and give the right permission with `setcap`
 3. make sure run `modprobe msr`
+
+
+#### How to disable some sub-plugins ?
+
+It supports enable/disable sub-plugins by configuration file.
+Just make a new file names ~/.config/dde-istate-menus/dde-istate-menus.conf with contents below:
+
+```
+[plugins]
+cpu=true
+datetime=true
+sensors=true
+ram=true
+network=true
+disk=true
+```
+
+Disable any sub-plugins by changing true to false, then restart `dde-dock` or `dde-top-panel`
