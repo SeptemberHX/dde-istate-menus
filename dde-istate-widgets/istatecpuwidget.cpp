@@ -1,6 +1,9 @@
 #include "istatecpuwidget.h"
 #include "ui_istatecpuwidget.h"
 
+#include <iostream>
+#include <QDebug>
+
 IstateCpuWidget::IstateCpuWidget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::IstateCpuWidget)
@@ -169,6 +172,7 @@ void IstateCpuWidget::addCpuUsage(cpu_usage avgUsage, QList<cpu_usage> cpuUsageL
 void IstateCpuWidget::redrawCpuCurve() {
     if (this->isHidden()) return;  // reduce useless cpu usage
 
+    std::cout << "======> Trying to redraw cpu usage curve ..." << std::endl;
     this->m_userSeries->clear();
     this->m_systemSeries->clear();
 
@@ -185,6 +189,7 @@ void IstateCpuWidget::redrawCpuCurve() {
     ui->cpuUserLabel->setText(QString("%1%").arg(QString::number(this->cpuUsageList.last().user * 100, 'f', 1)));
     ui->cpuSystemLabel->setText(QString("%1%").arg(QString::number(this->cpuUsageList.last().system * 100, 'f', 1)));
     ui->cpuIdleLabel->setText(QString("%1%").arg(QString::number(this->cpuUsageList.last().idle * 100, 'f', 1)));
+    std::cout << "======> Redraw cpu usage curve finished" << std::endl;
 }
 
 void IstateCpuWidget::showEvent(QShowEvent *event) {
@@ -238,6 +243,8 @@ void IstateCpuWidget::initCpuBarChart() {
 void IstateCpuWidget::redrawCpuBarCurve() {
     if (this->isHidden()) return;
 
+    std::cout << "======> Trying to redraw cpu bar curve ..." << std::endl;
+
     if (this->categories.size() != this->cpuUsageBarList.size()) {
         this->categories.clear();
         for (int i  = 0; i < this->cpuUsageBarList.size(); ++i) {
@@ -263,6 +270,8 @@ void IstateCpuWidget::redrawCpuBarCurve() {
         this->m_cpuSystemBarSet->append(i.system);
         this->m_cpuIdleBarSet->append(i.idle);
     }
+
+    std::cout << "======> Redraw cpu bar curve finished" << std::endl;
 }
 
 void IstateCpuWidget::updateProcesses(QList<ProcessEntry> entryList) {
@@ -275,6 +284,7 @@ void IstateCpuWidget::updateProcesses(QList<ProcessEntry> entryList) {
 
 void IstateCpuWidget::redrawProcesses() {
     if (this->isHidden()) return;
+    std::cout << "======> Trying to redraw cpu processes ..." << std::endl;
 
     int r;
     for (r = 0; r < ui->processGridLayout->rowCount() && r < this->entries.size(); ++r) {
@@ -298,6 +308,7 @@ void IstateCpuWidget::redrawProcesses() {
         label = dynamic_cast<QLabel*>(ui->processGridLayout->itemAtPosition(r, 3)->widget());
         label->clear();
     }
+    std::cout << "======> Redraw cpu processes finished" << std::endl;
 }
 
 void IstateCpuWidget::updateUptime(qulonglong uptime) {
@@ -308,6 +319,8 @@ void IstateCpuWidget::updateUptime(qulonglong uptime) {
 void IstateCpuWidget::redrawUptime() {
     if (this->isHidden()) return;
 
+    std::cout << "======> Trying to redraw uptime ..." << std::endl;
+
     int minutes = this->uptime / 60;
     int nowMinutes = minutes % 60;
     int hours = minutes / 60;
@@ -315,6 +328,8 @@ void IstateCpuWidget::redrawUptime() {
     int days = hours / 24;
 
     ui->uptimeLabel->setText(QString("%1 days, %2 hours, %3 minutes").arg(days).arg(nowHours).arg(nowMinutes));
+
+    std::cout << "======> Redraw uptime finished" << std::endl;
 }
 
 void IstateCpuWidget::updateLoadAvg(qreal loadAvg1, qreal loadAvg5, qreal loadAvg15) {
@@ -338,6 +353,8 @@ void IstateCpuWidget::updateLoadAvg(qreal loadAvg1, qreal loadAvg5, qreal loadAv
 
 void IstateCpuWidget::redrawLoadCurve() {
     if (this->isHidden()) return;
+
+    std::cout << "======> Trying to redraw system load curve ..." << std::endl;
 
     this->m_loadAvg1Series->clear();
     this->m_loadAvg5Series->clear();
@@ -368,4 +385,6 @@ void IstateCpuWidget::redrawLoadCurve() {
     ui->loadAvg1ValueLabel->setText(QString::number(this->loadAvg1List.last(), 'f', 2));
     ui->loadAvg5ValueLabel->setText(QString::number(this->loadAvg5List.last(), 'f', 2));
     ui->loadAvg15ValueLabel->setText(QString::number(this->loadAvg15List.last(), 'f', 2));
+
+    std::cout << "======> Redraw system load curve finished" << std::endl;
 }
