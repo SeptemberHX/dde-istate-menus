@@ -6,6 +6,8 @@
 #define DDE_ISTATE_MENUS_RAPL_READ_H
 
 #include <QList>
+#include <QDebug>
+#include <cmath>
 
 struct PowerConsumption {
     double package;
