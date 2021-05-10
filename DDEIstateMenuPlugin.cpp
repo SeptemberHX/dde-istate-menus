@@ -72,6 +72,13 @@ void DDEIstateMenuPlugin::init(PluginProxyInterface *proxyInter) {
 
     if (!pluginIsDisable()) {
 //        this->m_proxyInter->itemAdded(this, this->pluginName());
+        // force refresh status to make sure they keep the same as the config file
+        m_proxyInter->saveValue(this, PLUGIN_STATE_KEY, true);
+        m_proxyInter->saveValue(this->netspeedPlugin, PLUGIN_STATE_KEY, true);
+        m_proxyInter->saveValue(this->datetimePlugin, PLUGIN_STATE_KEY, true);
+        m_proxyInter->saveValue(this->cpuPlugin, PLUGIN_STATE_KEY, true);
+        m_proxyInter->saveValue(this->ramPlugin, PLUGIN_STATE_KEY, true);
+        m_proxyInter->saveValue(this->sensorPlugin, PLUGIN_STATE_KEY, true);
         this->reloadSettings();
     }
 }
@@ -103,11 +110,12 @@ void DDEIstateMenuPlugin::pluginStateSwitched() {
     }
 
 //    m_proxyInter->itemAdded(this, pluginName());
-    this->m_proxyInter->itemAdded(this->netspeedPlugin, this->netspeedPlugin->pluginName());
-    this->m_proxyInter->itemAdded(this->datetimePlugin, this->datetimePlugin->pluginName());
-    this->m_proxyInter->itemAdded(this->cpuPlugin, this->cpuPlugin->pluginName());
-    this->m_proxyInter->itemAdded(this->ramPlugin, this->ramPlugin->pluginName());
-    this->m_proxyInter->itemAdded(this->sensorPlugin, this->sensorPlugin->pluginName());
+//    this->m_proxyInter->itemAdded(this->netspeedPlugin, this->netspeedPlugin->pluginName());
+//    this->m_proxyInter->itemAdded(this->datetimePlugin, this->datetimePlugin->pluginName());
+//    this->m_proxyInter->itemAdded(this->cpuPlugin, this->cpuPlugin->pluginName());
+//    this->m_proxyInter->itemAdded(this->ramPlugin, this->ramPlugin->pluginName());
+//    this->m_proxyInter->itemAdded(this->sensorPlugin, this->sensorPlugin->pluginName());
+    this->reloadSettings();
 }
 
 const QString DDEIstateMenuPlugin::pluginDisplayName() const {
@@ -126,11 +134,12 @@ void DDEIstateMenuPlugin::pluginSettingsChanged() {
     }
 
 //    m_proxyInter->itemAdded(this, pluginName());
-    this->m_proxyInter->itemAdded(this->datetimePlugin, this->datetimePlugin->pluginName());
-    this->m_proxyInter->itemAdded(this->netspeedPlugin, this->netspeedPlugin->pluginName());
-    this->m_proxyInter->itemAdded(this->cpuPlugin, this->cpuPlugin->pluginName());
-    this->m_proxyInter->itemAdded(this->ramPlugin, this->ramPlugin->pluginName());
-    this->m_proxyInter->itemAdded(this->sensorPlugin, this->sensorPlugin->pluginName());
+//    this->m_proxyInter->itemAdded(this->datetimePlugin, this->datetimePlugin->pluginName());
+//    this->m_proxyInter->itemAdded(this->netspeedPlugin, this->netspeedPlugin->pluginName());
+//    this->m_proxyInter->itemAdded(this->cpuPlugin, this->cpuPlugin->pluginName());
+//    this->m_proxyInter->itemAdded(this->ramPlugin, this->ramPlugin->pluginName());
+//    this->m_proxyInter->itemAdded(this->sensorPlugin, this->sensorPlugin->pluginName());
+    this->reloadSettings();
 }
 
 QWidget *DDEIstateMenuPlugin::itemWidget(const QString &itemKey) {
@@ -204,11 +213,11 @@ void DDEIstateMenuPlugin::reloadSettings() {
     }
     this->netspeedPlugin->reloadSettings();
 
-    if (DDEIstateMenuSettings::inst()->isEnableSensors() == this->sensorPlugin->pluginIsDisable()) {
-        if (this->sensorPlugin->pluginIsDisable()) {
+    if (DDEIstateMenuSettings::inst()->isEnableSensors() != this->sensorPlugin->pluginIsDisable()) {
+        if (!this->sensorPlugin->pluginIsDisable()) {
             this->m_proxyInter->itemAdded(this->sensorPlugin, this->sensorPlugin->pluginName());
         } else {
-            m_proxyInter->itemRemoved(this->sensorPlugin, this->ramPlugin->pluginName());
+            m_proxyInter->itemRemoved(this->sensorPlugin, this->sensorPlugin->pluginName());
         }
     }
     this->sensorPlugin->reloadSettings();
