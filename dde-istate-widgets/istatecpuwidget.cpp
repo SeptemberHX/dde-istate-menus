@@ -360,6 +360,11 @@ void IstateCpuWidget::redrawLoadCurve() {
     this->m_loadAvg5Series->clear();
     this->m_loadAvg15Series->clear();
 
+    if (this->loadAvg1List.isEmpty() || this->loadAvg5List.isEmpty() || this->loadAvg15List.isEmpty()) {
+        std::cout << "======> Redraw system load curve finished due to empty list" << std::endl;
+        return;
+    }
+
     qreal maxAvg1 = *std::max_element(this->loadAvg1List.begin(), this->loadAvg1List.end());
     qreal maxAvg5 = *std::max_element(this->loadAvg5List.begin(), this->loadAvg5List.end());
     qreal maxAvg15 = *std::max_element(this->loadAvg15List.begin(), this->loadAvg15List.end());
