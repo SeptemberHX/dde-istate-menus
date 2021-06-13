@@ -16,6 +16,8 @@
 #include <QObject>
 #include <QLabel>
 #include <QThread>
+#include <QWidget>
+#include <QHBoxLayout>
 #include <QMap>
 
 class DDEIstateMenuPlugin : public QObject, public PluginsItemInterface {
@@ -35,6 +37,7 @@ public:
     // 插件初始化函数
     void init(PluginProxyInterface *proxyInter) override;
     QWidget *itemWidget(const QString &itemKey) override;
+    QWidget *itemPopupApplet(const QString &itemKey) override;
 
     bool pluginIsAllowDisable() override;
     bool pluginIsDisable() override;
@@ -45,6 +48,8 @@ public:
     void pluginSettingsChanged() override;
 
     void reloadSettings();
+
+    bool eventFilter(QObject *watched, QEvent *event) override;
 
 //    int itemSortKey(const QString &itemKey) Q_DECL_OVERRIDE;
 //    void setSortKey(const QString &itemKey, const int order) Q_DECL_OVERRIDE;
@@ -60,6 +65,10 @@ private:
     DDECpuPlugin *cpuPlugin;
     DDERamPlugin *ramPlugin;
     DDESensorPlugin *sensorPlugin;
+
+    QWidget *p_itemWidget;
+    QWidget *popupWidget;
+    QHBoxLayout *itemLayout;
 
     PowerConsumption prevPc {};
 };

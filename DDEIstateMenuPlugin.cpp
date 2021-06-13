@@ -53,16 +53,29 @@ const QString DDEIstateMenuPlugin::pluginName() const {
 void DDEIstateMenuPlugin::init(PluginProxyInterface *proxyInter) {
     this->m_proxyInter = proxyInter;
 
+    this->p_itemWidget = new QWidget();
+    this->itemLayout = new QHBoxLayout(this->p_itemWidget);
+    this->itemLayout->setMargin(0);
+
     this->netspeedPlugin = new DDENetspeedPlugin();
     this->netspeedPlugin->init(this->m_proxyInter);
+    this->netspeedPlugin->itemWidget("")->installEventFilter(this);
+
     this->datetimePlugin = new DatetimePlugin();
     this->datetimePlugin->init(this->m_proxyInter);
+    this->datetimePlugin->itemWidget("")->installEventFilter(this);
+
     this->cpuPlugin = new DDECpuPlugin();
     this->cpuPlugin->init(this->m_proxyInter);
+    this->cpuPlugin->itemWidget("")->installEventFilter(this);
+
     this->ramPlugin = new DDERamPlugin();
     this->ramPlugin->init(this->m_proxyInter);
+    this->ramPlugin->itemWidget("")->installEventFilter(this);
+
     this->sensorPlugin = new DDESensorPlugin();
     this->sensorPlugin->init(this->m_proxyInter);
+    this->sensorPlugin->itemWidget("")->installEventFilter(this);
 
     if (!NetworkTrafficFilter::hasInstance) {
         NetworkTrafficFilter::hasInstance = true;
@@ -71,7 +84,7 @@ void DDEIstateMenuPlugin::init(PluginProxyInterface *proxyInter) {
     }
 
     if (!pluginIsDisable()) {
-//        this->m_proxyInter->itemAdded(this, this->pluginName());
+        this->m_proxyInter->itemAdded(this, this->pluginName());
         // force refresh status to make sure they keep the same as the config file
         m_proxyInter->saveValue(this, PLUGIN_STATE_KEY, true);
         m_proxyInter->saveValue(this->netspeedPlugin, PLUGIN_STATE_KEY, true);
@@ -144,7 +157,7 @@ void DDEIstateMenuPlugin::pluginSettingsChanged() {
 
 QWidget *DDEIstateMenuPlugin::itemWidget(const QString &itemKey) {
     Q_UNUSED(itemKey)
-    return nullptr;
+    return p_itemWidget;
 }
 
 void DDEIstateMenuPlugin::updateProcessList(QList<ProcessEntry> procList) {
@@ -186,48 +199,82 @@ void DDEIstateMenuPlugin::updateTempInfo(QList<TempInfo> tempInfoList) {
 }
 
 void DDEIstateMenuPlugin::reloadSettings() {
+    int c = this->itemLayout->count();
+    for (int i = 0; i < c; ++i) {
+        this->itemLayout->removeItem(this->itemLayout->itemAt(0));
+    }
+
     if (DDEIstateMenuSettings::inst()->isEnableCpu() != this->cpuPlugin->pluginIsDisable()) {
         if (!this->cpuPlugin->pluginIsDisable()) {
-            this->m_proxyInter->itemAdded(this->cpuPlugin, this->cpuPlugin->pluginName());
-        } else {
-            m_proxyInter->itemRemoved(this->cpuPlugin, this->cpuPlugin->pluginName());
+//            this->m_proxyInter->itemAdded(this->cpuPlugin, this->cpuPlugin->pluginName());
+//        } else {
+//            m_proxyInter->itemRemoved(this->cpuPlugin, this->cpuPlugin->pluginName());
+            this->itemLayout->addWidget(this->cpuPlugin->itemWidget(""));
         }
     }
     this->cpuPlugin->reloadSettings();
 
     if (DDEIstateMenuSettings::inst()->isEnableRam() != this->ramPlugin->pluginIsDisable()) {
         if (!this->ramPlugin->pluginIsDisable()) {
-            this->m_proxyInter->itemAdded(this->ramPlugin, this->ramPlugin->pluginName());
-        } else {
-            m_proxyInter->itemRemoved(this->ramPlugin, this->ramPlugin->pluginName());
+//            this->m_proxyInter->itemAdded(this->ramPlugin, this->ramPlugin->pluginName());
+//        } else {
+//            m_proxyInter->itemRemoved(this->ramPlugin, this->ramPlugin->pluginName());
+            this->itemLayout->addWidget(this->ramPlugin->itemWidget(""));
         }
     }
     this->ramPlugin->reloadSettings();
 
     if (DDEIstateMenuSettings::inst()->isEnableNetwork() != this->netspeedPlugin->pluginIsDisable()) {
         if (!this->netspeedPlugin->pluginIsDisable()) {
-            this->m_proxyInter->itemAdded(this->netspeedPlugin, this->netspeedPlugin->pluginName());
-        } else {
-            m_proxyInter->itemRemoved(this->netspeedPlugin, this->netspeedPlugin->pluginName());
+//            this->m_proxyInter->itemAdded(this->netspeedPlugin, this->netspeedPlugin->pluginName());
+//        } else {
+//            m_proxyInter->itemRemoved(this->netspeedPlugin, this->netspeedPlugin->pluginName());
+            this->itemLayout->addWidget(this->netspeedPlugin->itemWidget(""));
         }
     }
     this->netspeedPlugin->reloadSettings();
 
     if (DDEIstateMenuSettings::inst()->isEnableSensors() != this->sensorPlugin->pluginIsDisable()) {
         if (!this->sensorPlugin->pluginIsDisable()) {
-            this->m_proxyInter->itemAdded(this->sensorPlugin, this->sensorPlugin->pluginName());
-        } else {
-            m_proxyInter->itemRemoved(this->sensorPlugin, this->sensorPlugin->pluginName());
+//            this->m_proxyInter->itemAdded(this->sensorPlugin, this->sensorPlugin->pluginName());
+//        } else {
+//            m_proxyInter->itemRemoved(this->sensorPlugin, this->sensorPlugin->pluginName());
+            this->itemLayout->addWidget(this->sensorPlugin->itemWidget(""));
         }
     }
     this->sensorPlugin->reloadSettings();
 
     if (DDEIstateMenuSettings::inst()->isEnableDatetime() != this->datetimePlugin->pluginIsDisable()) {
         if (!this->datetimePlugin->pluginIsDisable()) {
-            this->m_proxyInter->itemAdded(this->datetimePlugin, this->datetimePlugin->pluginName());
-        } else {
-            m_proxyInter->itemRemoved(this->datetimePlugin, this->datetimePlugin->pluginName());
+//            this->m_proxyInter->itemAdded(this->datetimePlugin, this->datetimePlugin->pluginName());
+//        } else {
+//            m_proxyInter->itemRemoved(this->datetimePlugin, this->datetimePlugin->pluginName());
+            this->itemLayout->addWidget(this->datetimePlugin->itemWidget(""));
         }
     }
     this->datetimePlugin->reloadSettings();
+}
+
+bool DDEIstateMenuPlugin::eventFilter(QObject *watched, QEvent *event) {
+    if (event->type() == QEvent::Enter) {
+        auto *subPlugin = dynamic_cast<QWidget*>(watched);
+        if (subPlugin == this->cpuPlugin->itemWidget("")) {
+            this->popupWidget = this->cpuPlugin->itemPopupApplet("");
+        } else if (subPlugin == this->ramPlugin->itemWidget("")) {
+            this->popupWidget = this->ramPlugin->itemPopupApplet("");
+        } else if (subPlugin == this->sensorPlugin->itemWidget("")) {
+            this->popupWidget = this->sensorPlugin->itemPopupApplet("");
+        } else if (subPlugin == this->netspeedPlugin->itemWidget("")) {
+            this->popupWidget = this->netspeedPlugin->itemPopupApplet("");
+        } else if (subPlugin == this->datetimePlugin->itemWidget("")) {
+            this->popupWidget = this->datetimePlugin->itemPopupApplet("");
+        }
+    }
+
+    return QObject::eventFilter(watched, event);
+}
+
+QWidget *DDEIstateMenuPlugin::itemPopupApplet(const QString &itemKey) {
+    Q_UNUSED(itemKey)
+    return this->popupWidget;
 }
