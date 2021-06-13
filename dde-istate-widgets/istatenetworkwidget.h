@@ -61,7 +61,7 @@ private:
     QTimer *m_timer;
 
     int _testCount = 0;
-    int maxHistorySize = 60;
+    int maxHistorySize = 120;
     int maxY = 100;
     double currMaxY = 100;
     double spacing = 0.15;

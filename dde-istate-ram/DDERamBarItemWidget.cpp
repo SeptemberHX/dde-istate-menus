@@ -9,7 +9,7 @@
 DDERamBarItemWidget::DDERamBarItemWidget(QWidget *parent)
     : QLabel(parent)
     , percent(0)
-    , maxValue(20)
+    , maxValue(18)
     , width(8)
 {
     this->setFixedSize(width + 2, maxValue + 2);
@@ -29,7 +29,7 @@ void DDERamBarItemWidget::paintEvent(QPaintEvent *event) {
 
     painter.setPen(QPen(Qt::white, 2));
     painter.setBrush(Qt::NoBrush);
-    painter.drawRoundRect(event->rect(), 50, 50);
+    painter.drawRoundedRect(event->rect(), 4, 4);
 }
 
 void DDERamBarItemWidget::setPercent(qreal percent) {

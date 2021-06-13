@@ -7,8 +7,8 @@
 
 DDECpuPlotItemWidget::DDECpuPlotItemWidget(QWidget *parent)
     : QLabel(parent)
-    , historySize(35)
-    , maxValue(20)      // 1, 2, ..., maxValue
+    , historySize(30)
+    , maxValue(18)      // 1, 2, ..., maxValue
 {
     this->setFixedSize(historySize + 2, maxValue + 2);
 
@@ -43,7 +43,7 @@ void DDECpuPlotItemWidget::paintEvent(QPaintEvent *event) {
 
     painter.setPen(QPen(Qt::white, 2));
     painter.setBrush(Qt::NoBrush);
-    painter.drawRoundRect(event->rect());
+    painter.drawRoundedRect(event->rect(), 4, 4);
 }
 
 void DDECpuPlotItemWidget::addData(qreal usagePer) {
