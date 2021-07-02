@@ -4,7 +4,8 @@
 # https://cmake.org/cmake/help/latest/
 
 # 设置运行被配置所需的 cmake 最低版本
-cmake_minimum_required(VERSION 3.11)
+cmake_minimum_required(VERSION 3.18)
+
 set(CMAKE_CXX_STANDARD 11)
 
 # 使用 set 命令设置一个变量
@@ -122,8 +123,8 @@ target_compile_definitions(${PLUGIN_NAME} PUBLIC
         QT_DEBUG_NO_OUTPUT
         )
 
-find_library(pcap REQUIRED)
-find_library(procps REQUIRED)
+#find_library(pcap REQUIRED)
+#find_library(procps REQUIRED)
 
 # 设置目标要使用的链接库
 # 变量 ${DtkWidget_LIBRARIES} 和 ${Qt5Widgets_LIBRARIES} 是在前面执行 find_package 命令时引入的

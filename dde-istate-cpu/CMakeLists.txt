@@ -36,7 +36,6 @@ find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Charts REQUIRED)
 find_package(DtkWidget REQUIRED)
 find_package(Qt5LinguistTools REQUIRED)
-find_library(pcap REQUIRED)
 
 # find_package 命令还可以用来加载 cmake 的功能模块
 # 并不是所有的库都直接支持 cmake 查找的，但大部分都支持了 pkg-config 这个标准，
