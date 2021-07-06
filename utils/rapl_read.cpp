@@ -151,6 +151,7 @@ static long long read_msr(int fd, unsigned int which) {
 #define CPU_SKYLAKE        78
 #define CPU_SKYLAKE_HS        94
 #define CPU_SKYLAKE_X        85
+#define CPU_ICELAKE         126
 #define CPU_KNIGHTS_LANDING    87
 #define CPU_KNIGHTS_MILL    133
 #define CPU_KABYLAKE_MOBILE    142
@@ -269,6 +270,9 @@ static int detect_cpu(void) {
             case CPU_ATOM_GEMINI_LAKE:
             case CPU_ATOM_DENVERTON:
                 printf("Atom");
+                break;
+            case CPU_ICELAKE:
+                printf("Ice Lake");
                 break;
             default:
                 printf("Unsupported model %d\n", model);
@@ -418,6 +422,7 @@ static int rapl_msr(int cpu_model, QList<PowerConsumption>& pcList) {
             psys_avail = 0;
             break;
 
+        case CPU_ICELAKE:
         case CPU_SKYLAKE:
         case CPU_SKYLAKE_HS:
         case CPU_KABYLAKE:
