@@ -20,6 +20,7 @@ protected:
     void paintEvent(QPaintEvent *event) override;
 
 private:
+    int fontId;
     qreal temperature;
     qreal powerConsumption;
 };

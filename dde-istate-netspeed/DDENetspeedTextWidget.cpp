@@ -8,6 +8,7 @@
 #include <constants.h>
 #include <QPainter>
 #include <DFontSizeManager>
+#include <QFontDatabase>
 
 #define PLUGIN_STATE_KEY    "enable"
 #define TIME_FONT DFontSizeManager::instance()->t4()
@@ -18,6 +19,7 @@ DDENetspeedTextWidget::DDENetspeedTextWidget(QWidget *parent)
         : QWidget(parent) {
     setMinimumSize(PLUGIN_BACKGROUND_MIN_SIZE, PLUGIN_BACKGROUND_MIN_SIZE);
     this->setFixedHeight(24);
+    this->m_font = QFont(QFontDatabase::applicationFontFamilies(QFontDatabase::addApplicationFont(":/fonts/JetBrainsMono-Bold.ttf")).at(0));
 }
 
 QSize DDENetspeedTextWidget::sizeHint() const {
@@ -37,8 +39,8 @@ void DDENetspeedTextWidget::paintEvent(QPaintEvent *e) {
     uploadRect.setBottom(rect().center().y() + 2);
     downloadRect.setTop(uploadRect.bottom() - 2);
 
-    painter.drawText(uploadRect, Qt::AlignBottom | Qt::AlignLeft, getUploadBpsStr());
-    painter.drawText(downloadRect, Qt::AlignTop | Qt::AlignLeft, getDownloadBpsStr());
+    painter.drawText(uploadRect, Qt::AlignBottom | Qt::AlignHCenter, getUploadBpsStr());
+    painter.drawText(downloadRect, Qt::AlignTop | Qt::AlignHCenter, getDownloadBpsStr());
 }
 
 QString DDENetspeedTextWidget::shortenDataSizeStr(QString dataSizeStr, int fixLength) const {
@@ -55,11 +57,7 @@ QString DDENetspeedTextWidget::shortenDataSizeStr(QString dataSizeStr, int fixLe
         tmpStr = dataSizeStr.mid(0, i + 1);
     }
 
-    while (tmpStr.length() < fixLength) {
-        tmpStr = tmpStr.insert(0, ' ');
-    }
-
-    return tmpStr;
+    return tmpStr.rightJustified(fixLength - 5) + "/s";
 }
 
 void DDENetspeedTextWidget::setUpAndDownBps(qreal uploadBps, qreal downloadBps) {
@@ -71,10 +69,11 @@ void DDENetspeedTextWidget::setUpAndDownBps(qreal uploadBps, qreal downloadBps) 
 QSize DDENetspeedTextWidget::curSize() const {
     QLocale tmpLocal = QLocale(QLocale::English, QLocale::UnitedStates);
 
-    this->m_font = TIME_FONT;
+    this->m_font.setBold(true);
+    this->m_font.setPixelSize(14);
     QFontMetrics fm(this->m_font);
-    QString uploadStr = QString("↑ 1000.0B");
-    QString downloadStr = QString("↑ 1000.0B");
+    QString uploadStr = QString("↑ 1000.0b/s");
+    QString downloadStr = QString("↑ 1000.0b/s");
 
     const Dock::Position position = qApp->property(PROP_POSITION).value<Dock::Position>();
 

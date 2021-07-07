@@ -19,7 +19,7 @@ public:
 
 private:
     void paintEvent(QPaintEvent *e) override;
-    QString shortenDataSizeStr(QString dataSizeStr, int fixLength=7) const;
+    QString shortenDataSizeStr(QString dataSizeStr, int fixLength=11) const;
     QSize curSize() const;
 
 private:

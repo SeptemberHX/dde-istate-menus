@@ -6,6 +6,7 @@
 #include <QPainter>
 #include <QDebug>
 #include <DFontSizeManager>
+#include <QFontDatabase>
 
 DWIDGET_USE_NAMESPACE
 
@@ -15,6 +16,7 @@ DDESensorTempAndPowerItemWidget::DDESensorTempAndPowerItemWidget(QWidget *parent
     , powerConsumption(0)
 {
     this->setFixedSize(34, 24);
+    this->fontId = QFontDatabase::addApplicationFont(":/fonts/JetBrainsMono-Bold.ttf");
 }
 
 void DDESensorTempAndPowerItemWidget::setTempAndPower(qreal percent, qreal powerConsumption) {
@@ -27,9 +29,11 @@ void DDESensorTempAndPowerItemWidget::paintEvent(QPaintEvent *event) {
     QString tempStr = QString("%1°").arg(QString::number(this->temperature, 'f', 1));
     QString powerConStr = QString("%1W").arg(QString::number(this->powerConsumption, 'f', 1));
 
-    QFont font = DFontSizeManager::instance()->t4();
+    QFont font = QFont(QFontDatabase::applicationFontFamilies(fontId).at(0));
+    font.setBold(true);
+    font.setPixelSize(14);;
     while (QFontMetrics(font).boundingRect(tempStr).size().height() +
-           QFontMetrics(font).boundingRect(powerConStr).size().height() > height() + 4) {
+           QFontMetrics(font).boundingRect(powerConStr).size().height() > height() + 2) {
         font.setPixelSize(font.pixelSize() - 1);
     }
 

@@ -28,6 +28,7 @@
 #include <QMouseEvent>
 #include <DFontSizeManager>
 #include <DGuiApplicationHelper>
+#include <QFontDatabase>
 
 #define TIME_FONT DFontSizeManager::instance()->t4()
 #define DATE_FONT DFontSizeManager::instance()->t10()
@@ -39,6 +40,8 @@ DatetimeWidget::DatetimeWidget(QWidget *parent)
     , showDate(false)
 {
     setMinimumSize(PLUGIN_BACKGROUND_MIN_SIZE, PLUGIN_BACKGROUND_MIN_SIZE);
+    this->m_dateFont = QFont(QFontDatabase::applicationFontFamilies(QFontDatabase::addApplicationFont(":/fonts/JetBrainsMono-Regular.ttf")).at(0));
+    this->m_timeFont = QFont(QFontDatabase::applicationFontFamilies(QFontDatabase::addApplicationFont(":/fonts/JetBrainsMono-Regular.ttf")).at(0));
 }
 
 void DatetimeWidget::set24HourFormat(const bool value)
@@ -61,8 +64,8 @@ QSize DatetimeWidget::curTimeSize() const
 {
     const Dock::Position position = qApp->property(PROP_POSITION).value<Dock::Position>();
 
-    m_timeFont = TIME_FONT;
-    m_dateFont = DATE_FONT;
+    this->m_timeFont.setPixelSize(20);
+    this->m_dateFont.setPixelSize(20);
     QFontMetrics fm(m_timeFont);
     QString format;
     if (m_24HourFormat)

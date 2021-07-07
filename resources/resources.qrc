@@ -1,7 +1,7 @@
 <RCC>
     <qresource prefix="/fonts">
-        <file alias="8bit.ttf">font/8bit.ttf</file>
-        <file alias="pixel.ttf">font/pixel-inversions.ttf</file>
+        <file alias="JetBrainsMono-Bold.ttf">font/JetBrainsMono-Bold.ttf</file>
+        <file alias="JetBrainsMono-Regular.ttf">font/JetBrainsMono-Regular.ttf</file>
     </qresource>
     <qresource prefix="/icons">
         <file alias="cpu-dark.svg">icons/cpu-dark.svg</file>
