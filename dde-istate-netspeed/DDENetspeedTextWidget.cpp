@@ -39,8 +39,8 @@ void DDENetspeedTextWidget::paintEvent(QPaintEvent *e) {
     uploadRect.setBottom(rect().center().y() + 2);
     downloadRect.setTop(uploadRect.bottom() - 2);
 
-    painter.drawText(uploadRect, Qt::AlignBottom | Qt::AlignHCenter, getUploadBpsStr());
-    painter.drawText(downloadRect, Qt::AlignTop | Qt::AlignHCenter, getDownloadBpsStr());
+    painter.drawText(uploadRect, Qt::AlignBottom | Qt::AlignLeft, getUploadBpsStr());
+    painter.drawText(downloadRect, Qt::AlignTop | Qt::AlignLeft, getDownloadBpsStr());
 }
 
 QString DDENetspeedTextWidget::shortenDataSizeStr(QString dataSizeStr, int fixLength) const {
@@ -57,7 +57,7 @@ QString DDENetspeedTextWidget::shortenDataSizeStr(QString dataSizeStr, int fixLe
         tmpStr = dataSizeStr.mid(0, i + 1);
     }
 
-    return tmpStr.rightJustified(fixLength - 5) + "/s";
+    return tmpStr.rightJustified(fixLength - 3) + "/s";
 }
 
 void DDENetspeedTextWidget::setUpAndDownBps(qreal uploadBps, qreal downloadBps) {
@@ -72,8 +72,8 @@ QSize DDENetspeedTextWidget::curSize() const {
     this->m_font.setBold(true);
     this->m_font.setPixelSize(14);
     QFontMetrics fm(this->m_font);
-    QString uploadStr = QString("↑ 1000.0b/s");
-    QString downloadStr = QString("↑ 1000.0b/s");
+    QString uploadStr = QString("↑___1000.0b/s");
+    QString downloadStr = QString("↑___1000.0b/s");
 
     const Dock::Position position = qApp->property(PROP_POSITION).value<Dock::Position>();
 
