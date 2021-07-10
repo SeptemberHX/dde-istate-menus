@@ -205,11 +205,11 @@ void IstateCpuWidget::initCpuBarChart() {
     this->m_cpuBarChart = new QChart();
 
     this->m_cpuUserBarSet = new QBarSet("User");
-    this->m_cpuUserBarSet->setPen(QPen(this->cpuUserColor, 1));
+    this->m_cpuUserBarSet->setPen(QPen(this->cpuUserColor, 0.5));
     this->m_cpuUserBarSet->setBrush(this->cpuUserAreaColor);
 
     this->m_cpuSystemBarSet = new QBarSet("System");
-    this->m_cpuSystemBarSet->setPen(QPen(this->cpuSystemColor, 1));
+    this->m_cpuSystemBarSet->setPen(QPen(this->cpuSystemColor, 0.5));
     this->m_cpuSystemBarSet->setBrush(this->cpuSystemAreaColor);
 
     this->m_cpuIdleBarSet = new QBarSet("Idle");
@@ -250,14 +250,14 @@ void IstateCpuWidget::redrawCpuBarCurve() {
         for (int i  = 0; i < this->cpuUsageBarList.size(); ++i) {
             categories << QString::number(i);
         }
-        ui->cpuBarChartView->setFixedWidth(10 * this->cpuUsageBarList.size() + 2);
+        ui->cpuBarChartView->setFixedWidth(6 * this->cpuUsageBarList.size());
 
         QBarCategoryAxis *axisX = new QBarCategoryAxis();
         axisX->hide();
         axisX->append(categories);
         this->m_cpuBarChart->addAxis(axisX, Qt::AlignBottom);
         this->m_cpuBarSeries->attachAxis(axisX);
-        this->m_cpuBarSeries->setBarWidth((this->cpuUsageBarList.size() - 1.0) / this->cpuUsageBarList.size());
+        this->m_cpuBarSeries->setBarWidth(1);
 
     }
 
