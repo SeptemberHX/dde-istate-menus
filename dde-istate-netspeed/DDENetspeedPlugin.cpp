@@ -140,16 +140,8 @@ void DDENetspeedPlugin::determineNetDevice(QMap<QString, QPair<ulong, ulong>> da
         return dataMap[s1].first + dataMap[s1].second > dataMap[s2].first + dataMap[s2].second;
     });
 
-    // eth link first
     for (const QString& devName : interfaceList) {
-        if (devName.startsWith("eth") || devName.startsWith("en")) {
-            this->defaultNetDeviceName = devName;
-            return;
-        }
-    }
-
-    for (const QString& devName : interfaceList) {
-        if (devName.startsWith("wlan") || devName.startsWith("wlp")) {
+        if (devName.startsWith("eth") || devName.startsWith("en") || devName.startsWith("wlan") || devName.startsWith("wlp")) {
             this->defaultNetDeviceName = devName;
             return;
         }
