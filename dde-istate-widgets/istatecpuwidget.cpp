@@ -11,10 +11,10 @@ IstateCpuWidget::IstateCpuWidget(QWidget *parent) :
     ui->setupUi(this);
 
     this->cpuIdleColor = QColor("#404244");
-    this->cpuUserColor = QColor("#5BBDF8");
-    this->cpuUserAreaColor = QColor("#296085");
-    this->cpuSystemColor = QColor("#EA654D");
-    this->cpuSystemAreaColor = QColor("#811D18");
+    this->cpuUserColor = QColor("#17a5ec");
+    this->cpuUserAreaColor = QColor("#2bbafc");
+    this->cpuSystemColor = QColor("#ef1818");
+    this->cpuSystemAreaColor = QColor("#ff2a2a");
 
     this->loadAvg15Color = QColor("#9C9CA0");
     this->loadAvg1Color = this->cpuUserColor;
@@ -45,11 +45,11 @@ void IstateCpuWidget::initCpuChart() {
     this->m_cpuChart = new QChart();
 
     this->m_userSeries = new QLineSeries();
-    this->m_userSeries->setPen(QPen(this->cpuUserColor, 2));
+    this->m_userSeries->setPen(QPen(this->cpuUserColor, 1));
     this->m_userSeries->setBrush(Qt::NoBrush);
 
     this->m_systemSeries = new QLineSeries();
-    this->m_systemSeries->setPen(QPen(this->cpuSystemColor, 2));
+    this->m_systemSeries->setPen(QPen(this->cpuSystemColor, 1));
     this->m_systemSeries->setBrush(Qt::NoBrush);
 
     this->m_cpuZeroSeries = new QLineSeries();
@@ -103,15 +103,15 @@ void IstateCpuWidget::initLoadChart() {
     this->m_loadChart = new QChart();
 
     this->m_loadAvg1Series = new QLineSeries();
-    this->m_loadAvg1Series->setPen(QPen(this->loadAvg1Color, 2));
+    this->m_loadAvg1Series->setPen(QPen(this->loadAvg1Color, 1));
     this->m_loadAvg1Series->setBrush(Qt::NoBrush);
 
     this->m_loadAvg5Series = new QLineSeries();
-    this->m_loadAvg5Series->setPen(QPen(this->loadAvg5Color, 2));
+    this->m_loadAvg5Series->setPen(QPen(this->loadAvg5Color, 1));
     this->m_loadAvg5Series->setBrush(Qt::NoBrush);
 
     this->m_loadAvg15Series = new QLineSeries();
-    this->m_loadAvg15Series->setPen(QPen(this->loadAvg15Color, 2));
+    this->m_loadAvg15Series->setPen(QPen(this->loadAvg15Color, 1));
     this->m_loadAvg15Series->setBrush(Qt::NoBrush);
 
     this->m_loadZeroSeries = new QLineSeries();

@@ -14,6 +14,9 @@
 #include "../dde-istate-widgets/istateramwidget.h"
 #include "DDERamItemWidget.h"
 #include "../utils/system_stat.h"
+#include <DGuiApplicationHelper>
+
+DGUI_USE_NAMESPACE
 
 class DDERamPlugin : public QObject, public PluginsItemInterface, public DDEIstateSubPlugin {
     Q_OBJECT
@@ -51,6 +54,8 @@ public:
     void setRefreshInterval(int msec) override;
 
     void reloadSettings() override;
+
+    void themeChanged(DGuiApplicationHelper::ColorType type);
 
 private:
     DDERamItemWidget *m_pluginWidget;

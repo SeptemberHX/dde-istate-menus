@@ -19,6 +19,9 @@
 #include <QWidget>
 #include <QHBoxLayout>
 #include <QMap>
+#include <DGuiApplicationHelper>
+
+DGUI_USE_NAMESPACE
 
 class DDEIstateMenuPlugin : public QObject, public PluginsItemInterface {
     Q_OBJECT
@@ -58,6 +61,7 @@ private slots:
     void updateProcessList(const QList<ProcessEntry> procList);
     void updateCpuUsage(qreal cpuPercent, const QList<double> cpuPercents, cpu_usage separatorUsage, QList<cpu_usage> cpuUsageList);
     void updateTempInfo(QList<TempInfo> tempInfoList);
+    void themeTypeChanged(DGuiApplicationHelper::ColorType themeType);
 
 private:
     DDENetspeedPlugin *netspeedPlugin;

@@ -7,6 +7,7 @@
 #include "DDEIstateMenuSettings.h"
 #include <QJsonObject>
 #include <QDebug>
+#include <iostream>
 
 #define PLUGIN_STATE_KEY "enable"
 
@@ -94,6 +95,9 @@ void DDEIstateMenuPlugin::init(PluginProxyInterface *proxyInter) {
         m_proxyInter->saveValue(this->sensorPlugin, PLUGIN_STATE_KEY, true);
         this->reloadSettings();
     }
+
+    connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, &DDEIstateMenuPlugin::themeTypeChanged);
+    themeTypeChanged(DGuiApplicationHelper::instance()->themeType());
 }
 
 bool DDEIstateMenuPlugin::pluginIsAllowDisable() {
@@ -277,4 +281,11 @@ bool DDEIstateMenuPlugin::eventFilter(QObject *watched, QEvent *event) {
 QWidget *DDEIstateMenuPlugin::itemPopupApplet(const QString &itemKey) {
     Q_UNUSED(itemKey)
     return this->popupWidget;
+}
+
+void DDEIstateMenuPlugin::themeTypeChanged(DGuiApplicationHelper::ColorType themeType) {
+    this->cpuPlugin->themeChanged(themeType);
+    this->ramPlugin->themeChanged(themeType);
+    this->sensorPlugin->themeChanged(themeType);
+    this->netspeedPlugin->themeChanged(themeType);
 }

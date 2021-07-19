@@ -31,3 +31,15 @@ DDERamItemWidget::DDERamItemWidget(QWidget *parent)
     this->m_label->setFixedSize(10, 22);
     this->m_label->setPixmap(QPixmap::fromImage(image));
 }
+
+void DDERamItemWidget::changeIconTheme(bool dark) {
+    QImage image;
+    if (dark) {
+        image = QImage(":/icons/ram-light.svg");
+    } else {
+        image = QImage(":/icons/ram-dark.svg");
+    }
+    image.setDevicePixelRatio(this->devicePixelRatioF());
+    image = image.scaled(10 * this->devicePixelRatio(), 22 * this->devicePixelRatio(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    this->m_label->setPixmap(QPixmap::fromImage(image));
+}

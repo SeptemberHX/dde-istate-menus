@@ -13,6 +13,9 @@
 #include <QObject>
 #include <QLabel>
 #include <QTimer>
+#include <DGuiApplicationHelper>
+
+DGUI_USE_NAMESPACE
 
 
 class DDENetspeedPlugin : public QObject, public PluginsItemInterface, public DDEIstateSubPlugin {
@@ -55,6 +58,8 @@ public:
     void determineNetDevice(QMap<QString, QPair<ulong, ulong>> netTrafficMap);
 
     void reloadSettings() override;
+
+    void themeChanged(DGuiApplicationHelper::ColorType type);
 
 private:
     QLabel *m_pluginWidget;

@@ -9,6 +9,9 @@
 #include "../DDEIstateSubPlugin.h"
 #include "../dde-istate-widgets/istatesensorwidget.h"
 #include "DDESensorItemWidget.h"
+#include <DGuiApplicationHelper>
+
+DGUI_USE_NAMESPACE
 
 class DDESensorPlugin : public QObject, public PluginsItemInterface, public DDEIstateSubPlugin {
     Q_OBJECT
@@ -47,6 +50,8 @@ public:
     void setRefreshInterval(int msec) override;
 
     void reloadSettings() override;
+
+    void themeChanged(DGuiApplicationHelper::ColorType type);
 
 private:
     DDESensorItemWidget *m_pluginWidget;

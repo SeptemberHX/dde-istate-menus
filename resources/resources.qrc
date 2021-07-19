@@ -7,5 +7,8 @@
         <file alias="cpu-dark.svg">icons/cpu-dark.svg</file>
         <file alias="ram-dark.svg">icons/ram-dark.svg</file>
         <file alias="sensor-dark.svg">icons/sensor-dark.svg</file>
+        <file alias="cpu-light.svg">icons/cpu-light.svg</file>
+        <file alias="ram-light.svg">icons/ram-light.svg</file>
+        <file alias="sensor-light.svg">icons/sensor-light.svg</file>
     </qresource>
 </RCC>

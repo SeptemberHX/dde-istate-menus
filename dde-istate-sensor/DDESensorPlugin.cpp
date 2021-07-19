@@ -113,3 +113,19 @@ void DDESensorPlugin::updatePowerConsumption(PowerConsumption pc) {
 void DDESensorPlugin::reloadSettings() {
 
 }
+
+void DDESensorPlugin::themeChanged(DGuiApplicationHelper::ColorType themeType) {
+    QColor fontColor = Qt::white;
+    switch (themeType) {
+        case DGuiApplicationHelper::DarkType:
+            this->m_pluginWidget->changeIconTheme(true);
+            break;
+        case DGuiApplicationHelper::LightType:
+            this->m_pluginWidget->changeIconTheme(false);
+            fontColor = Qt::black;
+            break;
+        default:
+            break;
+    }
+    this->m_popupWidget->setStyleSheet(QString("QWidget { color: %1; }").arg(fontColor.name()));
+}

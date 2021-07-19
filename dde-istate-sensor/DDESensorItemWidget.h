@@ -19,6 +19,7 @@ public:
 
     void setTemp(qreal percent);
     void setPower(qreal power);
+    void changeIconTheme(bool dark);
 
 private:
     QHBoxLayout *m_layout;

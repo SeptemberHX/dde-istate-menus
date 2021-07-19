@@ -17,6 +17,7 @@ class DDERamItemWidget : public QWidget {
 public:
     explicit DDERamItemWidget(QWidget *parent = nullptr);
     void setPercent(qreal percent);
+    void changeIconTheme(bool dark);
 
 private:
     QHBoxLayout *m_layout;

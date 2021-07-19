@@ -44,6 +44,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0")
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5DBus REQUIRED)
 find_package(DtkWidget REQUIRED)
+find_package(DtkGui REQUIRED)
 find_package(Qt5LinguistTools REQUIRED)
 find_package(DtkGui REQUIRED)
 
@@ -110,6 +111,7 @@ target_include_directories(${PLUGIN_NAME} PUBLIC
         ${Qt5Widgets_INCLUDE_DIRS}
         ${Qt5DBus_INCLUDE_DIRS}
         ${DtkWidget_INCLUDE_DIRS}
+        ${DtkGui_INCLUDE_DIRS}
         ${DdeDockInterface_INCLUDE_DIRS}
         ${Dtkwm_INCLUDE_DIRS}
         ${XCB_INCLUDE_DIRS}
@@ -132,6 +134,7 @@ target_compile_definitions(${PLUGIN_NAME} PUBLIC
 target_link_libraries(${PLUGIN_NAME} PRIVATE
         ${Qt5Widgets_LIBRARIES}
         ${DtkWidget_LIBRARIES}
+        ${DtkGui_LIBRARIES}
         ${DdeDockInterface_LIBRARIES}
         ${CMAKE_CURRENT_SOURCE_DIR}/nethogs/src/libnethogs.a
         pcap

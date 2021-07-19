@@ -17,6 +17,7 @@ class DDECpuItemWidget : public QWidget {
 public:
     explicit DDECpuItemWidget(QWidget *parent = nullptr);
     void addData(qreal usagePer);
+    void changeIconTheme(bool dark);
 
 private:
     QHBoxLayout *m_layout;

@@ -151,3 +151,17 @@ void DDENetspeedPlugin::determineNetDevice(QMap<QString, QPair<ulong, ulong>> da
 void DDENetspeedPlugin::reloadSettings() {
 
 }
+
+void DDENetspeedPlugin::themeChanged(DGuiApplicationHelper::ColorType themeType) {
+    QColor fontColor = Qt::white;
+    switch (themeType) {
+        case DGuiApplicationHelper::DarkType:
+            break;
+        case DGuiApplicationHelper::LightType:
+            fontColor = Qt::black;
+            break;
+        default:
+            break;
+    }
+    this->m_appletWidget->setStyleSheet(QString("QWidget { color: %1; }").arg(fontColor.name()));
+}

@@ -32,3 +32,15 @@ DDECpuItemWidget::DDECpuItemWidget(QWidget *parent)
 void DDECpuItemWidget::addData(qreal usagePer) {
     this->m_plotWidget->addData(usagePer);
 }
+
+void DDECpuItemWidget::changeIconTheme(bool dark) {
+    QImage image;
+    if (dark) {
+        image = QImage(":/icons/cpu-light.svg");
+    } else {
+        image = QImage(":/icons/cpu-dark.svg");
+    }
+    image.setDevicePixelRatio(this->devicePixelRatioF());
+    image = image.scaled(10 * this->devicePixelRatio(), 22 * this->devicePixelRatio(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    this->m_label->setPixmap(QPixmap::fromImage(image));
+}

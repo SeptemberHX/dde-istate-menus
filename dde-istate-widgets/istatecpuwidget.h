@@ -52,7 +52,7 @@ private:
     QColor cpuSystemAreaColor;
     QChart *m_cpuChart;
 
-    int maxHistorySize = 60;
+    int maxHistorySize = 120;
 
     QLineSeries *m_userSeries;
     QLineSeries *m_cpuZeroSeries;

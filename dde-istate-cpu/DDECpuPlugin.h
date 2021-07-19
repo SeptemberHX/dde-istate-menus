@@ -14,6 +14,9 @@
 #include "../utils/process_entry.h"
 #include <QLabel>
 #include <QWidget>
+#include <DGuiApplicationHelper>
+
+DGUI_USE_NAMESPACE
 
 
 class DDECpuPlugin : public QObject, public PluginsItemInterface, public DDEIstateSubPlugin {
@@ -54,6 +57,8 @@ public:
     void setRefreshInterval(int msec) override;
 
     void reloadSettings() override;
+
+    void themeChanged(DGuiApplicationHelper::ColorType type);
 
 private:
     DDECpuItemWidget *m_pluginWidget;
