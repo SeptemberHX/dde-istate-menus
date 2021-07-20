@@ -10,7 +10,6 @@ IstateNetworkWidget::IstateNetworkWidget(QWidget *parent) :
     this->m_chart = new QChart();
     this->m_inSeries = new QLineSeries();
     this->m_outSeries = new QLineSeries();
-    this->m_seperatorSeries = new QLineSeries();
 
     this->m_inBottomSeries = new QLineSeries();
     this->m_outBottomSeries = new QLineSeries();
@@ -27,17 +26,11 @@ IstateNetworkWidget::IstateNetworkWidget(QWidget *parent) :
 
     this->m_chart->addSeries(this->m_outSeries);
     this->m_outSeries->setName(tr("Peak↑"));                    // upload speed
-    this->m_outSeries->setPen(QPen(QBrush("#EC9B9B"), 2));
+    this->m_outSeries->setPen(QPen(QBrush("#EC9B9B"), 1));
 
     this->m_chart->addSeries(this->m_inSeries);                 // download speed
     this->m_inSeries->setName(tr("Peak↓"));
-    this->m_inSeries->setPen(QPen(QBrush("#4DADFB"), 2));
-
-    this->m_chart->addSeries(this->m_seperatorSeries);
-    this->m_seperatorSeries->setPen(QPen(Qt::white, 1));
-    for (int i = 0; i < this->maxHistorySize; ++i) {
-        this->m_seperatorSeries->append(i, 0);
-    }
+    this->m_inSeries->setPen(QPen(QBrush("#4DADFB"), 1));
 
     // enable the legend and move it to bottom
     this->m_chart->legend()->setVisible(true);
@@ -62,13 +55,13 @@ IstateNetworkWidget::IstateNetworkWidget(QWidget *parent) :
     this->m_chart->legend()->layout()->setContentsMargins(0, 0, 0, 0);
 
     // hide the legend of the seperator
-    this->m_chart->legend()->markers(this->m_seperatorSeries)[0]->setVisible(false);
     this->m_chart->legend()->markers(this->m_inAreaSeries)[0]->setVisible(false);
     this->m_chart->legend()->markers(this->m_outAreaSeries)[0]->setVisible(false);
 
     this->m_chart->setBackgroundBrush(QBrush("#404244"));
-    this->m_chart->setBackgroundRoundness(0);
+    this->m_chart->setBackgroundRoundness(6);
     this->m_chart->legend()->setLabelColor(Qt::white);
+    ui->chartView->setStyleSheet("* { background: transparent; }");
 
     ui->chartView->setChart(this->m_chart);
     ui->chartView->setContentsMargins(0, 0, 0, 0);
@@ -103,6 +96,8 @@ void IstateNetworkWidget::appendBps(qreal upSpeed, qreal downSpeed)
 void IstateNetworkWidget::redrawCurve()
 {
     if (this->isHidden()) return;
+
+    if (this->uploadHistoryList.isEmpty()) return;
 
     this->m_inSeries->clear();
     this->m_outSeries->clear();
