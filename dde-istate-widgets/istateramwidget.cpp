@@ -123,7 +123,9 @@ void IstateRamWidget::redrawProcesses() {
     int r;
     for (r = 0; r < ui->processGridLayout->rowCount() && r < this->entries.size(); ++r) {
         QLabel *label = dynamic_cast<QLabel*>(ui->processGridLayout->itemAtPosition(r, 0)->widget());
-        label->setPixmap(this->entries[r].getIcon().pixmap(label->size()));
+        auto pixmap = this->entries[r].getIcon().pixmap(label->size() * this->devicePixelRatioF());
+        pixmap.setDevicePixelRatio(this->devicePixelRatioF());
+        label->setPixmap(pixmap);
 
         label = dynamic_cast<QLabel*>(ui->processGridLayout->itemAtPosition(r, 2)->widget());
         label->setText(this->entries[r].getName());

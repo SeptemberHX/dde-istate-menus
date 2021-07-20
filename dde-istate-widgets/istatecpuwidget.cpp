@@ -92,7 +92,8 @@ void IstateCpuWidget::initCpuChart() {
     this->m_cpuChart->setMargins(QMargins(0, 0, 0, 0));
     this->m_cpuChart->layout()->setContentsMargins(0, 0, 0, 0);
     this->m_cpuChart->setBackgroundBrush(QBrush(this->cpuIdleColor));
-    this->m_cpuChart->setBackgroundRoundness(0);
+    this->m_cpuChart->setBackgroundRoundness(5);
+    ui->cpuChartView->setStyleSheet("* { background: transparent; }");
 
     ui->cpuChartView->setChart(this->m_cpuChart);
     ui->cpuChartView->setContentsMargins(0, 0, 0, 0);
@@ -149,8 +150,9 @@ void IstateCpuWidget::initLoadChart() {
     this->m_loadChart->setMargins(QMargins(0, 0, 0, 0));
     this->m_loadChart->layout()->setContentsMargins(0, 0, 0, 0);
     this->m_loadChart->setBackgroundBrush(QBrush(this->cpuIdleColor));
-    this->m_loadChart->setBackgroundRoundness(0);
+    this->m_loadChart->setBackgroundRoundness(5);
 
+    ui->loadChartView->setStyleSheet("* { background: transparent; }");
     ui->loadChartView->setChart(this->m_loadChart);
     ui->loadChartView->setContentsMargins(0, 0, 0, 0);
     ui->loadChartView->setRenderHint(QPainter::Antialiasing);
@@ -233,8 +235,9 @@ void IstateCpuWidget::initCpuBarChart() {
     this->m_cpuBarChart->setMargins(QMargins(0, 0, 0, 0));
     this->m_cpuBarChart->layout()->setContentsMargins(0, 0, 0, 0);
     this->m_cpuBarChart->setBackgroundBrush(QBrush(this->cpuIdleColor));
-    this->m_cpuBarChart->setBackgroundRoundness(0);
+    this->m_cpuBarChart->setBackgroundRoundness(5);
 
+    ui->cpuBarChartView->setStyleSheet("* { background: transparent; }");
     ui->cpuBarChartView->setChart(this->m_cpuBarChart);
     ui->cpuBarChartView->setContentsMargins(0, 0, 0, 0);
     ui->cpuBarChartView->setRenderHint(QPainter::Antialiasing);
@@ -289,7 +292,9 @@ void IstateCpuWidget::redrawProcesses() {
     int r;
     for (r = 0; r < ui->processGridLayout->rowCount() && r < this->entries.size(); ++r) {
         QLabel *label = dynamic_cast<QLabel*>(ui->processGridLayout->itemAtPosition(r, 0)->widget());
-        label->setPixmap(this->entries[r].getIcon().pixmap(label->size()));
+        auto pixmap = this->entries[r].getIcon().pixmap(label->sizeHint() * this->devicePixelRatioF());
+        pixmap.setDevicePixelRatio(this->devicePixelRatioF());
+        label->setPixmap(pixmap);
 
         label = dynamic_cast<QLabel*>(ui->processGridLayout->itemAtPosition(r, 2)->widget());
         label->setText(this->entries[r].getName());
