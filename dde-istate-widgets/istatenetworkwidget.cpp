@@ -204,7 +204,9 @@ void IstateNetworkWidget::redrawProcessList() {
         if (rank < entries.size()) {
             ProcessEntry entry = entries.at(rank);
             auto *qLabel = dynamic_cast<QLabel*>(ui->processesGridLayout->itemAtPosition(r, 0)->widget());
-            qLabel->setPixmap(entry.getIcon().pixmap(qLabel->size()));
+            auto pixmap = entry.getIcon().pixmap(qLabel->size() * this->devicePixelRatioF());
+            pixmap.setDevicePixelRatio(this->devicePixelRatioF());
+            qLabel->setPixmap(pixmap);
 
             qLabel = dynamic_cast<QLabel*>(ui->processesGridLayout->itemAtPosition(r, 1)->widget());
             QFontMetrics fontWidth(qLabel->font());
