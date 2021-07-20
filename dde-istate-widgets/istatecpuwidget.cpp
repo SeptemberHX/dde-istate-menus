@@ -260,7 +260,7 @@ void IstateCpuWidget::redrawCpuBarCurve() {
         axisX->append(categories);
         this->m_cpuBarChart->addAxis(axisX, Qt::AlignBottom);
         this->m_cpuBarSeries->attachAxis(axisX);
-        this->m_cpuBarSeries->setBarWidth(1);
+        this->m_cpuBarSeries->setBarWidth(0.8);
 
     }
 
