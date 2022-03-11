@@ -24,20 +24,22 @@
 #ifndef FINDWINDOWTITLE_H
 #define FINDWINDOWTITLE_H
 
-#include <dwindowmanager.h>
 #include <xcb/xcb.h>
 #include <xcb/xcb_aux.h>
 #include <QMap>
+#include <QObject>
 
-DWM_USE_NAMESPACE
-
-class FindWindowTitle : public DWindowManager
+class FindWindowTitle : QObject
 {
     Q_OBJECT
 
 public:
     FindWindowTitle();
     ~FindWindowTitle();
+    QString getWindowName(xcb_window_t window);
+    QString getWindowFlatpakAppid(xcb_window_t window);
+    int getWindowPid(xcb_window_t window);
+    QPixmap getWindowIcon(xcb_window_t win, int iconSize);
 
     QList<int> getWindowPids();
     QString getWindowTitle(int pid);
@@ -45,6 +47,12 @@ public:
     xcb_window_t getWindow(int pid);
 
 private:
+    xcb_get_property_reply_t* getProperty(xcb_window_t window, QString propertyName, xcb_atom_t type);
+    xcb_atom_t getAtom(QString name);
+    QStringList getWindowTypes(xcb_window_t window);
+    QString getAtomName(xcb_atom_t atom);
+
+    xcb_window_t rootWindow;
     QMap<int, xcb_window_t> m_windowTitles;
 };
 

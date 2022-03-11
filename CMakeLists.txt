@@ -66,7 +66,6 @@ find_package(PkgConfig REQUIRED)
 # DdeDockInterface_LIBRARIES
 # 还有有另外的一些变量以及更灵活的用法，比如一次性查找多个库，这些请自行查找 cmake 文档学习。
 pkg_check_modules(DdeDockInterface REQUIRED dde-dock)
-pkg_check_modules(Dtkwm REQUIRED dtkwm)
 pkg_check_modules(XCB REQUIRED xcb)
 
 # add_definitions 命令用于声明/定义一些编译/预处理参数
@@ -113,7 +112,6 @@ target_include_directories(${PLUGIN_NAME} PUBLIC
         ${DtkWidget_INCLUDE_DIRS}
         ${DtkGui_INCLUDE_DIRS}
         ${DdeDockInterface_INCLUDE_DIRS}
-        ${Dtkwm_INCLUDE_DIRS}
         ${XCB_INCLUDE_DIRS}
         )
 
@@ -146,7 +144,6 @@ target_link_libraries(${PLUGIN_NAME} PRIVATE
         dde_istate_ram
         dde_istate_sensor
         ${Qt5DBus_LIBRARIES}
-        ${Dtkwm_LIBRARIES}
         ${XCB_LIBRARIES}
         )
 

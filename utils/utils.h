@@ -23,7 +23,6 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-#include <dwindowmanager.h>
 #include <proc/readproc.h>
 #include <QFileInfoList>
 #include <QLayout>
@@ -40,8 +39,6 @@
 #include <QPainterPath>
 
 #include <QVariant>
-
-DWM_USE_NAMESPACE
 
 const int RECTANGLE_PADDING = 24;
 const int RECTANGLE_RADIUS = 8;
@@ -171,7 +168,7 @@ inline QString normalizeProcName(const QString &proc_name, const QByteArrayList 
 }
 
 int getStatusBarMaxWidth();
-int getWindowPid(DWindowManager *windowManager, xcb_window_t window);
+int getWindowPid(FindWindowTitle *windowManager, xcb_window_t window);
 long getProcessMemory(QString cmdline, long residentMemroy, long shareMemory);
 QList<xcb_window_t> getTrayWindows();
 QMap<QString, QString> getProcessDescriptions();
@@ -239,9 +236,6 @@ double calculateCPUPercentage(const proc_t *before, const proc_t *after,
                               const unsigned long long &prevCpuTime,
                               const unsigned long long &cpuTime);
 std::string getDesktopFileFromName(int pid, QString procName, QString cmdline);
-void blurRect(DWindowManager *windowManager, int widgetId, QRectF rect);
-void blurRects(DWindowManager *windowManager, int widgetId, QList<QRectF> rects);
-void clearBlur(DWindowManager *windowManager, int widgetId);
 void drawLoadingRing(QPainter &painter, int centerX, int centerY, int radius, int penWidth,
                      int loadingAngle, int rotationAngle, QColor foregroundColor,
                      double foregroundOpacity, QColor backgroundColor, double backgroundOpacity,

@@ -95,7 +95,7 @@ int getStatusBarMaxWidth()
     return 300;
 }
 
-int getWindowPid(DWindowManager *windowManager, xcb_window_t window)
+int getWindowPid(FindWindowTitle *windowManager, xcb_window_t window)
 {
     int windowPid = -1;
 
@@ -542,34 +542,6 @@ double calculateCPUPercentage(const proc_t *before, const proc_t *after,
         ((after->utime + after->stime) - (before->utime + before->stime));
 
     return (processcpuTime / totalCpuTime) * 100.0;
-}
-
-void blurRect(DWindowManager *windowManager, int widgetId, QRectF rect)
-{
-    QVector<uint32_t> data;
-
-    qreal devicePixelRatio = qApp->devicePixelRatio();
-    data << rect.x() << rect.y() << rect.width() * devicePixelRatio
-         << rect.height() * devicePixelRatio << RECTANGLE_RADIUS << RECTANGLE_RADIUS;
-    windowManager->setWindowBlur(widgetId, data);
-}
-
-void blurRects(DWindowManager *windowManager, int widgetId, QList<QRectF> rects)
-{
-    QVector<uint32_t> data;
-    qreal devicePixelRatio = qApp->devicePixelRatio();
-    foreach (auto rect, rects) {
-        data << rect.x() << rect.y() << rect.width() * devicePixelRatio
-             << rect.height() * devicePixelRatio << RECTANGLE_RADIUS << RECTANGLE_RADIUS;
-    }
-    windowManager->setWindowBlur(widgetId, data);
-}
-
-void clearBlur(DWindowManager *windowManager, int widgetId)
-{
-    QVector<uint32_t> data;
-    data << 0 << 0 << 0 << 0 << 0 << 0;
-    windowManager->setWindowBlur(widgetId, data);
 }
 
 void drawLoadingRing(QPainter &painter, int centerX, int centerY, int radius, int penWidth,
